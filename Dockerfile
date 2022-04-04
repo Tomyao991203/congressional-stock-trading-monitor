@@ -1,7 +1,5 @@
 FROM python:3.10
 
-ENV FLASK_APP=appplication.py
-
 # Flask apps listen to port 5000 by default
 EXPOSE 5000
 
@@ -13,6 +11,5 @@ COPY . /app
 # Install Requirements
 RUN pip install -r requirements.txt
 
-ENTRYPOINT [ "flask" ]
-CMD [ "run", "--host", "0.0.0.0" ] 
+CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0" ]
 
