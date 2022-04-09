@@ -23,3 +23,7 @@ def list():
     cur.execute(f"select * from {table_name}")
     entries = cur.fetchall()
     return render_template("all_transaction.html",entries = entries)
+
+if __name__ == '__main__':
+    application.run(host="0.0.0.0", port=5000, debug=True)
+
