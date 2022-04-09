@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FinancialDisclosure>
+  <Member>
+    <Prefix />
+    <Last>BINGEN-TYTLER</Last>
+    <First>KARI A.</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>NS00</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/21/2014</FilingDate>
+    <DocID>8214528</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix>HONORABLE</Prefix>
+    <Last>CAMPBELL</Last>
+    <First>JOHN</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>CA45</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>5/1/2014</FilingDate>
+    <DocID>8214602</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>CLARK</Last>
+    <First>KATHERINE</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>MA05</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/30/2014</FilingDate>
+    <DocID>8214656</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix>HONORABLE</Prefix>
+    <Last>DOGGETT</Last>
+    <First>LLOYD</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>TX35</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/30/2014</FilingDate>
+    <DocID>8214603</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>HAILEY</Last>
+    <First>SEAN</First>
+    <Suffix />
+    <FilingType>O</FilingType>
+    <StateDst>WM00</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/24/2014</FilingDate>
+    <DocID>8214527</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix>HONORABLE</Prefix>
+    <Last>HINOJOSA</Last>
+    <First>RUBEN</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>TX15</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/29/2014</FilingDate>
+    <DocID>8214604</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>KRUPNICK</Last>
+    <First>DANIEL E.</First>
+    <Suffix />
+    <FilingType>T</FilingType>
+    <StateDst>NY26</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2014</FilingYear>
+    <FilingDate>4/23/2014</FilingDate>
+    <DocID>8214526</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>PIGGEE</Last>
+    <First>DARRYL A.</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>MO01</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>4/2/2014</FilingDate>
+    <DocID>8214391</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>VERREAU</Last>
+    <First>REBECCA B.</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>CB00</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>5/2/2014</FilingDate>
+    <DocID>8214601</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>WHITE</Last>
+    <First>RICHARD A.</First>
+    <Suffix />
+    <FilingType>T</FilingType>
+    <StateDst>CP00</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2014</FilingYear>
+    <FilingDate>4/17/2014</FilingDate>
+    <DocID>8214529</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+  <Member>
+    <Prefix />
+    <Last>WYSONG</Last>
+    <First>DAVID</First>
+    <Suffix />
+    <FilingType>A</FilingType>
+    <StateDst>TX16</StateDst>
+    <Year>2014</Year>
+    <FilingYear>2013</FilingYear>
+    <FilingDate>5/1/2014</FilingDate>
+    <DocID>8214600</DocID>
+    <DisclosureType>FD</DisclosureType>
+  </Member>
+</FinancialDisclosure>
