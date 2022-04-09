@@ -13,9 +13,6 @@ class ProxyCreateTestCase(unittest.TestCase):
     def test_always_pass(self):
         self.assertTrue(True)
 
-    def test_always_fail(self):
-        self.assertTrue(False)
-
 
 class ProxyReadTestCase(unittest.TestCase):
     """
@@ -24,9 +21,6 @@ class ProxyReadTestCase(unittest.TestCase):
 
     def test_always_pass(self):
         self.assertTrue(True)
-
-    def test_always_fail(self):
-        self.assertTrue(False)
 
 
 class ProxyUpdateTestCase(unittest.TestCase):
@@ -37,9 +31,6 @@ class ProxyUpdateTestCase(unittest.TestCase):
     def test_always_pass(self):
         self.assertTrue(True)
 
-    def test_always_fail(self):
-        self.assertTrue(False)
-
 
 class ProxyDeleteTestCase(unittest.TestCase):
     """
@@ -49,5 +40,3 @@ class ProxyDeleteTestCase(unittest.TestCase):
     def test_always_pass(self):
         self.assertTrue(True)
 
-    def test_always_fail(self):
-        self.assertTrue(False)
