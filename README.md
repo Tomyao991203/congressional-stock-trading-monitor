@@ -8,13 +8,13 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 
 1. Open docker and a terminal window to this folder
 2. Type the following docker commands into the terminal window:
-    * ```docker compose build```
     * ```docker-compose up```
 3. Visit http://127.0.0.1:5000/  or localhost:5000 in a browser to see the webpage.
+4. When finished, run `docker-compose down` to remove leftover container artifacts.
 
 ### B. Visiting the Website
 
-If the Congressional Stock Trading Monitor is running on our server, you can access the webpage through http://35.175.242.206:5000.
+You can visit the Congressional Stock Trading Monitor webpage [here](http://cstm-testing.eba-2jr5ivme.us-east-1.elasticbeanstalk.com/).
 
 ## User Documentation
 
