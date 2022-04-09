@@ -1,4 +1,9 @@
-
+# PyCharm Files
+.idea/
+# PyTest Files
+.coverage
+.pytest_cache/
+__pycache__
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
