@@ -8,5 +8,6 @@
 2020_house_pdfs/
 2021_house_pdfs/
 2022_house_pdfs/
+.idea/
 
 *.pdf
