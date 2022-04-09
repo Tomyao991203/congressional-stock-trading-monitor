@@ -14,7 +14,7 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 
 ### B. Visiting the Website
 
-You can visit the Congressional Stock Trading Monitor webpage [http://cstm-testing.eba-2jr5ivme.us-east-1.elasticbeanstalk.com/](here)
+You can visit the Congressional Stock Trading Monitor webpage [here](http://cstm-testing.eba-2jr5ivme.us-east-1.elasticbeanstalk.com/).
 
 ## User Documentation
 
