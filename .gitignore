@@ -1,4 +1,5 @@
-
+# PyCharm Files
+.idea/*
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
