@@ -34,6 +34,15 @@ unit-test-job:   # This job runs in the test stage.
     - echo "Running unit tests..."
     - pytest tests/unit/
 
+code-coverage-job:
+  stage: test
+  before_script:
+    - python --version
+    - pip install -r requirements.txt
+  script:
+    - echo "Running code coverage..."
+    - pytest --cov=cstm/ --cov=database/ tests/
+
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
