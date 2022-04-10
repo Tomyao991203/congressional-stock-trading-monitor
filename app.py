@@ -80,3 +80,5 @@ def get_transaction_base_on_name():
             data = cur.fetchall()
         return render_template('search_by_name.html', data=data)
     return render_template("search_by_name.html")
+if __name__ == '__main__':
+    application.run(host="0.0.0.0", port=5000, debug=True)
