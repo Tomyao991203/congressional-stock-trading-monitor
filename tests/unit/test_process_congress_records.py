@@ -1,11 +1,10 @@
 """
 This is a little test suite for process_congress_records.py
 """
-import sys
 import unittest
+from database.process_congress_records import get_pdf
+from os.path import exists
 
-
-# sys.path.insert(0, "~/Documents/OS_Project/congressional-stock-trading-monitor/database/")
 
 class ProcessCongressRecordsGetPdf(unittest.TestCase):
     """
@@ -14,9 +13,9 @@ class ProcessCongressRecordsGetPdf(unittest.TestCase):
     """
 
     def test_doc_id_pdf(self):
-        # process_congress_records.get_pdf(year=2020, doc_id=10039988)
+        get_pdf(year=2020, doc_id=10039988)
         self.assertTrue(True)
 
     def test_last_first_name_pdf(self):
-        # process_congress_records.get_pdf(year=2020, first="Joe", last="Wilson")
+        get_pdf(year=2020, first="Joe", last="Wilson")
         self.assertTrue(True)
