@@ -8,7 +8,7 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 
 1. Open docker and a terminal window to this folder
 2. Type the following docker commands into the terminal window:
-    * ```docker-compose up```
+    * ```docker-compose build && docker-compose up```
 3. Visit http://127.0.0.1:5000/  or localhost:5000 in a browser to see the webpage.
 4. When finished, run `docker-compose down` to remove leftover container artifacts.
 
@@ -45,9 +45,18 @@ The ```ctsm``` directory contains backend python files to retreive, modify, and 
 1. ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
 2. ```input_validator.py```: includess an abstract base class ```InputValidator``` that validates inputs of the webpage.
 3. ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
+4. ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
+5. ```database_helpers.py```: connects html code form requests with queries on the database.
 
-### *db* Directory
-The ```db``` directory contains database files.
+### *database* Directory
+The ```database``` directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.
+1. ```pdfs``` directory: contains pdf files of stock transactions records for the U.S. House of Representatives.
+2. ```Financial_Disclosure_txt_files``` directory: contains text files of the U.S. House of Representatives, separated by year.
+3. ```process_congress_records.py```: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the ```Financial_Disclosure_txt_files``` directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the ```pdf``` directory. 
+4. ```sample_data.csv```: contains real stock transactions for 32 U.S. House of Representatives.
+5. ```database.db```: database file.
+6. ```database_schema.sql```: sql file that adds a table to the database to store all transactions.
+7. ```create_database_version1.ipynb```: python notebook that updates the database with data.
 
 ### *templates* Directory
 The ```templates``` directory contains html files.
@@ -55,12 +64,15 @@ The ```templates``` directory contains html files.
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
-* ```style.css```: css file defining the style of the webpage
+* ```style.css```: css file defining the style of the webpage.
 
 ### *tests* Directory
 The ```tests``` directory contains all test files.
 * ```unit``` directory: contains all unit tests
-    * ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*
+    1. ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
+    2. ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
+    3. ```test_query.py```:  tests ```query.py```.
+    4. ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
 
 ### Docker Files
 1. ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.
