@@ -1,10 +1,11 @@
 import sqlite3
+from flask import Request
 
 db_file_path = r"database/database.db"
 table_name = r"all_transaction"
 
 
-def get_db_connection(db_file: str):
+def get_db_connection(db_file: str = db_file_path):
     """
     :param db_file: Database file path
     :return: SQL3 Database Connection for the given file
@@ -14,13 +15,13 @@ def get_db_connection(db_file: str):
     return conn
 
 
-def transaction_query(request: dict) -> list:
+def transaction_query(request: Request) -> list:
     """
     This method makes a database query for all transactions that match the details in the given request. This request
     is expected to be generated from an HTML form, and could contain all the fields present in the form found in
     index.html's form
 
-    :param request: Dictionary containing the HTML Form Results from index.html
+    :param request: Flask Request containing the HTML Form Results from index.html
     :return: A list of all transactions in the database matching the given search parameters
     """
 
