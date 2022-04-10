@@ -1,0 +1,36 @@
+ <h1 class="pt-5 pb-2">List of entries in demo_table from demo_database</h1>
+
+      <p class="lead alert alert-warning">This is a list of all the entries in our inventory.</p>
+
+		<table class="table">
+			<tr>
+				<th>id</th>
+				<th>Member Name</th>
+                <th>State District Number</th>
+				<th>Company</th>
+                <th>Ticker</th>
+                <th>Transaction Type</th>
+                <th>Transaction Date</th>
+				<th>Value Lower Bound</th>
+                <th>Value Upper Bound</th>
+				<th>Description</th>
+                <th>Link</th>
+			</tr>
+
+			<!-- here is a for-loop to give us all the socks -->
+			{% for entry in entries %}
+			<tr>
+				<td>{{ entry.id }}</td>
+				<td>{{ entry.state_district_number }}</td>
+                <td>{{ entry.company }}</td>
+                <td>{{ entry.ticker }}</td>
+                <td>{{ entry.transaction_type }}</td>
+                <td>{{ entry.member_name }}</td>
+				<td>${{ entry.transaction_date }}</td>
+				<td>{{ entry.value_lb }}</td>
+				<td>{{ entry.value_ub }}</td>
+                <td>{{ entry.description }}</td>
+                <td>{{ entry.link }}</td>
+			</tr>
+			{% endfor %}
+		</table>
