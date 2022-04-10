@@ -1,6 +1,17 @@
 import pandas as pd
 import time
 import requests
+import os, os.path
+
+
+def safe_open_w(path):
+    """
+    Opens path in write mode, creating any needed folders along the way
+    :param path: The filename to open
+    :return: The opened file object
+    """
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    return open(path, "wb")
 
 
 def get_year(year):
@@ -21,7 +32,7 @@ def get_year(year):
         url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
         # print(url)
         response = requests.get(url)
-        with open(f"{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf", "wb") as f:
+        with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
 
 
@@ -38,7 +49,7 @@ def get_pdf(year, last="", first="", doc_id=0):
 
     :year: int or string of the year desired (2013-2022)
     :last: last name of the house member, should be a string.
-    :first: first name of the house member, hsould be a string.
+    :first: first name of the house member, should be a string.
     :doc_id: int or string of the document id.
     :return: void, writes the pdfs into year_house_pdfs/
     """
@@ -63,7 +74,7 @@ def __get_pdf_doc_id(year, doc_id):
     :doc_id: int or string of the document id.
     :return: void, writes the pdfs into year_house_pdfs/
     """
-    dataframe = pd.read_table(f"/database/Financial_Disclosure_txt_files/{year}FD.txt")
+    dataframe = pd.read_table(f"database/Financial_Disclosure_txt_files/{year}FD.txt")
 
     record = dataframe.loc[dataframe['DocID'] == doc_id]
     last_name = record['Last'].values[0]
@@ -72,7 +83,7 @@ def __get_pdf_doc_id(year, doc_id):
     url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id}.pdf"
     # print(url)
     response = requests.get(url)
-    with open(f"{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf", "wb") as f:
+    with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf") as f:
         f.write(response.content)
 
 
@@ -88,7 +99,7 @@ def __get_pdf_last_first_names(year, last, first):
     :return: void, writes the pdfs into year_house_pdfs/
 
     """
-    dataframe = pd.read_table(f"/database/Financial_Disclosure_txt_files/{year}FD.txt")
+    dataframe = pd.read_table(f"database/Financial_Disclosure_txt_files/{year}FD.txt")
     dataframe['Last'] = dataframe['Last'].apply(str.lower)
     dataframe['First'] = dataframe['First'].apply(str.lower)
     last_df = dataframe.loc[dataframe['Last'] == str.lower(last)]
@@ -100,5 +111,5 @@ def __get_pdf_last_first_names(year, last, first):
         url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
         # print(url)
         response = requests.get(url)
-        with open(f"{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf", "wb") as f:
+        with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
