@@ -10,3 +10,5 @@ __pycache__
 !.elasticbeanstalk/*.global.yml
 # Checkpoint files
 **/.ipynb_checkpoints
+# testing jp files
+playground.ipynb
