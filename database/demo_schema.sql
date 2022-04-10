@@ -6,3 +6,4 @@ CREATE TABLE demo_table (
     transaction_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     company TEXT NOT NULL,
     value FLOAT NOT NULL
+);
