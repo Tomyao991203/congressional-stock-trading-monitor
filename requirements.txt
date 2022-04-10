@@ -6,6 +6,7 @@ MarkupSafe==2.1.1
 Werkzeug==2.1.1
 mysql-connector==2.2.9
 pytest==6.2.4
+pytest-cov==3.0.0
 pandas==1.4.2
 requests==2.27.0
 
