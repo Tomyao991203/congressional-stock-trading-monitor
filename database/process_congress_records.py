@@ -21,17 +21,34 @@ def get_year(year):
 
 def get_pdf(year, last="", first="", doc_id=0):
     if doc_id != 0:
-        dataframe = pd.read_table(f"{year}FD.txt")
+        dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
 
-        doc_id = dataframe.get("DocID")
-        last_names = dataframe.get("Last")
-        first_names = dataframe.get("First")
+        record = dataframe.loc[dataframe['DocID'] == doc_id]
+        last_name = record['Last'].values[0]
+        first_name = record['First'].values[0]
 
-        print(dataframe.columns)
+        url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id}.pdf"
+        # print(url)
+        response = requests.get(url)
+        with open(f"{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf", "wb") as f:
+            f.write(response.content)
+
+    else:
+        if last == "" or first == "":
+            print("Please provide either a last and first name, or a document id.")
+            exit()
+
+        dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
+        dataframe['Last'] = dataframe['Last'].apply(str.lower)
+        dataframe['First'] = dataframe['First'].apply(str.lower)
+        last_df = dataframe.loc[dataframe['Last'] == str.lower(last)]
+        last_first_df = last_df.loc[last_df['First'] == str.lower(first)]
+
+        doc_id = last_first_df.get("DocID").values
+
         for i in range(len(doc_id)):
             url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
             # print(url)
             response = requests.get(url)
-            with open(f"{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf", "wb") as f:
+            with open(f"{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf", "wb") as f:
                 f.write(response.content)
-
