@@ -16,15 +16,18 @@
     
     <fieldset>
         <br>
+        <form action = "" method = "POST">
         <legend class="title">Search Query</legend>
-        <label>Representative Name: <input id="name" type="text"></label>
-        <label>State District Number: <input id="distrNum" type="text"></label>
+        
+        <label>Member Name: <input name="member_name" type="text"></label>
+        <label>State District Number: <input name="distrNum" type="text"></label>
         <br>
         <br>
-        <label>Company: <input id="company" type="text"></label>
-        <label>Transaction Type: <input id="transType" type="text"></label>
-        <label for="year">Year: </label>
-        <select name="years" id="year">
+        <label>Company: <input name="company" type="text"></label>
+        <label>Transaction Type: <input name="transType" type="text"></label>
+        <label>Year: </label>
+        <select name="transaction_year">
+            <option value=""></option>
             <option value="2013">2013</option>
             <option value="2014">2014</option>
             <option value="2015">2015</option>
@@ -38,12 +41,45 @@
         </select>
         <br>
         <br>
-        <input id="submitButton" type="submit" value="SEARCH">
+        <input name="submitButton" type="submit" value="submit">
+        </form>
     </fieldset>
-    
+
     <div>
-        
+    <br>
     </div>
+       <table class="styled-table">
+			<thead> <tr>
+                <th>id</th>
+				<th>Member Name</th>
+                <th>Member District</th>
+				<th>Company</th>
+                <th>Ticker</th>
+                <th>Transaction Type</th>
+                <th>Transaction Date</th>
+				<th>Value Lower Bound</th>
+                <th>Value Upper Bound</th>
+				<th>Description</th>
+                <th>Link</th>
+			</tr> </thead>
+
+			<!-- here is a for-loop to give us all the transactions -->
+			{% for entry in data %}
+			<tr>
+				<td>{{ entry.id }}</td>
+				<td>{{ entry.member_name }}</td>
+                <td>{{ entry.state_district_number }}</td>
+                <td>{{ entry.company }}</td>
+                <td>{{ entry.ticker }}</td>
+                <td>{{ entry.transaction_type }}</td>
+                <td>{{ entry.transaction_date }}</td>
+				<td>{{ entry.value_lb }}</td>
+				<td>{{ entry.value_ub }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="{{ entry.link }}">Source File</a></td>
+			</tr>
+			{% endfor %}
+		</table>
     
 </body>
 
