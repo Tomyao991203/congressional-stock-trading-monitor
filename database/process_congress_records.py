@@ -4,6 +4,11 @@ import requests
 
 
 def get_year(year):
+    """
+    get_year(year):
+    takes in a year (2013-2022) and downloads all the financial disclosure pdfs into year_house_pdfs/ in the current
+    directory
+    """
     dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
 
     doc_id = dataframe.get("DocID")
@@ -20,6 +25,16 @@ def get_year(year):
 
 
 def get_pdf(year, last="", first="", doc_id=0):
+    """
+    get_pdf(year, last="", first="", doc_id=0) takes in one mandatory argument (year), and three optional arguments,
+    (last, first, doc_id). However, either last and first or doc_id must be provided.
+
+    In the case of doc_id being provided, get_pdf() will download the corresponding financial disclosure form that
+    corresponds to that document id. This will be saved in year_house_pdfs/ in the current directory.
+
+    in the case of a first and last name being provided, get_pdf() will download all the financial disclosure forms
+    that correspond to that member in the given year. All of the pdfs will be saved in the year_house_pdfs/.
+    """
     if doc_id != 0:
         __get_pdf_doc_id(year, doc_id)
 
@@ -32,6 +47,11 @@ def get_pdf(year, last="", first="", doc_id=0):
 
 
 def __get_pdf_doc_id(year, doc_id):
+    """
+    private helper function for get_pdf(), when a doc_id is provided. Like stated above, __get_pdf_doc_id() will
+    download the corresponding financial disclosure form that
+    corresponds to that document id. This will be saved in year_house_pdfs/ in the current directory.
+    """
     dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
 
     record = dataframe.loc[dataframe['DocID'] == doc_id]
@@ -46,6 +66,11 @@ def __get_pdf_doc_id(year, doc_id):
 
 
 def __get_pdf_last_first_names(year, last, first):
+    """
+    private helper function for get_pdf(). __get_pdf_last_first_names() will download all the financial disclosure forms
+    that correspond to that member of the house  in the given year. All of the pdfs will be saved in
+    the year_house_pdfs/.
+    """
     dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
     dataframe['Last'] = dataframe['Last'].apply(str.lower)
     dataframe['First'] = dataframe['First'].apply(str.lower)
