@@ -3,15 +3,17 @@ from typing import List
 from cstm.query import where_condition 
 import sqlite3
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 
 db_file_path = r"database/v1.db"
 table_name = r"all_transaction"
+
 
 def get_db_connection(db_file: str):
     conn = sqlite3.connect(db_file)
     conn.row_factory = sqlite3.Row
     return conn
+
 
 def where_condition(var_name:str, var_value: Union[int, str]) -> str:
     """
@@ -28,12 +30,16 @@ def where_condition(var_name:str, var_value: Union[int, str]) -> str:
     
     
 
-@app.route('/',  methods=['GET', 'POST'])
+
+
+@app.route('/', methods=['GET', 'POST'])
+
 def root_dir():
     if request.method == "POST":
-        member_name = request.form['member_name'] 
-        transaction_date = request.form['transaction_date'] 
+        member_name = request.form['member_name']
+        transaction_date = request.form['transaction_date']
         transaction_year = request.form['transaction_year']
+
         company = request.form['company'] 
         
         condition_member_name = where_condition('member_name', member_name)
@@ -45,16 +51,19 @@ def root_dir():
         cur = connection.cursor()
         
         full_query = f'select *  from {table_name} where {condition_member_name} AND {condition_company} AND {query_transaction_year}'
+
         cur.execute(full_query)
-        
+
         connection.commit()
         data = cur.fetchall()
-        if len(data) == 0 or member_name == 'all': 
+
+        if len(data) == 0 and member_name == 'all':
             cur.execute(f"select * from {table_name}")
             connection.commit()
             data = cursor.fetchall()
         return render_template('index.html', data=data)
     return render_template("index.html")
+
 
 @app.route('/list')
 def list():
@@ -62,14 +71,15 @@ def list():
     cur = connection.cursor()
     cur.execute(f"select * from {table_name}")
     entries = cur.fetchall()
-    return render_template("all_transaction.html",entries = entries)
+    return render_template("all_transaction.html", entries=entries)
+
 
 @app.route('/search_by_name', methods=['GET', 'POST'])
 def get_transaction_base_on_name():
     if request.method == "POST":
-        member_name = request.form['member_name'] 
-        transaction_date = request.form['transaction_date'] 
+        member_name = request.form['member_name']
         transaction_year = request.form['transaction_year']
+
         company = request.form['company'] 
         
         condition_member_name = where_condition('member_name', member_name)
@@ -81,11 +91,12 @@ def get_transaction_base_on_name():
         cur = connection.cursor()
         
         full_query = f'select *  from {table_name} where {condition_member_name} AND {condition_company} AND {query_transaction_year}'
+
         cur.execute(full_query)
-        
+
         connection.commit()
         data = cur.fetchall()
-        if len(data) == 0 and member_name == 'all': 
+        if len(data) == 0 and member_name == 'all':
             cur.execute(f"select * from {table_name}")
             connection.commit()
             data = cur.fetchall()
