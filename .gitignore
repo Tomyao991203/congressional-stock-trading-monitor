@@ -8,3 +8,7 @@ __pycache__
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+# Checkpoint files
+**/.ipynb_checkpoints
+# testing jp files
+playground.ipynb
