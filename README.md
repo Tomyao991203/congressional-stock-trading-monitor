@@ -80,3 +80,8 @@ The ```tests``` directory contains all test files.
 3. ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
 
 ## Level of Effort by Each Member
+* (30%) Brian Spates - Organized group meetings, dealt with merge requests and resolving probelms before merging, setup AWS, setup CI/CD pipeline, wrote tests for the database code.
+* (25%) Jiaming Yao - Responsible for all code regarding the database and connecting HTML forms to the querying the database. 
+* (15%) Jake Wilson - Responsible for coding webscraping python files and corresponding tests.
+* (15%) Xue Qiu - Responsible for writing documentation and some html/css code.
+* (15%) Michelle Zheng - Responsible for some html code and collecting data entries into a .cvs file.
