@@ -71,10 +71,10 @@
                 <td>{{ entry.state_district_number }}</td>
                 <td>{{ entry.company }}</td>
                 <td>{{ entry.ticker }}</td>
-                <td>{{ entry.transaction_type }}</td>
+                <td>{{ "Purchase" if "P" == entry.transaction_type else "Sale" }}</td>
                 <td>{{ entry.transaction_date }}</td>
-				<td>{{ entry.value_lb }}</td>
-				<td>{{ entry.value_ub }}</td>
+				<td>{{ "${:,.2f}".format(entry.value_lb) }}</td>
+				<td>{{ "${:,.2f}".format(entry.value_ub) }}</td>
                 <td>{{ entry.description }}</td>
                 <td><a href="{{ entry.link }}">Source File</a></td>
 			</tr>
