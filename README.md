@@ -60,7 +60,9 @@ The ```database``` directory contains database files, python files for webscrapi
 
 ### *templates* Directory
 The ```templates``` directory contains html files.
-* ```index.html```: html file defining the front-end structure of the home page.
+* ```partials``` directory: contains html files defining reusable UI components
+* ```base.html```: html file defining the basic webpage format to extend into other pages
+* ```transactions.html```: html file defining the transaction driven view
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
