@@ -8,8 +8,8 @@ application = app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def root_dir():
     if request.method == "POST":
-        return render_template('index.html', data=transaction_query(request))
-    return render_template("index.html")
+        return render_template('transactions.html', data=transaction_query(request))
+    return render_template("transactions.html")
 
 
 if __name__ == '__main__':
