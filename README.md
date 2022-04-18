@@ -60,11 +60,17 @@ The ```database``` directory contains database files, python files for webscrapi
 
 ### *templates* Directory
 The ```templates``` directory contains html files.
-* ```index.html```: html file defining the front-end structure of the home page.
+* ```partials``` directory: contains html files defining reusable UI components
+    * ```description_modal.html```: html file defining the transaction description popup
+    * ```navigation_bar.html```: html file defining the responsive navigation
+    * ```transaction_table.html```: html file defining the transaction table
+* ```base.html```: html file defining the basic webpage format to extend into other pages
+* ```transactions.html```: html file defining the transaction driven view
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
-* ```style.css```: css file defining the style of the webpage.
+* ```darkly.bootstrap.min.css```: css file with the darkly bootstrap theme
+* ```flatly.bootstrap.min.css```: css file with the darkly bootstrap theme
 
 ### *tests* Directory
 The ```tests``` directory contains all test files.
