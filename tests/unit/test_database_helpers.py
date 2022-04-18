@@ -1,5 +1,5 @@
 import unittest
-from cstm.database_helpers import get_db_connection, transaction_query
+from cstm.database_helpers import get_db_connection, transaction_query, generate_like_condition_string
 import sqlite3
 from flask import Request
 
@@ -72,8 +72,19 @@ class TransactionQueryTestCase(unittest.TestCase):
             request.form['transaction_year'] = year
             self.assertEqual(transaction_counts[year], len(transaction_query(request)))
 
-
     def test_empty_request_with_member_all(self):
         request = empty_request()
         request.form['member_name'] = 'all'
         self.assertEqual(32, len(transaction_query(request)))
+
+
+class LikeConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_like_condition_string(variable_name="", partial_value="") == "TRUE")
+        self.assertTrue(generate_like_condition_string(variable_name="", partial_value="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_like_condition_string(variable_name="aa", partial_value="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_like_condition_string(variable_name="aa", partial_value="bb"), "aa like %bb%")
