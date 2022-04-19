@@ -1,0 +1,64 @@
+<div class="mx-auto" style="width: 90vw">
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark"> <tr>
+            <th>Rank</th>
+            <th>Company</th>
+            <th>Ticker</th>
+            <th>Type</th>
+            <th>Year</th>
+            <th><a data-bs-toggle="tooltip" data-bs-placement="top" title="The total number of transactions purchased/sold from a company." href="#"># Transactions</a></th>
+            <th><a data-bs-toggle="tooltip" data-bs-placement="top" title="The total number of House of Representative Members that purchased/sold stock from a company." href="#"># Members</a></th>
+            <th><a data-bs-toggle="tooltip" data-bs-placement="top" title="The lower bound on the total sum (in dollars) of purchases/sales of a company's stock." href="#">Value Lower Bound</a></th>
+            <th><a data-bs-toggle="tooltip" data-bs-placement="top" title="The upper bound on the total sum (in dollars) of purchases/sales of a company's stock." href="#">Value Upper Bound</a></th>
+        </tr> </thead>
+    
+        <form action = "" method = "POST">
+        <tr id="transactionSearch">
+            <td></td>
+            <td><input name="company" type="text" class="form-control"></td>
+            <td><input name="ticker" type="text" class="form-control"></td>
+            <td><select name="transaction_type" class="form-select">
+                <option value="P">Purchase</option>
+                <option value="S">Sale</option>
+            </select></td>
+            <td>
+                <select name="transaction_year" class="form-select">
+                    <option value=""></option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-primary" type="submit">Search</button></td>
+        </tr>
+        </form>
+    
+        {# Loops through all transactions returned from the search #}
+        {% for entry in data %}
+        <tr>
+            <td>{{ entry.rank }}</td>
+            <td>{{ entry.company }}</td>
+            <td>{{ entry.ticker }}</td>
+            <td>{{ "Purchase" if "P" == entry.transaction_type else "Sale" }}</td>
+            <td>{{ entry.year }}</td>
+            <td>{{ entry.num_transactions }}</td>
+            <td>{{ entry.num_members }}</td>
+            <td>{{ "${:,.2f}".format(entry.value_lb) }}</td>
+            <td>{{ "${:,.2f}".format(entry.value_ub) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    {% include "partials/description_modal.html" %}
+    
+    </div>
