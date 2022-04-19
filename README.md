@@ -47,6 +47,9 @@ The ```ctsm``` directory contains backend python files to retreive, modify, and 
 3. ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
 4. ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
 5. ```database_helpers.py```: connects html code form requests with queries on the database.
+6. ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
+7. ```enums.py```: Contains enumerated types found in CSTM
+8. ```dataclasses.py```: Contains dataclasses found in CSTM
 
 ### *database* Directory
 The ```database``` directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.
@@ -79,6 +82,11 @@ The ```tests``` directory contains all test files.
     2. ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
     3. ```test_query.py```:  tests ```query.py```.
     4. ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
+    5. ```test_state_enum.p```: tests the `State` enumerated type
+    6. ```test_transaction_dataclass.py```: tests the Transaction dataclass
+    7. ```test_disctrict_dataclasss.py```: tests the District dataclass
+    8. ```test_state_enum.py```: tests the State enum
+    9. ```test_representative_helpers.py```: tests the representative helper functions
 
 ### Docker Files
 1. ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.

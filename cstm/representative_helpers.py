@@ -3,7 +3,7 @@ from datetime import date
 from statistics import mean
 
 from cstm.database_helpers import get_transactions_between
-from cstm.dataclasses import Representative
+from cstm.dataclasses import Representative, Transaction
 from cstm.enums import TransactionType
 
 
@@ -24,6 +24,10 @@ def representative_list(date_lower: date, date_upper: date) -> list[Representati
     if not transactions:
         return []
 
+    return representatives_from_transactions(transactions)
+
+
+def representatives_from_transactions(transactions: list[Transaction]) -> list[Representative]:
     representatives_by_name: dict[str, Representative] = {}
     avg_values_by_name: dict[str, list[float]] = defaultdict(lambda: [])
 
@@ -41,12 +45,12 @@ def representative_list(date_lower: date, date_upper: date) -> list[Representati
         curr_rep.trade_count += 1
         if transaction.type == TransactionType.SALE:
             curr_rep.sale_count += 1
-            curr_rep.total_purchase_range = tuple(x+y for x, y in zip(curr_rep.total_purchase_range,
-                                                                      transaction.value_range))
+            curr_rep.total_sale_range = (curr_rep.total_sale_range[0] + transaction.value_range[0],
+                                         curr_rep.total_sale_range[1] + transaction.value_range[1])
         elif transaction.type == TransactionType.PURCHASE:
             curr_rep.purchase_count += 1
-            curr_rep.total_sale_range = tuple(x+y for x, y in zip(curr_rep.total_purchase_range,
-                                              transaction.value_range))
+            curr_rep.total_purchase_range = (curr_rep.total_purchase_range[0] + transaction.value_range[0],
+                                             curr_rep.total_purchase_range[1] + transaction.value_range[1])
 
         avg_values_by_name[name].append(transaction.get_average_value())
         representatives_by_name[name] = curr_rep

@@ -61,7 +61,7 @@ class Transaction:
     type: TransactionType
     date: date
     value_range: tuple[float, float]
-    description: str
+    description: str or None
 
     def get_average_value(self) -> float:
         """
