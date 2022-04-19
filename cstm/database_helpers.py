@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Request
+from typing import List
 
 db_file_path = r"database/database.db"
 table_name = r"all_transaction"
@@ -22,14 +23,45 @@ def generate_like_condition_string(variable_name: str, partial_value: str) -> st
     :param variable_name: the name of the variable
     :param partial_value: substring of the goal string (first name of the person for instance, or "Samsung", instead of
         its full legal name).
+    :return: a like condition string in the form of XXX Like %aa%
+    """
+    if partial_value is "" or variable_name is "":
+        return "TRUE"
+    return f"{variable_name} like \'%{partial_value}%\'"
+
+
+def generate_equal_condition_string(variable_name: str, partial_value: str) -> str:
+    """
+    return an equal condition (SQLite)
+    :param variable_name: the name of the variable
+    :param partial_value: the goal string
     :return:
     """
     if partial_value is "" or variable_name is "":
         return "TRUE"
-    return f"{variable_name} like %{partial_value}%"
+    return f"{variable_name} = \"{partial_value}\""
 
 
-
+def generate_select_query(selected_var: List[str], the_table_name: str, where_conditions: List[str]) -> str:
+    """
+    Vanilla, naive method of constructing a select query string
+    :param the_table_name: the name of the table which contains the keys we are looking for
+    :type the_table_name: string
+    :param selected_var: name of keys that will be returned by the query
+    :type selected_var: List of string
+    :param where_conditions: list of where conditions
+    :type where_conditions: List of string
+    :return: a string represent the SQLite select query
+    :rtype: string
+    """
+    select_string = 'Select ' + selected_var[0] if len(selected_var) != 0 else 'Select *'
+    for variable_name in selected_var:
+        select_string = select_string + ", " + variable_name
+    from_string = " From " + the_table_name
+    where_string = "Where " + where_conditions[0] if len(where_conditions) != 0 else ""
+    for condition in where_conditions:
+        where_string = where_string + " And " + condition
+    return select_string + from_string + where_string
 
 def transaction_query(request: Request) -> list:
     """

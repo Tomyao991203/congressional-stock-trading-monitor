@@ -1,5 +1,6 @@
 import unittest
-from cstm.database_helpers import get_db_connection, transaction_query, generate_like_condition_string
+from cstm.database_helpers import get_db_connection, transaction_query, generate_like_condition_string, \
+    generate_equal_condition_string, generate_select_query
 import sqlite3
 from flask import Request
 
@@ -87,4 +88,20 @@ class LikeConditionGenerationTestCase(unittest.TestCase):
         self.assertTrue(generate_like_condition_string(variable_name="aa", partial_value="") == "TRUE")
 
     def test_regular_query(self):
-        self.assertEqual(generate_like_condition_string(variable_name="aa", partial_value="bb"), "aa like %bb%")
+        self.assertEqual(generate_like_condition_string(variable_name="aa", partial_value="bb"), "aa like \'%bb%\'")
+
+
+class EqualConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_equal_condition_string(variable_name="", partial_value="") == "TRUE")
+        self.assertTrue(generate_equal_condition_string(variable_name="", partial_value="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_equal_condition_string(variable_name="aa", partial_value="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_equal_condition_string(variable_name="aa", partial_value="bb"), "aa = \"bb\"")
+
+
+# class SelectQueryGenerationTestCase(unittest.TestCase):
+#     def test_empty_

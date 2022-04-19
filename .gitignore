@@ -12,3 +12,4 @@ __pycache__
 **/.ipynb_checkpoints
 # testing jp files
 playground.ipynb
+playground.py
