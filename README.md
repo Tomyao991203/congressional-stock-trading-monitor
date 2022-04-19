@@ -42,24 +42,24 @@ The ```app.py``` file uses the Flask framework to create the web application.
 
 ### *ctsm* Directory
 The ```ctsm``` directory contains backend python files to retreive, modify, and send information to the Flask application.
-1. ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
-2. ```input_validator.py```: includess an abstract base class ```InputValidator``` that validates inputs of the webpage.
-3. ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
-4. ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
-5. ```database_helpers.py```: connects html code form requests with queries on the database.
-6. ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
-7. ```enums.py```: Contains enumerated types found in CSTM
-8. ```dataclasses.py```: Contains dataclasses found in CSTM
+* ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
+* ```input_validator.py```: includess an abstract base class ```InputValidator``` that validates inputs of the webpage.
+* ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
+* ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
+* ```database_helpers.py```: connects html code form requests with queries on the database.
+* ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
+* ```enums.py```: Contains enumerated types found in CSTM
+* ```dataclasses.py```: Contains dataclasses found in CSTM
 
 ### *database* Directory
 The ```database``` directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.
-1. ```pdfs``` directory: contains pdf files of stock transactions records for the U.S. House of Representatives.
-2. ```Financial_Disclosure_txt_files``` directory: contains text files of the U.S. House of Representatives, separated by year.
-3. ```process_congress_records.py```: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the ```Financial_Disclosure_txt_files``` directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the ```pdf``` directory. 
-4. ```sample_data.csv```: contains real stock transactions for 32 U.S. House of Representatives.
-5. ```database.db```: database file.
-6. ```database_schema.sql```: sql file that adds a table to the database to store all transactions.
-7. ```create_database_version1.ipynb```: python notebook that updates the database with data.
+* ```pdfs``` directory: contains pdf files of stock transactions records for the U.S. House of Representatives.
+* ```Financial_Disclosure_txt_files``` directory: contains text files of the U.S. House of Representatives, separated by year.
+* ```process_congress_records.py```: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the ```Financial_Disclosure_txt_files``` directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the ```pdf``` directory. 
+* ```sample_data.csv```: contains real stock transactions for 32 U.S. House of Representatives.
+* ```database.db```: database file.
+* ```database_schema.sql```: sql file that adds a table to the database to store all transactions.
+* ```create_database_version1.ipynb```: python notebook that updates the database with data.
 
 ### *templates* Directory
 The ```templates``` directory contains html files.
@@ -67,8 +67,10 @@ The ```templates``` directory contains html files.
     * ```description_modal.html```: html file defining the transaction description popup
     * ```navigation_bar.html```: html file defining the responsive navigation
     * ```transaction_table.html```: html file defining the transaction table
+    * ```companies_table.html```: html file defining the companies table
 * ```base.html```: html file defining the basic webpage format to extend into other pages
 * ```transactions.html```: html file defining the transaction driven view
+* ```companies.html```: html file defining the companies driven view
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
@@ -78,20 +80,22 @@ The ```static``` directory contains any scripts, css, and javascript files.
 ### *tests* Directory
 The ```tests``` directory contains all test files.
 * ```unit``` directory: contains all unit tests
-    1. ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
-    2. ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
-    3. ```test_query.py```:  tests ```query.py```.
-    4. ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
-    5. ```test_state_enum.p```: tests the `State` enumerated type
-    6. ```test_transaction_dataclass.py```: tests the Transaction dataclass
-    7. ```test_disctrict_dataclasss.py```: tests the District dataclass
-    8. ```test_state_enum.py```: tests the State enum
-    9. ```test_representative_helpers.py```: tests the representative helper functions
+    * ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
+    * ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
+    * ```test_query.py```:  tests ```query.py```.
+    * ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
+    * ```test_state_enum.p```: tests the `State` enumerated type
+    * ```test_transaction_dataclass.py```: tests the Transaction dataclass
+    * ```test_disctrict_dataclasss.py```: tests the District dataclass
+    * ```test_state_enum.py```: tests the State enum
+    * ```test_representative_helpers.py```: tests the representative helper functions
+
+>>>>>>> README.md
 
 ### Docker Files
-1. ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.
-2. ```compose.yaml```: configuration file that defines services, networks, and volumes for Docker containers.
-3. ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
+* ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.
+* ```compose.yaml```: configuration file that defines services, networks, and volumes for Docker containers.
+* ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
 
 ## Level of Effort by Each Member
 * (30%) Brian Spates - Organized group meetings, dealt with merge requests and resolving probelms before merging, setup AWS, setup CI/CD pipeline, wrote tests for the database code.
