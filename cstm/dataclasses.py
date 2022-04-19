@@ -1,7 +1,8 @@
-from cstm.enums import State
-from datetime import datetime
-from datetime import date as Date
+from datetime import date
 from dataclasses import dataclass
+import re
+
+from cstm.enums import State, TransactionType
 
 
 @dataclass
@@ -13,7 +14,21 @@ class District:
     number: int
 
     def __str__(self):
-        return state.abbrev() + str(number)
+        return self.state.abbrev() + str(self.number).zfill(2)
+
+    @classmethod
+    def from_district_string(cls, district_str: str):
+        match = re.match(r'^([A-Z]{2})([0-9]{2})$', district_str)
+        if not match:
+            raise Exception("Invalid District String")
+
+        state = match.group(1)
+        number = int(match.group(2))
+
+        if not State.has_value(state) or number < 1:
+            raise Exception("Invalid District String")
+
+        return cls(State(state), number)
 
 
 @dataclass
@@ -23,13 +38,13 @@ class Representative:
     as well as facilitating computations using this data
     """
     name: str
-    district: str
+    district_by_year: dict[int, District]
     trade_count: int
     purchase_count: int
     sale_count: int
-    avg_transaction_value: int
-    total_purchase_range: tuple[int, int]
-    total_sale_range: tuple[int, int]
+    avg_transaction_value: float
+    total_purchase_range: tuple[float, float]
+    total_sale_range: tuple[float, float]
 
 
 @dataclass
@@ -43,8 +58,8 @@ class Transaction:
     member_district: District
     company: str
     ticker: str
-    type: str
-    date: Date
+    type: TransactionType
+    date: date
     value_range: tuple[float, float]
     description: str
 

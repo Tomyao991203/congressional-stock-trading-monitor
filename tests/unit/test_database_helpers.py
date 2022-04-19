@@ -1,7 +1,11 @@
 import unittest
-from cstm.database_helpers import get_db_connection, transaction_query
+from datetime import date
 import sqlite3
 from flask import Request
+
+
+import cstm.database_helpers
+from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -72,8 +76,57 @@ class TransactionQueryTestCase(unittest.TestCase):
             request.form['transaction_year'] = year
             self.assertEqual(transaction_counts[year], len(transaction_query(request)))
 
-
     def test_empty_request_with_member_all(self):
         request = empty_request()
         request.form['member_name'] = 'all'
         self.assertEqual(32, len(transaction_query(request)))
+
+
+class TransactionsBetweenTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_transactions_between method in cstm.database_helpers
+    """
+
+    def test_all_transactions_in_range(self):
+        start_dates = [date(2012, 1, 1), date(2013, 1, 4), date(2021, 12, 31)]
+        end_dates = [date(2014, 4, 12), date(2020, 4, 20), date(2022, 4, 18)]
+        for i in range(len(start_dates)):
+            start_date = start_dates[i]
+            end_date = end_dates[i]
+            transactions = get_transactions_between(start_date, end_date)
+            for t in transactions:
+                self.assertTrue(start_date <= t.date <= end_date)
+
+    def test_flipped_range_returns_empty_list(self):
+        start_dates = [date(2012, 1, 1), date(2013, 1, 4), date(2021, 12, 31)]
+        end_dates = [date(2014, 4, 12), date(2020, 4, 20), date(2022, 4, 18)]
+        for i in range(len(start_dates)):
+            self.assertEqual([], get_transactions_between(end_dates[i], start_dates[i]))
+
+
+class ConvertDBTransactionTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the convert_db_transactions_to_dataclass method in
+    cstm.database_helpers
+    """
+
+    def test_convert_transactions_from_db(self):
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT * FROM {cstm.database_helpers.table_name} LIMIT 100")
+        connection.commit()
+        db_transactions = cursor.fetchall()
+        transactions = cstm.database_helpers.convert_db_transactions_to_dataclass(db_transactions)
+        for i in range(len(transactions)):
+            db_t = db_transactions[i]
+            t = transactions[i]
+            self.assertEqual(t.id, db_t["id"])
+            self.assertEqual(t.member_name, db_t["member_name"])
+            self.assertEqual(str(t.member_district), db_t["state_district_number"])
+            self.assertEqual(t.company, db_t["company"])
+            self.assertEqual(t.ticker, db_t["ticker"])
+            self.assertEqual(str(t.type), "Purchase" if db_t["transaction_type"] == "P" else "Sale")
+            self.assertEqual(t.date.isoformat(), db_t["transaction_date"])
+            self.assertEqual(t.value_range[0], db_t["value_lb"])
+            self.assertEqual(t.value_range[1], db_t["value_ub"])
+            self.assertEqual(t.description, None if db_t["description"] == "None" else db_t["description"])
