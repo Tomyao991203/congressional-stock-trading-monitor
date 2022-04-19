@@ -14,11 +14,7 @@ def representative_list(date_lower: date, date_upper: date) -> list[Representati
 
     :param date_lower: The lower bound of the query
     :param date_upper: The upper bound of the query
-    :return: A dictionary mapping strings (State Names) to a list of all members who served in that state. Each entry
-             in that list will be a dictionary with the following fields: Name, District, Number of Trades, Number of
-             Purchases, Number of Sales, Average Transaction Value, Total Purchase Value Lower/Upper Bound, Total Sale
-             Value Lower/Upper Bound.
-             If the year range is not valid, the empty dictionary is returned.
+    :return: A list of Representative objects populated from all transactions in the given range
     """
     transactions = get_transactions_between(date_lower, date_upper)
     if not transactions:
@@ -28,6 +24,13 @@ def representative_list(date_lower: date, date_upper: date) -> list[Representati
 
 
 def representatives_from_transactions(transactions: list[Transaction]) -> list[Representative]:
+    """
+    This method populates Representative objects with the information found in the
+    given list of transactions
+
+    :param transactions: The list of transactions to determine Representative info from
+    :return: A list of Representative objects populated from the given transaction list
+    """
     representatives_by_name: dict[str, Representative] = {}
     avg_values_by_name: dict[str, list[float]] = defaultdict(lambda: [])
 
