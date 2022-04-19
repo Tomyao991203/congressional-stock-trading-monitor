@@ -1,5 +1,6 @@
 from datetime import date
 from dataclasses import dataclass
+from statistics import mean
 import re
 
 from cstm.enums import State, TransactionType
@@ -67,4 +68,4 @@ class Transaction:
         """
         :return: The average value of this transaction, which is the midpoint between its value bounds
         """
-        return sum(self.value_range) / len(self.value_range)
+        return mean(self.value_range)
