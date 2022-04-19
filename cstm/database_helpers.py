@@ -82,7 +82,7 @@ def get_transactions_between(date_lower: date, date_upper: date) -> list[Transac
     :param date_upper: The upper range of the transaction query
     :return: A list of all transactions from the database within the given range
     """
-    if date_lower < date(get_earliest_recorded_year(), 1, 1) or date_upper > date(get_latest_recorded_year(), 1, 1):
+    if date_lower < date(get_earliest_recorded_year(), 1, 1) or date_upper > date(get_latest_recorded_year(), 12, 31):
         return []
 
     connection = get_db_connection()
