@@ -4,7 +4,7 @@ import sqlite3
 from flask import Request
 
 from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between, \
-    get_most_popular_companies, get_most_popular_companies_helper
+    get_most_popular_companies, get_most_popular_companies_helper, table_name, convert_db_transactions_to_dataclass
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -112,10 +112,10 @@ class ConvertDBTransactionTestCase(unittest.TestCase):
     def test_convert_transactions_from_db(self):
         connection = get_db_connection()
         cursor = connection.cursor()
-        cursor.execute(f"SELECT * FROM {cstm.database_helpers.table_name} LIMIT 100")
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT 100")
         connection.commit()
         db_transactions = cursor.fetchall()
-        transactions = cstm.database_helpers.convert_db_transactions_to_dataclass(db_transactions)
+        transactions = convert_db_transactions_to_dataclass(db_transactions)
         for i in range(len(transactions)):
             db_t = db_transactions[i]
             t = transactions[i]
@@ -216,13 +216,14 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
     """
     This test case is meant to test the get_most_popular_companies_helper method in the Database Helpers file.
     """
+
     def test_empty_request_returns_correct_tuple(self):
         """
         This test makes sure that an empty request results in the correct tuple being returned.
         """
 
         query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year = \
-        get_most_popular_companies_helper(company_empty_request_purchase())
+            get_most_popular_companies_helper(company_empty_request_purchase())
 
         self.assertEqual(query_transaction_year, "TRUE")
         self.assertEqual(query_company, "AND TRUE")
