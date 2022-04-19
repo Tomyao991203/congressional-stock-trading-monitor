@@ -51,3 +51,61 @@ def transaction_query(request: Request) -> list:
         data = cur.fetchall()
 
     return data
+
+
+def get_most_popular_companies(request: Request) -> list:
+    """
+    This method makes a database query for all companies with the greatest amount of transactions depending on
+    that match the details in the given request. This request is expected to be generated from an HTML form found
+    at companies_table.html
+
+    :param request: Flask Request containing the HTML Form Results from companies_table.html
+    :return: A list of all companies from the database matching the given search parameters, sorted by the greatest
+    number of transactions.
+    """
+
+    query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year = \
+        get_most_popular_companies_helper(request)
+
+    connection = get_db_connection(db_file_path)
+    cur = connection.cursor()
+
+    full_query = f'SELECT ROW_NUMBER() OVER(ORDER BY COUNT(id) DESC) AS rank, company, ticker, transaction_type, ' \
+                 f'IFNULL({select_query_year}, \'All\') AS year, COUNT(id) AS num_transactions, ' \
+                 f'COUNT(DISTINCT member_name) AS num_members, SUM(value_lb) AS value_lb, SUM(value_ub) AS value_ub ' \
+                 f'FROM {table_name} WHERE {query_transaction_year} {query_company} {query_ticker} ' \
+                 f'{query_trans_type} GROUP BY company ORDER BY num_transactions DESC'
+
+    cur.execute(full_query)
+
+    connection.commit()
+    data = cur.fetchall()
+
+    return data
+
+
+def get_most_popular_companies_helper(request: Request) -> tuple:
+    """
+    This is a helper method for most_popular_companies() that gets values from the HTML form
+    in companies_table.html. This helper function also breaks down the queries to be more readable
+    for most_popular_companies() method.
+
+    :param request: Flask Request containing the HTML Form Results from companies_table.html
+    :return: A tuple of strings used for querying the database.
+    """
+
+    transaction_year = request.form['transaction_year']
+    company = request.form['company']
+    ticker = request.form['ticker']
+    transaction_type = request.form['transaction_type']
+
+    query_transaction_year = f"strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" if transaction_year != "" \
+        else 'TRUE'
+    query_company = f"AND company = \'{company}\'" if company != "" else 'AND TRUE'
+    query_ticker = f"AND ticker = \'{ticker}\'" if ticker != "" else 'AND TRUE'
+    query_trans_type = f"AND transaction_type = \'{transaction_type}\'" \
+        if transaction_type == "S" or transaction_type == "P" else 'AND TRUE'
+
+    select_query_year = f"strftime(\'%Y\',transaction_date)" if transaction_year != "" else f"NULL"
+
+    return query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year
