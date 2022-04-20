@@ -17,51 +17,67 @@ def get_db_connection(db_file: str = db_file_path):
     return conn
 
 
-def generate_like_condition_string(variable_name: str, partial_value: str) -> str:
+def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     """
-    return a like condition (SQLite)
-    :param variable_name: the name of the variable
-    :param partial_value: substring of the goal string (first name of the person for instance, or "Samsung", instead of
+    return a like condition for string(SQLite)
+    :param key_name: the name of the key
+    :param partial_string: substring of the goal string (first name of the person for instance, or "Samsung", instead of
         its full legal name).
-    :return: a like condition string in the form of XXX Like %aa%
+    :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one
+        of input is empty
     """
-    if partial_value is "" or variable_name is "":
+    if partial_string is "" or key_name is "":
         return "TRUE"
-    return f"{variable_name} like \'%{partial_value}%\'"
+    return f"{key_name} like \'%{partial_string}%\'"
 
 
-def generate_equal_condition_string(variable_name: str, partial_value: str) -> str:
+def generate_string_equal_condition(key_name: str, exact_string: str) -> str:
     """
-    return an equal condition (SQLite)
-    :param variable_name: the name of the variable
-    :param partial_value: the goal string
-    :return:
+    return an equal condition for string (SQLite)
+    :param key_name: the name of the key
+    :param exact_string: the goal string
+    :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
+        of input is empty
     """
-    if partial_value is "" or variable_name is "":
+    if exact_string is "" or key_name is "":
         return "TRUE"
-    return f"{variable_name} = \"{partial_value}\""
+    return f"{key_name} = \"{exact_string}\""
 
 
-def generate_select_query(selected_var: List[str], the_table_name: str, where_conditions: List[str]) -> str:
+def generate_time_equal_condition(key_name: str, exact_time: str) -> str:
+    """
+    return an equal condition for year
+    :param key_name: the name of the key
+    :type key_name: str
+    :param exact_time: a string represent the exact year we are looking for
+    :type exact_time: str
+    :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one
+        of input is empty
+    :rtype: str
+    """
+
+
+def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
     """
     Vanilla, naive method of constructing a select query string
     :param the_table_name: the name of the table which contains the keys we are looking for
     :type the_table_name: string
-    :param selected_var: name of keys that will be returned by the query
-    :type selected_var: List of string
+    :param selected_key: name of keys that will be returned by the query
+    :type selected_key: List of string
     :param where_conditions: list of where conditions
     :type where_conditions: List of string
     :return: a string represent the SQLite select query
     :rtype: string
     """
-    select_string = 'Select ' + selected_var[0] if len(selected_var) != 0 else 'Select *'
-    for variable_name in selected_var:
+    select_string = 'Select ' + selected_key[0] if len(selected_key) != 0 else 'Select *'
+    for variable_name in selected_key[1:]:
         select_string = select_string + ", " + variable_name
     from_string = " From " + the_table_name
-    where_string = "Where " + where_conditions[0] if len(where_conditions) != 0 else ""
-    for condition in where_conditions:
+    where_string = " Where " + where_conditions[0] if len(where_conditions) != 0 else ""
+    for condition in where_conditions[1:]:
         where_string = where_string + " And " + condition
     return select_string + from_string + where_string
+
 
 def transaction_query(request: Request) -> list:
     """
@@ -78,22 +94,34 @@ def transaction_query(request: Request) -> list:
     transaction_year = request.form['transaction_year']
     company = request.form['company']
 
-    query_member_name = f"member_name = \'{member_name}\'" if member_name != "" else 'TRUE'
-    query_company = f"AND company = \'{company}\'" if company != "" else 'AND TRUE'
-    query_transaction_year = f"AND strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" \
-        if transaction_year != "" else 'AND TRUE'
+    # query_member_name = f"member_name = \'{member_name}\'" if member_name != "" else 'TRUE'
+    # query_company = f"AND company = \'{company}\'" if company != "" else 'AND TRUE'
+    # query_transaction_year = f"AND strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" \
+    #     if transaction_year != "" else 'AND TRUE'
+    full_equal_conditions = [generate_string_equal_condition('member_name', member_name),
+                             generate_time_equal_condition('transaction_year', transaction_year),
+                             generate_string_equal_condition('company', company)]
+
+    string_like_time_equal_conditions = [generate_string_like_condition('member_name', member_name),
+                                         generate_time_equal_condition('transaction_year', transaction_year),
+                                         generate_string_like_condition('company', company)]
+
+    selected_keys = []
+    equal_query = generate_select_query(selected_keys, table_name, full_equal_conditions)
+    like_query = generate_select_query(selected_keys, table_name, string_like_time_equal_conditions)
 
     connection = get_db_connection(db_file_path)
     cur = connection.cursor()
 
-    full_query = f'select * from {table_name} where {query_member_name} {query_transaction_year} {query_company}'
-    print(full_query)
-    cur.execute(full_query)
+    cur.execute(equal_query)
 
     connection.commit()
     data = cur.fetchall()
-    if len(data) == 0 and member_name == 'all':
-        cur.execute(f"select * from {table_name}")
+    if len(data) == 0:
+        if member_name == 'all':
+            cur.execute(f"select * from {table_name}")
+        else:
+            cur.execute(like_query)
         connection.commit()
         data = cur.fetchall()
 
