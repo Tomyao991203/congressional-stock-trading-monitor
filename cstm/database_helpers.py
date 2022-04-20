@@ -2,7 +2,7 @@ import sqlite3
 from flask import Request
 from typing import List
 
-db_file_path = r"database/database.db"
+db_file_path = r"C:\Users\tomya\OneDrive\CMSC435\CMSC435_demo\database\database.db"
 table_name = r"all_transaction"
 
 
@@ -102,11 +102,11 @@ def transaction_query(request: Request) -> list:
     # query_transaction_year = f"AND strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" \
     #     if transaction_year != "" else 'AND TRUE'
     full_equal_conditions = [generate_string_equal_condition('member_name', member_name),
-                             generate_year_equal_condition('transaction_year', transaction_year),
+                             generate_year_equal_condition('transaction_date', transaction_year),
                              generate_string_equal_condition('company', company)]
 
     string_like_time_equal_conditions = [generate_string_like_condition('member_name', member_name),
-                                         generate_year_equal_condition('transaction_year', transaction_year),
+                                         generate_year_equal_condition('transaction_date', transaction_year),
                                          generate_string_like_condition('company', company)]
 
     selected_keys = []

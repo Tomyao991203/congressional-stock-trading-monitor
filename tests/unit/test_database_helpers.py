@@ -47,7 +47,6 @@ class TransactionQueryTestCase(unittest.TestCase):
         cur.execute("select * from all_transaction")
         conn.commit()
         transaction_count = len(cur.fetchall())
-
         self.assertEqual(transaction_count, len(transaction_query(empty_request())))
 
     def test_sample_database_correct_years(self):
