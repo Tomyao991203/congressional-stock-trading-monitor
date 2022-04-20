@@ -26,7 +26,7 @@ def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one
         of input is empty
     """
-    if partial_string is "" or key_name is "":
+    if partial_string == "" or key_name == "":
         return "TRUE"
     return f"{key_name} like \'%{partial_string}%\'"
 
@@ -39,22 +39,25 @@ def generate_string_equal_condition(key_name: str, exact_string: str) -> str:
     :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
         of input is empty
     """
-    if exact_string is "" or key_name is "":
+    if exact_string == "" or key_name == "":
         return "TRUE"
     return f"{key_name} = \"{exact_string}\""
 
 
-def generate_time_equal_condition(key_name: str, exact_time: str) -> str:
+def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     """
     return an equal condition for year
     :param key_name: the name of the key
     :type key_name: str
-    :param exact_time: a string represent the exact year we are looking for
-    :type exact_time: str
+    :param exact_year: a string represent the exact year we are looking for
+    :type exact_year: str
     :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one
         of input is empty
     :rtype: str
     """
+    if key_name == "" or exact_year == "":
+        return "TRUE"
+    return f"strftime(\'%Y\',{key_name}) = \'{exact_year}\'"
 
 
 def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
@@ -99,11 +102,11 @@ def transaction_query(request: Request) -> list:
     # query_transaction_year = f"AND strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" \
     #     if transaction_year != "" else 'AND TRUE'
     full_equal_conditions = [generate_string_equal_condition('member_name', member_name),
-                             generate_time_equal_condition('transaction_year', transaction_year),
+                             generate_year_equal_condition('transaction_year', transaction_year),
                              generate_string_equal_condition('company', company)]
 
     string_like_time_equal_conditions = [generate_string_like_condition('member_name', member_name),
-                                         generate_time_equal_condition('transaction_year', transaction_year),
+                                         generate_year_equal_condition('transaction_year', transaction_year),
                                          generate_string_like_condition('company', company)]
 
     selected_keys = []
