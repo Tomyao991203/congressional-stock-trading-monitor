@@ -2,7 +2,8 @@ import sqlite3
 from flask import Request
 from typing import List
 
-db_file_path = r"C:\Users\tomya\OneDrive\CMSC435\CMSC435_demo\database\database.db"
+
+db_file_path = r"database\database.db"
 table_name = r"all_transaction"
 
 
