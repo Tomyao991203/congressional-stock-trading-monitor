@@ -38,7 +38,7 @@ class PdfScrapingPdfDiscriminator(unittest.TestCase):
 
     def test_working_input(self):
         db = pdf_discriminator("database/2015_house_pdfs/Pelosi_Nancy_10010857.pdf")
-        first_line_check = db[0].columns[0].lower() == 'filer_information'
+        first_line_check = db[0].columns[0].lower() == 'filer information'
         self.assertTrue(first_line_check)
 
     def test_not_malformed_but_incorrect_form(self):

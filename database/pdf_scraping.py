@@ -62,7 +62,7 @@ def pdf_discriminator(file: str):
     create_correct_template(file)
     template_path = 'database/pdf_tmp_template.tabula-template.json'
     pdf_db = tb.read_pdf_with_template(file, template_path, stream=True)
-    if pdf_db == [] or pdf_db[0].columns[0].lower() != 'filer_information':
+    if pdf_db == [] or pdf_db[0].columns[0].lower() != 'filer information':
         print(f"The path {file} leads to a disclosure form of the incorrect format.")
         return None
     return pdf_db
