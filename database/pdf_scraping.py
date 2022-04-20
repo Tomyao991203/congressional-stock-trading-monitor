@@ -30,7 +30,7 @@ def create_correct_template(file: str):
     file = open(file, 'rb')
     readpdf = PyPDF2.PdfFileReader(file)
     total_pages = readpdf.numPages
-    with open("pdf_reduced_template.tabula-template.json", "r") as jsonTemplate:
+    with open("database/pdf_reduced_template.tabula-template.json", "r") as jsonTemplate:
         data = json.load(jsonTemplate)
         page_template = data[3]
         if total_pages == 1:
@@ -41,7 +41,7 @@ def create_correct_template(file: str):
                 tmp_page_template['page'] = page_num + 1
                 data.append(tmp_page_template)
 
-        with open("pdf_tmp_template.tabula-template.json", 'w') as outfile:
+        with open("database/pdf_tmp_template.tabula-template.json", 'w') as outfile:
             json.dump(data, outfile)
 
 
@@ -60,7 +60,7 @@ def pdf_discriminator(file: str):
         return None
 
     create_correct_template(file)
-    template_path = 'pdf_tmp_template.tabula-template.json'
+    template_path = 'database/pdf_tmp_template.tabula-template.json'
     pdf_db = tb.read_pdf_with_template(file, template_path, stream=True)
     if pdf_db == [] or pdf_db[0].columns[0].lower() != 'filer_information':
         print(f"The path {file} leads to a disclosure form of the incorrect format.")

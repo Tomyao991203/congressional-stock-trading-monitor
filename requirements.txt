@@ -10,6 +10,4 @@ pytest-cov==3.0.0
 pandas==1.4.2
 requests==2.27.0
 tabula-py==2.3.0
-
-
 PyPDF2==1.27.7

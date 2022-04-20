@@ -9,7 +9,7 @@ class PdfScrapingCheckIfPdfIsMalformed(unittest.TestCase):
     """
 
     def test_malformed_input(self):
-        db_malformed = check_if_pdf_is_malformed("/database/2015_house_pdfs/Pelosi_Nancy_20002351.pdf")
+        db_malformed = check_if_pdf_is_malformed("database/2015_house_pdfs/Pelosi_Nancy_20002351.pdf")
         self.assertTrue(db_malformed)
 
     def test_not_malformed_input(self):
@@ -23,7 +23,7 @@ class PdfScrapingCreateCorrectTemplate(unittest.TestCase):
     """
 
     def test_correct_template(self):
-        create_correct_template("Pelosi_Nancy_10010857.pdf")
+        create_correct_template("database/2015_house_pdfs/Pelosi_Nancy_10010857.pdf")
         self.assertTrue(exists("database/pdf_tmp_template.tabula-template.json"))
 
 
@@ -42,5 +42,5 @@ class PdfScrapingPdfDiscriminator(unittest.TestCase):
         self.assertTrue(first_line_check)
 
     def test_not_malformed_but_incorrect_form(self):
-        db = pdf_discriminator("2015_house_pdfs/Adams_Boyce_9106272.pdf")
+        db = pdf_discriminator("database/2015_house_pdfs/Adams_Boyce_9106272.pdf")
         self.assertTrue(db is None)
