@@ -3,7 +3,7 @@ from flask import Request
 from typing import List
 
 
-db_file_path = r"database\database.db"
+db_file_path = r"database/database.db"
 table_name = r"all_transaction"
 
 
