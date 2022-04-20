@@ -9,7 +9,7 @@ class PdfScrapingCheckIfPdfIsMalformed(unittest.TestCase):
     """
 
     def test_malformed_input(self):
-        db_malformed = check_if_pdf_is_malformed("database/2015_house_pdfs/Pelosi_Nancy_20002351.pdf")
+        db_malformed = check_if_pdf_is_malformed("/database/2015_house_pdfs/Pelosi_Nancy_20002351.pdf")
         self.assertTrue(db_malformed)
 
     def test_not_malformed_input(self):
