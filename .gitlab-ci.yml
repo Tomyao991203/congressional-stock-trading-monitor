@@ -28,8 +28,11 @@ build-job:       # This job runs in the build stage, which runs first.
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   before_script:
-      - python --version
-      - pip install -r requirements.txt
+    - python --version
+    - pip install -r requirements.txt
+    - apt-get update
+    - apt-get install -y openjdk-11-jre-headless
+    - apt-get clean
   script:
     - echo "Running unit tests..."
     - pytest tests/unit/
@@ -39,6 +42,9 @@ code-coverage-job:
   before_script:
     - python --version
     - pip install -r requirements.txt
+    - apt-get update
+    - apt-get install -y openjdk-11-jre-headless
+    - apt-get clean
   script:
     - echo "Running code coverage..."
     - pytest --cov=cstm/ --cov=database/ tests/
