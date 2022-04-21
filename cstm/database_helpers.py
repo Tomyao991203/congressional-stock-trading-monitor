@@ -19,7 +19,7 @@ def get_db_connection(db_file: str = db_file_path):
     return conn
 
 
-def get_earliest_recorded_year() -> int:
+def get_earliest_year() -> int:
     """
     TODO: Don't hardcode this
     :return: The first year for which a transaction exists in the database
@@ -27,7 +27,7 @@ def get_earliest_recorded_year() -> int:
     return 2013
 
 
-def get_latest_recorded_year() -> int:
+def get_latest_year() -> int:
     """
     TODO: Don't hardcode this
     :return: The last year for which a transaction exists in the database
@@ -82,19 +82,19 @@ def get_transactions_between(date_lower: date, date_upper: date) -> list[Transac
     :param date_upper: The upper range of the transaction query
     :return: A list of all transactions from the database within the given range
     """
-    if date_lower < date(get_earliest_recorded_year(), 1, 1) or date_upper > date(get_latest_recorded_year(), 12, 31):
+    if date_lower < date(get_earliest_year(), 1, 1) or date_upper > date(get_latest_year(), 12, 31):
         return []
 
     connection = get_db_connection()
     cur = connection.cursor()
 
     full_query = f"SELECT * FROM {table_name} WHERE transaction_date BETWEEN " \
-                 f"{date_lower.isoformat()} AND {date_upper.isoformat()}"
+                 f"'{date_lower.isoformat()}' AND '{date_upper.isoformat()}'"
     cur.execute(full_query)
 
     connection.commit()
     db_transactions = cur.fetchall()
-
+    print(full_query)
     return convert_db_transactions_to_dataclass(db_transactions)
 
 
