@@ -21,7 +21,6 @@ def get_db_connection(db_file: str = db_file_path):
     return conn
 
 
-<<<<<<< cstm/database_helpers.py
 def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     """
     return a like condition for string(SQLite)
@@ -85,7 +84,8 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
     for condition in where_conditions[1:]:
         where_string = where_string + " And " + condition
     return select_string + from_string + where_string
-=======
+
+
 def get_earliest_year() -> int:
     """
     TODO: Don't hardcode this
@@ -100,7 +100,6 @@ def get_latest_year() -> int:
     :return: The last year for which a transaction exists in the database
     """
     return 2022
->>>>>>> cstm/database_helpers.py
 
 
 def transaction_query(request: Request) -> list:
