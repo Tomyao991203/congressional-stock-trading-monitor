@@ -50,12 +50,7 @@ class TransactionQueryTestCase(unittest.TestCase):
         cur.execute("select * from all_transaction")
         conn.commit()
         transaction_count = len(cur.fetchall())
-<<<<<<< tests/unit/test_database_helpers.py
-        self.assertEqual(transaction_count, len(transaction_query(empty_request())))
-=======
-
         self.assertEqual(transaction_count, len(transaction_query(transaction_empty_request())))
->>>>>>> tests/unit/test_database_helpers.py
 
     def test_sample_database_correct_years(self):
         """
@@ -86,7 +81,6 @@ class TransactionQueryTestCase(unittest.TestCase):
         self.assertEqual(32, len(transaction_query(request)))
 
 
-<<<<<<< tests/unit/test_database_helpers.py
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
         self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
@@ -186,10 +180,6 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
         self.assertEqual(temp_query, full_query)
 
 
-
-
-
-=======
 class TransactionsBetweenTestCase(unittest.TestCase):
     """
     This test case is meant to test the get_transactions_between method in cstm.database_helpers
@@ -358,4 +348,3 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
         self.assertEqual(query_ticker, "AND ticker = \'EMC\'")
         self.assertEqual(query_trans_type, "AND transaction_type = \'S\'")
         self.assertEqual(select_query_year, "strftime(\'%Y\',transaction_date)")
->>>>>>> tests/unit/test_database_helpers.py
