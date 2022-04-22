@@ -20,6 +20,69 @@ def get_db_connection(db_file: str = db_file_path):
     conn.row_factory = sqlite3.Row
     return conn
 
+def generate_string_like_condition(key_name: str, partial_string: str) -> str:
+    """
+    return a like condition for string(SQLite)
+    :param key_name: the name of the key
+    :param partial_string: substring of the goal string (first name of the person for instance, or "Samsung", instead of
+        its full legal name).
+    :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one
+        of input is empty
+    """
+    if partial_string == "" or key_name == "":
+        return "TRUE"
+    return f"{key_name} like \'%{partial_string}%\'"
+
+
+def generate_string_equal_condition(key_name: str, exact_string: str) -> str:
+    """
+    return an equal condition for string (SQLite)
+    :param key_name: the name of the key
+    :param exact_string: the goal string
+    :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
+        of input is empty
+    """
+    if exact_string == "" or key_name == "":
+        return "TRUE"
+    return f"{key_name} = \"{exact_string}\""
+
+
+def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
+    """
+    return an equal condition for year
+    :param key_name: the name of the key
+    :type key_name: str
+    :param exact_year: a string represent the exact year we are looking for
+    :type exact_year: str
+    :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one
+        of input is empty
+    :rtype: str
+    """
+    if key_name == "" or exact_year == "":
+        return "TRUE"
+    return f"strftime(\'%Y\',{key_name}) = \'{exact_year}\'"
+
+
+def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
+    """
+    Vanilla, naive method of constructing a select query string
+    :param the_table_name: the name of the table which contains the keys we are looking for
+    :type the_table_name: string
+    :param selected_key: name of keys that will be returned by the query
+    :type selected_key: List of string
+    :param where_conditions: list of where conditions
+    :type where_conditions: List of string
+    :return: a string represent the SQLite select query
+    :rtype: string
+    """
+    select_string = 'Select ' + selected_key[0] if len(selected_key) != 0 else 'Select *'
+    for variable_name in selected_key[1:]:
+        select_string = select_string + ", " + variable_name
+    from_string = " From " + the_table_name
+    where_string = " Where " + where_conditions[0] if len(where_conditions) != 0 else ""
+    for condition in where_conditions[1:]:
+        where_string = where_string + " And " + condition
+    return select_string + from_string + where_string
 
 def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     """
@@ -194,6 +257,47 @@ def convert_db_transactions_to_dataclass(db_transactions: list[sqlite3.Row]) -> 
                         (t["value_lb"], t["value_ub"]), description))
 
     return transactions
+
+
+def get_most_popular_companies_btwn_years(date_lower: date, date_upper: date) -> list:
+    """
+    This method makes a database query to list all companies with their corresponding ticker,
+    the number of transactions including this company, the number of house members that made a transaction
+    with this company, and the lower and upper bounds of stock purchases/sales.
+    The query will return data that is between the date_lower and date_upper.
+
+    :param date_lower: The lower range of the transaction query
+    :param date_upper: The upper range of the transaction query
+    :return: A list of all companies along with aggregated columns from the database within the given range
+    """
+
+    connection = get_db_connection(db_file_path)
+    cur = connection.cursor()
+
+    temp_query = f"WITH temp AS (SELECT company, ticker, id, member_name, " \
+                 f"CASE transaction_type WHEN 'P' THEN value_lb ELSE 0 END AS purchase_lb, " \
+                 f"CASE transaction_type WHEN 'P' THEN value_ub ELSE 0 END AS purchase_ub, " \
+                 f"CASE transaction_type WHEN 'S' THEN value_lb ELSE 0 END AS sale_lb, " \
+                 f"CASE transaction_type WHEN 'S' THEN value_ub ELSE 0 END AS sale_ub " \
+                 f"FROM {table_name} " \
+                 f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}')"
+    
+    full_query = f" {temp_query} " \
+                 f"SELECT company, ticker, " \
+                 f"COUNT(id) AS num_transactions, " \
+                 f"COUNT(DISTINCT member_name) AS num_members, " \
+                 f"SUM(purchase_lb) as purchase_lb, " \
+                 f"SUM(purchase_ub) as purchase_ub, " \
+                 f"SUM(sale_lb) as sale_lb, " \
+                 f"SUM(sale_ub) as sale_ub " \
+                 f"FROM temp GROUP BY company"
+
+    cur.execute(full_query)
+
+    connection.commit()
+    data = cur.fetchall()
+
+    return data
 
 
 def get_most_popular_companies(request: Request) -> list:
