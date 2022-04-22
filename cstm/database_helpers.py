@@ -60,7 +60,7 @@ def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     """
     if key_name == "" or exact_year == "":
         return "TRUE"
-    return f"strftime(\'%Y\',{key_name}) = \'{exact_year}\'"
+    return f"strftime(\'%Y\', {key_name}) = \'{exact_year}\'"
 
 
 def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
@@ -84,69 +84,6 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
         where_string = where_string + " And " + condition
     return select_string + from_string + where_string
 
-def generate_string_like_condition(key_name: str, partial_string: str) -> str:
-    """
-    return a like condition for string(SQLite)
-    :param key_name: the name of the key
-    :param partial_string: substring of the goal string (first name of the person for instance, or "Samsung", instead of
-        its full legal name).
-    :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one
-        of input is empty
-    """
-    if partial_string == "" or key_name == "":
-        return "TRUE"
-    return f"{key_name} like \'%{partial_string}%\'"
-
-
-def generate_string_equal_condition(key_name: str, exact_string: str) -> str:
-    """
-    return an equal condition for string (SQLite)
-    :param key_name: the name of the key
-    :param exact_string: the goal string
-    :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
-        of input is empty
-    """
-    if exact_string == "" or key_name == "":
-        return "TRUE"
-    return f"{key_name} = \"{exact_string}\""
-
-
-def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
-    """
-    return an equal condition for year
-    :param key_name: the name of the key
-    :type key_name: str
-    :param exact_year: a string represent the exact year we are looking for
-    :type exact_year: str
-    :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one
-        of input is empty
-    :rtype: str
-    """
-    if key_name == "" or exact_year == "":
-        return "TRUE"
-    return f"strftime(\'%Y\',{key_name}) = \'{exact_year}\'"
-
-
-def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
-    """
-    Vanilla, naive method of constructing a select query string
-    :param the_table_name: the name of the table which contains the keys we are looking for
-    :type the_table_name: string
-    :param selected_key: name of keys that will be returned by the query
-    :type selected_key: List of string
-    :param where_conditions: list of where conditions
-    :type where_conditions: List of string
-    :return: a string represent the SQLite select query
-    :rtype: string
-    """
-    select_string = 'Select ' + selected_key[0] if len(selected_key) != 0 else 'Select *'
-    for variable_name in selected_key[1:]:
-        select_string = select_string + ", " + variable_name
-    from_string = " From " + the_table_name
-    where_string = " Where " + where_conditions[0] if len(where_conditions) != 0 else ""
-    for condition in where_conditions[1:]:
-        where_string = where_string + " And " + condition
-    return select_string + from_string + where_string
 
 
 def get_earliest_year() -> int:
