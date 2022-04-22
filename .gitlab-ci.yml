@@ -16,14 +16,8 @@
 image: "python:3.10"
 
 stages:          # List of stages for jobs, and their order of execution
-  - build
   - test
   - deploy
-
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - echo "This job is a placeholder, it should be updated to build and push the container to DockerHub"
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
@@ -51,5 +45,11 @@ code-coverage-job:
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  before_script:
+    - python --version
+    - pip install awsebcli
   script:
-    - echo "This job is also a placeholder, and should be updated to deploy the container from DockerHub to AWS"
+    - ./setup_deploy.sh
+    - eb deploy cstm-testing --timeout 4
+  only:
+    - develop
