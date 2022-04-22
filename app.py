@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from datetime import date
 
-from cstm.database_helpers import get_most_popular_companies, transaction_query, get_latest_year, get_earliest_year
+from cstm.database_helpers import get_most_popular_companies, get_most_popular_companies_btwn_years, transaction_query, get_latest_year, get_earliest_year
 from cstm.representative_helpers import representative_list
 
 application = app = Flask(__name__)
@@ -16,9 +16,16 @@ def root_dir():
 
 @app.route('/companies', methods=['GET', 'POST'])
 def companies():
+    today = date.today()
+    year_start = date(today.year, 1, 1)
     if request.method == 'POST':
-        return render_template("companies.html", data=get_most_popular_companies(request), dark_mode=is_dark_mode())
-    return render_template("companies.html", dark_mode=is_dark_mode())
+        range_start = date.fromisoformat(request.form["range_start"])
+        range_end = date.fromisoformat(request.form["range_end"])
+        companies_list = get_most_popular_companies_btwn_years(range_start, range_end)
+    else:
+        companies_list = get_most_popular_companies_btwn_years(year_start, today)
+    return render_template("companies.html", companies=companies_list, start=get_earliest_year(),
+                           today=today, year_start=year_start, dark_mode=is_dark_mode())
 
 
 @app.route('/representatives', methods=['GET', 'POST'])

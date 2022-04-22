@@ -3,9 +3,12 @@ from datetime import date
 import sqlite3
 from flask import Request
 
+
 from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between, \
-    get_most_popular_companies, get_most_popular_companies_helper, table_name, convert_db_transactions_to_dataclass, \
-    generate_string_like_condition, generate_string_equal_condition, generate_select_query
+get_most_popular_companies, get_most_popular_companies_helper, table_name, \
+convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
+generate_string_like_condition, generate_string_equal_condition, generate_select_query
+
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -80,6 +83,103 @@ class TransactionQueryTestCase(unittest.TestCase):
         request.form['member_name'] = 'all'
         self.assertEqual(32, len(transaction_query(request)))
 
+class LikeConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
+        self.assertTrue(generate_string_like_condition(key_name="", partial_string="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_string_like_condition(key_name="aa", partial_string="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_string_like_condition(key_name="aa", partial_string="bb"), "aa like \'%bb%\'")
+
+
+class EqualConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
+        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+
+
+class SelectQueryGenerationTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.empty_key = []
+        self.one_key = ["one"]
+        self.two_key = ["one", "two"]
+        self.table_name = "TABLE"
+        # self.empty_table_name = ""
+        self.empty_conditions = []
+        self.one_condition = ["A = \'B\'"]
+        self.two_condition = ["A = \'B\'", "C = \'D\'"]
+
+    def test_no_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
+                                           where_conditions=self.one_condition)
+        select_string = "Select *"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_no_where_conditions(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_no_selected_keys_and_where_conditions(self):
+        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select *"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_one_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_two_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.two_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one, two"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_one_where_condition(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.one_condition)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_two_where_condition(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.two_condition)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\' And C = \'D\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
 
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
@@ -348,3 +448,92 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
         self.assertEqual(query_ticker, "AND ticker = \'EMC\'")
         self.assertEqual(query_trans_type, "AND transaction_type = \'S\'")
         self.assertEqual(select_query_year, "strftime(\'%Y\',transaction_date)")
+
+
+class GetMostPopularCompaniesBtwnYearsTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_most_popular_companies_btwn_years method in the Database Helpers file.
+    """
+
+    def test_request_returns_correct_num_companies(self):
+        """
+        This test makes sure that a request results in the every transaction being returned. Note a request will
+        include a start and end date.
+        """
+        start_date = date(2015, 3, 10)
+        end_date = date(2018, 2, 6)
+
+        # Determine how many entries are in the database:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM all_transaction "
+                    f"WHERE transaction_date BETWEEN '{start_date.isoformat()}' AND '{end_date.isoformat()}' "
+                    f"GROUP BY company;")
+        conn.commit()
+        transaction_count = len(cur.fetchall())
+
+        self.assertEqual(transaction_count, len(get_most_popular_companies_btwn_years(start_date, end_date)))
+
+    def test_request_returns_correct_lowerbound_purchases(self):
+        """
+        Tests if the lowerbound of purchases for a company is correct.
+        Currently the database is only populated with a representative data subset. This test should be updated
+        when the database is updated.
+        """
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT SUM(value_lb) FROM all_transaction "
+                    "WHERE transaction_type = \"P\" AND company = \"Apple Inc.\" GROUP BY company;")
+        conn.commit()
+
+        self.assertEqual(cur.fetchall()[0][0],
+                         get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][4])
+
+    def test_request_returns_correct_upperbound_purchases(self):
+        """
+        Tests if the upperbound of purchases for a company is correct.
+        Currently the database is only populated with a representative data subset. This test should be updated
+        when the database is updated.
+        """
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT SUM(value_ub) FROM all_transaction "
+                    "WHERE transaction_type = \"P\" AND company = \"Apple Inc.\" GROUP BY company;")
+        conn.commit()
+
+        self.assertEqual(cur.fetchall()[0][0],
+                         get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][5])
+
+    def test_request_returns_correct_lowerbound_sales(self):
+        """
+        Tests if the lowerbound of sales for a company is correct.
+        Currently the database is only populated with a representative data subset. This test should be updated
+        when the database is updated.
+        """
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT SUM(value_lb) FROM all_transaction "
+                    "WHERE transaction_type = \"S\" AND company = \"Apple Inc.\" GROUP BY company;")
+        conn.commit()
+
+        self.assertEqual(cur.fetchall()[0][0],
+                         get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][6])
+
+    def test_request_returns_correct_upperbound_sales(self):
+        """
+        Tests if the upperbound of sales for a company is correct.
+        Currently the database is only populated with a representative data subset. This test should be updated
+        when the database is updated.
+        """
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT SUM(value_ub) FROM all_transaction "
+                    "WHERE transaction_type = \"S\" AND company = \"Apple Inc.\" GROUP BY company;")
+        conn.commit()
+
+        self.assertEqual(cur.fetchall()[0][0],
+                         get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][7])
