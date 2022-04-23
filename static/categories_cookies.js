@@ -40,7 +40,7 @@ function getCookie(cookie_name) {
  **/
 function assignTransactionIDToCategory(transaction_id, category_name) {
   categories_dict_string = getCookie("categories");
-  var categories_dict;
+  var categories_dict = {};
 
   if (categories_dict_string != "") {
     categories_dict = JSON.parse(categories_dict_string);
@@ -50,9 +50,7 @@ function assignTransactionIDToCategory(transaction_id, category_name) {
       categories_dict[category_name] = [transaction_id];
     }
   } else {
-    var categories_dict = {
-      category_name: transaction_id
-    };
+    categories_dict[category_name] = [transaction_id];
   }
 
   setCookie("categories", JSON.stringify(categories_dict), 365);
@@ -70,14 +68,13 @@ function removeTransactionIDFromCategory(transaction_id, category_name) {
 
   if (categories_dict_string != "") {
     categories_dict = JSON.parse(categories_dict_string);
-  } else {
     if (category_name in categories_dict) {
       transaction_ids_list = categories_dict[category_name];
       categories_dict[category_name] = transaction_ids_list.filter(function (e) { return e !== transaction_id });
+      
+      setCookie("categories", JSON.stringify(categories_dict), 365);
     }
   }
-
-  setCookie("categories", JSON.stringify(categories_dict), 365);
 }
 
 
