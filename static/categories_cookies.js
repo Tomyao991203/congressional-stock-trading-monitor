@@ -1,3 +1,5 @@
+/*JS functions to set and remove cookies. Used to help implement the functionality of saving transactions into custom categories.*/
+
 /** 
  * Sets a cookie
  * @param cookie_name - the name of the cookie 
@@ -71,7 +73,7 @@ function removeTransactionIDFromCategory(transaction_id, category_name) {
     if (category_name in categories_dict) {
       transaction_ids_list = categories_dict[category_name];
       categories_dict[category_name] = transaction_ids_list.filter(function (e) { return e !== transaction_id });
-      
+
       setCookie("categories", JSON.stringify(categories_dict), 365);
     }
   }
