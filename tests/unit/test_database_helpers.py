@@ -3,12 +3,11 @@ from datetime import date
 import sqlite3
 from flask import Request
 
-
 from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between, \
-get_most_popular_companies, get_most_popular_companies_helper, table_name, \
-convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
-generate_string_like_condition, generate_string_equal_condition, generate_select_query
-
+    get_most_popular_companies, get_most_popular_companies_helper, table_name, \
+    convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
+    generate_string_like_condition, generate_string_equal_condition, generate_select_query, \
+    generate_year_equal_condition
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -36,6 +35,13 @@ def transaction_empty_request():
     return request
 
 
+def transaction_partial_search_request():
+    request = Request({})
+    request.form = {'member_name': "a", 'transaction_year': "", 'company': ""}
+
+    return request
+
+
 class TransactionQueryTestCase(unittest.TestCase):
     """
     This test case is meant to test the transaction_query method in the Database Helpers file
@@ -54,6 +60,18 @@ class TransactionQueryTestCase(unittest.TestCase):
         conn.commit()
         transaction_count = len(cur.fetchall())
         self.assertEqual(transaction_count, len(transaction_query(transaction_empty_request())))
+
+    def test_partial_search_when_no_entry_found(self):
+        """
+        This test makes sure that an empty request results in the every transaction being returned.
+        """
+        # Determine how many entries are in the database:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("select * from all_transaction where member_name like '%a%'")
+        conn.commit()
+        transaction_count = len(cur.fetchall())
+        self.assertEqual(transaction_count, len(transaction_query(transaction_partial_search_request())))
 
     def test_sample_database_correct_years(self):
         """
@@ -83,103 +101,6 @@ class TransactionQueryTestCase(unittest.TestCase):
         request.form['member_name'] = 'all'
         self.assertEqual(32, len(transaction_query(request)))
 
-class LikeConditionGenerationTestCase(unittest.TestCase):
-    def test_empty_variable_name(self):
-        self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
-        self.assertTrue(generate_string_like_condition(key_name="", partial_string="aa") == "TRUE")
-
-    def test_empty_partial_value(self):
-        self.assertTrue(generate_string_like_condition(key_name="aa", partial_string="") == "TRUE")
-
-    def test_regular_query(self):
-        self.assertEqual(generate_string_like_condition(key_name="aa", partial_string="bb"), "aa like \'%bb%\'")
-
-
-class EqualConditionGenerationTestCase(unittest.TestCase):
-    def test_empty_variable_name(self):
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
-
-    def test_empty_partial_value(self):
-        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
-
-    def test_regular_query(self):
-        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
-
-
-class SelectQueryGenerationTestCase(unittest.TestCase):
-    def setUp(self) -> None:
-        self.empty_key = []
-        self.one_key = ["one"]
-        self.two_key = ["one", "two"]
-        self.table_name = "TABLE"
-        # self.empty_table_name = ""
-        self.empty_conditions = []
-        self.one_condition = ["A = \'B\'"]
-        self.two_condition = ["A = \'B\'", "C = \'D\'"]
-
-    def test_no_selected_key(self):
-        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
-                                           where_conditions=self.one_condition)
-        select_string = "Select *"
-        from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_no_where_conditions(self):
-        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
-                                           where_conditions=self.empty_conditions)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = ""
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_no_selected_keys_and_where_conditions(self):
-        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
-                                           where_conditions=self.empty_conditions)
-        select_string = "Select *"
-        from_string = " From TABLE"
-        where_string = ""
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_one_selected_key(self):
-        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
-                                           where_conditions=self.empty_conditions)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = ""
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_two_selected_key(self):
-        temp_query = generate_select_query(selected_key=self.two_key, the_table_name=self.table_name,
-                                           where_conditions=self.empty_conditions)
-        select_string = "Select one, two"
-        from_string = " From TABLE"
-        where_string = ""
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_one_where_condition(self):
-        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
-                                           where_conditions=self.one_condition)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
-
-    def test_two_where_condition(self):
-        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
-                                           where_conditions=self.two_condition)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = " Where A = \'B\' And C = \'D\'"
-        full_query = select_string + from_string + where_string
-        self.assertEqual(temp_query, full_query)
 
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
@@ -278,6 +199,118 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
         where_string = " Where A = \'B\' And C = \'D\'"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
+
+
+class LikeConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
+        self.assertTrue(generate_string_like_condition(key_name="", partial_string="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_string_like_condition(key_name="aa", partial_string="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_string_like_condition(key_name="aa", partial_string="bb"), "aa like \'%bb%\'")
+
+
+class EqualConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
+        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+
+
+class SelectQueryGenerationTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.empty_key = []
+        self.one_key = ["one"]
+        self.two_key = ["one", "two"]
+        self.table_name = "TABLE"
+        # self.empty_table_name = ""
+        self.empty_conditions = []
+        self.one_condition = ["A = \'B\'"]
+        self.two_condition = ["A = \'B\'", "C = \'D\'"]
+
+    def test_no_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
+                                           where_conditions=self.one_condition)
+        select_string = "Select *"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_no_where_conditions(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_no_selected_keys_and_where_conditions(self):
+        temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select *"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_one_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_two_selected_key(self):
+        temp_query = generate_select_query(selected_key=self.two_key, the_table_name=self.table_name,
+                                           where_conditions=self.empty_conditions)
+        select_string = "Select one, two"
+        from_string = " From TABLE"
+        where_string = ""
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_one_where_condition(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.one_condition)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+    def test_two_where_condition(self):
+        temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
+                                           where_conditions=self.two_condition)
+        select_string = "Select one"
+        from_string = " From TABLE"
+        where_string = " Where A = \'B\' And C = \'D\'"
+        full_query = select_string + from_string + where_string
+        self.assertEqual(temp_query, full_query)
+
+
+class YearEqualConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_year_equal_condition(key_name="", exact_year="") == "TRUE")
+        self.assertTrue(generate_year_equal_condition(key_name="", exact_year="2014") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_year_equal_condition(key_name="aa", exact_year="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_year_equal_condition(key_name="aa", exact_year="2014"),
+                         "strftime(\'%Y\', aa) = \'2014\'")
 
 
 class TransactionsBetweenTestCase(unittest.TestCase):
