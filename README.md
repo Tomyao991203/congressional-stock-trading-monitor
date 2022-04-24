@@ -77,6 +77,7 @@ The ```static``` directory contains any scripts, css, and javascript files.
 * ```darkly.bootstrap.min.css```: css file with the darkly bootstrap theme
 * ```flatly.bootstrap.min.css```: css file with the darkly bootstrap theme
 * ```tooltip.js```: javascript file supporting bootstrap tooltips
+* ```categories_cookies.js```: javascript file with functions to set cookies
 
 ### *tests* Directory
 The ```tests``` directory contains all test files.
