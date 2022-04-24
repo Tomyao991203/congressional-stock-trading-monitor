@@ -60,6 +60,9 @@ The ```database``` directory contains database files, python files for webscrapi
 * ```database.db```: database file.
 * ```database_schema.sql```: sql file that adds a table to the database to store all transactions.
 * ```create_database_version1.ipynb```: python notebook that updates the database with data.
+* ```pdf_scraping.py```: python file that will eventually contain all the functions for pdf scraping.
+* ```pdf_scraper_notebook.ipynb``` a python jupyter notebook that contains all the work for the creating the pdf scraping functions.
+* ```json files``` all the json files are used for tabula templates, which help with parsing the pdfs.
 
 ### *templates* Directory
 The ```templates``` directory contains html files.
@@ -98,9 +101,16 @@ The ```tests``` directory contains all test files.
 * ```compose.yaml```: configuration file that defines services, networks, and volumes for Docker containers.
 * ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
 
-## Level of Effort by Each Member
+## Level of Effort by Each Member for Sprint 1
 * (30%) Brian Spates - Organized group meetings, dealt with merge requests and resolving probelms before merging, setup AWS, setup CI/CD pipeline, wrote tests for the database code.
 * (25%) Jiaming Yao - Responsible for all code regarding the database and connecting HTML forms to the querying the database. 
 * (15%) Jake Wilson - Responsible for coding webscraping python files and corresponding tests.
 * (15%) Xue Qiu - Responsible for writing documentation and some html/css code.
 * (15%) Michelle Zheng - Responsible for some html code and collecting data entries into a .cvs file.
+
+## Level of Effort By Each Member For Sprint 2
++ (26%) Brian Spates - Worked a frontend and searching. 
++ (22%) Jake Wilson - Worked on the backend and the pdf parsing so the database can be full.
++ (22%) Xue Qiu
++ (18%) Jiaming Yao
++ (12%) Michelle Zheng
