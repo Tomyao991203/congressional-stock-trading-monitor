@@ -5,9 +5,8 @@ from flask import Request
 
 from cstm.database_helpers import get_db_connection, get_transactions_between, \
     get_most_popular_companies, get_most_popular_companies_helper, table_name, \
-    convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
-    generate_string_like_condition, generate_string_equal_condition, generate_select_query, \
-    generate_year_equal_condition, get_transactions_btwn_years
+    convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, generate_string_like_condition, \
+    equal_condition, generate_select_query, generate_year_equal_condition, get_transactions_btwn_years
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -34,14 +33,6 @@ def transaction_empty_request():
 
     return request
 
-
-def transaction_partial_search_request():
-    request = Request({})
-    request.form = {'member_name': "a", 'transaction_year': "", 'company': ""}
-
-    return request
-
-
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
         self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
@@ -56,14 +47,14 @@ class LikeConditionGenerationTestCase(unittest.TestCase):
 
 class EqualConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="aa") == "TRUE")
 
     def test_empty_partial_value(self):
-        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+        self.assertTrue(equal_condition(expression="aa", exact_value="") == "TRUE")
 
     def test_regular_query(self):
-        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+        self.assertEqual(equal_condition(expression="aa", exact_value="bb"), "aa = \"bb\"")
 
 
 class SelectQueryGenerationTestCase(unittest.TestCase):
@@ -155,14 +146,14 @@ class LikeConditionGenerationTestCase(unittest.TestCase):
 
 class EqualConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="aa") == "TRUE")
 
     def test_empty_partial_value(self):
-        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+        self.assertTrue(equal_condition(expression="aa", exact_value="") == "TRUE")
 
     def test_regular_query(self):
-        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+        self.assertEqual(equal_condition(expression="aa", exact_value="bb"), "aa = \'bb\'")
 
 
 class SelectQueryGenerationTestCase(unittest.TestCase):
@@ -181,7 +172,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.one_condition)
         select_string = "Select *"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
+        where_string = " Where (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
@@ -226,7 +217,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.one_condition)
         select_string = "Select one"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
+        where_string = " Where (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
@@ -235,7 +226,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.two_condition)
         select_string = "Select one"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\' And C = \'D\'"
+        where_string = " Where (A = \'B\' AND C = \'D\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
@@ -398,9 +389,9 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
             get_most_popular_companies_helper(company_empty_request_purchase())
 
         self.assertEqual(query_transaction_year, "TRUE")
-        self.assertEqual(query_company, "AND TRUE")
-        self.assertEqual(query_ticker, "AND TRUE")
-        self.assertEqual(query_trans_type, "AND transaction_type = \'P\'")
+        self.assertEqual(query_company, "TRUE")
+        self.assertEqual(query_ticker, "TRUE")
+        self.assertEqual(query_trans_type, "transaction_type = \'P\'")
         self.assertEqual(select_query_year, "NULL")
 
     def test_nonempty_request_returns_correct_tuple(self):
@@ -416,11 +407,11 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
         query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year = \
             get_most_popular_companies_helper(request)
 
-        self.assertEqual(query_transaction_year, "strftime(\'%Y\',transaction_date) = \'2016\'")
-        self.assertEqual(query_company, "AND company = \'EMC Corporation\'")
-        self.assertEqual(query_ticker, "AND ticker = \'EMC\'")
-        self.assertEqual(query_trans_type, "AND transaction_type = \'S\'")
-        self.assertEqual(select_query_year, "strftime(\'%Y\',transaction_date)")
+        self.assertEqual(query_transaction_year, "strftime(\'%Y\', transaction_date) = \'2016\'")
+        self.assertEqual(query_company, "company = \'EMC Corporation\'")
+        self.assertEqual(query_ticker, "ticker = \'EMC\'")
+        self.assertEqual(query_trans_type, "transaction_type = \'S\'")
+        self.assertEqual(select_query_year, "strftime(\'%Y\', transaction_date)")
 
 
 class GetMostPopularCompaniesBtwnYearsTestCase(unittest.TestCase):

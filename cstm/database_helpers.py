@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Request
 from datetime import date
-from typing import List
+from typing import List, Union
 
 from cstm.enums import TransactionType
 from cstm.dataclasses import Transaction, District
@@ -20,6 +20,7 @@ def get_db_connection(db_file: str = db_file_path):
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     """
     return a like condition for string(SQLite)
@@ -34,17 +35,19 @@ def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     return f"{key_name} like \'%{partial_string}%\'"
 
 
-def generate_string_equal_condition(key_name: str, exact_string: str) -> str:
+def equal_condition(expression: str, exact_value: str, value_is_string: bool = True) -> str:
     """
     return an equal condition for string (SQLite)
-    :param key_name: the name of the key
-    :param exact_string: the goal string
+    :param value_is_string: whether the exact value is string or not
+    :type value_is_string: bool
+    :param expression: the expression we are evaluating
+    :param exact_value: the expect value
     :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
         of input is empty
     """
-    if exact_string == "" or key_name == "":
+    if exact_value == "" or expression == "":
         return "TRUE"
-    return f"{key_name} = \"{exact_string}\""
+    return f"{expression} = {expression_wrapper(exact_value, value_is_string)}"
 
 
 def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
@@ -63,9 +66,74 @@ def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     return f"strftime(\'%Y\', {key_name}) = \'{exact_year}\'"
 
 
-def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str]) -> str:
+def aggregating_conditions(conditions: List[str]):
+    """
+    aggregating a list of conditions. Auto-inject "AND" between conditions unless detect a specified "OR" condition
+    :param conditions: list of conditions
+    :type conditions: list[str]
+    :return: aggregated condition
+    :rtype: str
+    """
+    if len(conditions) == 0 or conditions[-1] == 'OR':
+        return "TRUE"
+    result = f"({conditions[0]}"
+    for condition in conditions[1:]:
+        result = f"{result}) OR (" if condition == 'OR' else f"{result} AND {condition}"
+    return result + ")"
+
+
+def cases_str(expression: str, case_value_pairs: dict, else_value: Union[int, str], as_var_name: str,
+              key_is_str: bool = False, value_is_str: bool = False):
+    """
+    return a string in the format of "CASE expression when exp_1 then ... when exp_n then ... ELSE else_value END as
+        as_var_name". Used as a selected key. Currently, user has to make sure input is correct
+    :param key_is_str: if the key should be a string, then TRUE, FALSE otherwise
+    :type key_is_str: bool
+    :param value_is_str:  if the value should be a string, then TRUE, FALSE otherwise
+    :type value_is_str: bool
+    :param as_var_name: the name we assign to this variable
+    :type as_var_name: str
+    :param expression: the expression we are evaluating, could be empty
+    :type expression: str
+    :param case_value_pairs: a dictionary where the key is the possible expression value, the value is the assign value
+    :type case_value_pairs: dict
+    :param else_value: the final assign value
+    :type else_value: str or int
+    :return: the final case string
+    :rtype: str
+    """
+
+    case = f'CASE {expression}'
+    assert len(case_value_pairs) >= 1
+    for key, value in case_value_pairs.items():
+        case = f'{case} WHEN {expression_wrapper(key, key_is_str)} THEN {expression_wrapper(value, value_is_str)}'
+    else_str = f' ELSE {expression_wrapper(else_value, value_is_str)}'
+    end_as_str = f' END AS {as_var_name}'
+    return case + else_str + end_as_str
+
+
+def expression_wrapper(expression: Union[str, int], is_str: bool) -> str:
+    """
+    wrap the value with quotation marks if we want it to be a string value in the query
+    :param expression: the expression we want to wrap up
+    :type expression:  Union[str, int]
+    :param is_str: a boolean indicating if the expression will be a str value in the query.
+    :type is_str: bool
+    :return: a str that is either 'a' or '\'a\''
+    :rtype: str
+    """
+    return f'\'{expression}\'' if is_str else f'{expression}'
+
+
+def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str] = [],
+                          group_by: str = '',
+                          order_by: str = '') -> str:
     """
     Vanilla, naive method of constructing a select query string
+    :param group_by: group by condition
+    :type group_by: str
+    :param order_by: order by condition
+    :type order_by: str
     :param the_table_name: the name of the table which contains the keys we are looking for
     :type the_table_name: string
     :param selected_key: name of keys that will be returned by the query
@@ -79,11 +147,29 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
     for variable_name in selected_key[1:]:
         select_string = select_string + ", " + variable_name
     from_string = " From " + the_table_name
-    where_string = " Where " + where_conditions[0] if len(where_conditions) != 0 else ""
-    for condition in where_conditions[1:]:
-        where_string = where_string + " And " + condition
-    return select_string + from_string + where_string
+    where_string = " Where " + aggregating_conditions(where_conditions) if len(where_conditions) != 0 else ""
+    group_by_string = " GROUP BY " + group_by if group_by != '' else ''
+    order_by_string = " ORDER BY " + order_by if order_by != '' else ''
+    return select_string + from_string + where_string + group_by_string + order_by_string
 
+
+def value_between(expression: str, lower_bound: Union[int, str], upper_bound: Union[int, str],
+                  bound_is_str: bool = False):
+    """
+    Return a between condition string (i.e.: A between lower_bound and upper_bound)
+    :param bound_is_str: whether the bound value is str type or not
+    :type bound_is_str: bool
+    :param expression: the expression we are examining
+    :type expression: str
+    :param lower_bound: value lower bound
+    :type lower_bound: str or int
+    :param upper_bound: value upper bound
+    :type upper_bound: str or int
+    :return: a between condition string
+    :rtype: str
+    """
+    return f"{expression} BETWEEN {expression_wrapper(lower_bound, bound_is_str)} AND " \
+           f"{expression_wrapper(upper_bound, bound_is_str)}"
 
 
 def get_earliest_year() -> int:
@@ -170,7 +256,16 @@ def get_most_popular_companies_btwn_years(date_lower: date, date_upper: date) ->
                  f"CASE transaction_type WHEN 'S' THEN value_ub ELSE 0 END AS sale_ub " \
                  f"FROM {table_name} " \
                  f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}')"
-    
+
+    transaction_value = [('P', 'purchase'), ('S', 'sale')]
+    boudnary = ['lb', 'ub']
+
+    temp_table_keys = ["company", "ticker", "id", "member_name"]
+    for val, full_str in transaction_value:
+        for b in boudnary:
+            temp_table_keys += [
+                cases_str(expression="transaction_type", case_value_pairs={val: f'value_{b}'}, else_value=0,
+                          as_var_name=f'{full_str}_lb', key_is_str=True)]
     full_query = f" {temp_query} " \
                  f"SELECT company, ticker, " \
                  f"COUNT(id) AS num_transactions, " \
@@ -232,11 +327,27 @@ def get_most_popular_companies(request: Request) -> list:
     connection = get_db_connection(db_file_path)
     cur = connection.cursor()
 
-    full_query = f'SELECT ROW_NUMBER() OVER(ORDER BY COUNT(id) DESC) AS rank, company, ticker, transaction_type, ' \
-                 f'IFNULL({select_query_year}, \'All\') AS year, COUNT(id) AS num_transactions, ' \
-                 f'COUNT(DISTINCT member_name) AS num_members, SUM(value_lb) AS value_lb, SUM(value_ub) AS value_ub ' \
-                 f'FROM {table_name} WHERE {query_transaction_year} {query_company} {query_ticker} ' \
-                 f'{query_trans_type} GROUP BY company ORDER BY num_transactions DESC'
+    keys = ["ROW_NUMBER() OVER(ORDER BY COUNT(id) DESC) AS rank",
+            "company", "ticker", "transaction_type",
+            f'IFNULL({select_query_year}, \'All\') AS year',
+            'COUNT(id) AS num_transactions',
+            'COUNT(DISTINCT member_name) AS num_members',
+            'SUM(value_lb) AS value_lb', 'SUM(value_ub) AS value_ub']
+    group_by_key = 'company'
+    order_by_key = 'num_transactions DESC'
+    where_conditions = [query_company, query_ticker, query_trans_type, query_transaction_year]
+    # full_query = f'SELECT ROW_NUMBER() OVER(ORDER BY COUNT(id) DESC) AS rank,' \
+    #              f' company, ticker, transaction_type, ' \
+    #              f'IFNULL({select_query_year}, \'All\') AS year,' \
+    #              f'COUNT(id) AS num_transactions, ' \
+    #              f'COUNT(DISTINCT member_name) AS num_members, ' \
+    #              f'SUM(value_lb) AS value_lb, SUM(value_ub) AS value_ub ' \
+    #              f'FROM {table_name} ' \
+    #              f'WHERE {aggregating_conditions()}' \
+    #              f'GROUP BY company ' \
+    #              f'ORDER BY num_transactions DESC'
+    full_query = generate_select_query(selected_key=keys, the_table_name=table_name, where_conditions=where_conditions,
+                                       group_by=group_by_key, order_by=order_by_key)
 
     cur.execute(full_query)
 
@@ -261,13 +372,12 @@ def get_most_popular_companies_helper(request: Request) -> tuple:
     ticker = request.form['ticker']
     transaction_type = request.form['transaction_type']
 
-    query_transaction_year = f"strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" if transaction_year != "" \
-        else 'TRUE'
-    query_company = f"AND company = \'{company}\'" if company != "" else 'AND TRUE'
-    query_ticker = f"AND ticker = \'{ticker}\'" if ticker != "" else 'AND TRUE'
-    query_trans_type = f"AND transaction_type = \'{transaction_type}\'" \
-        if transaction_type == "S" or transaction_type == "P" else 'AND TRUE'
+    query_transaction_year = generate_year_equal_condition('transaction_date', transaction_year)
+    query_company = equal_condition('company', company)
+    query_ticker = equal_condition("ticker", ticker)
+    transaction_type = transaction_type if transaction_type in ['S', 'P'] else ''
+    query_trans_type = equal_condition('transaction_type', transaction_type)
 
-    select_query_year = f"strftime(\'%Y\',transaction_date)" if transaction_year != "" else f"NULL"
+    select_query_year = f"strftime(\'%Y\', transaction_date)" if transaction_year != "" else f"NULL"
 
     return query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year
