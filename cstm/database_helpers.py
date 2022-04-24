@@ -205,7 +205,8 @@ def get_most_popular_companies_btwn_years(date_lower: date, date_upper: date) ->
 
     :param date_lower: The lower range of the transaction query
     :param date_upper: The upper range of the transaction query
-    :return: A list of all companies along with aggregated columns from the database within the given range
+    :return: A list of all companies along with aggregated columns from the database within the given
+    date range
     """
 
     connection = get_db_connection(db_file_path)
@@ -228,6 +229,32 @@ def get_most_popular_companies_btwn_years(date_lower: date, date_upper: date) ->
                  f"SUM(sale_lb) as sale_lb, " \
                  f"SUM(sale_ub) as sale_ub " \
                  f"FROM temp GROUP BY company"
+
+    cur.execute(full_query)
+
+    connection.commit()
+    data = cur.fetchall()
+
+    return data
+
+
+def get_transactions_btwn_years(date_lower: date, date_upper: date) -> list:
+    """
+    This method makes a database query to list all transactions, with information including the U.S. House
+    of Representatives name, U.S. House of Representative district, company, ticker, transaction
+    type (purchase or sale), date, the lower and upper bound of the stock purchased/sold,
+    description, and link to the official document showing the transaction.
+
+    :param date_lower: The lower range of the transaction query
+    :param date_upper: The upper range of the transaction query
+    :return: A list of all transactions from the database within the given date range
+    """
+
+    connection = get_db_connection(db_file_path)
+    cur = connection.cursor()
+    
+    full_query = f"SELECT * from {table_name} "\
+                 f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}'"
 
     cur.execute(full_query)
 

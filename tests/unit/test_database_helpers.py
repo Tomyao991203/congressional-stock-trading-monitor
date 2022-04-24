@@ -7,7 +7,7 @@ from cstm.database_helpers import get_db_connection, transaction_query, get_tran
     get_most_popular_companies, get_most_popular_companies_helper, table_name, \
     convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
     generate_string_like_condition, generate_string_equal_condition, generate_select_query, \
-    generate_year_equal_condition
+    generate_year_equal_condition, get_transactions_btwn_years
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -570,3 +570,27 @@ class GetMostPopularCompaniesBtwnYearsTestCase(unittest.TestCase):
 
         self.assertEqual(cur.fetchall()[0][0],
                          get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][7])
+
+
+class GetTransactionsBtwnYearsTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_transactions_btwn_years method in the Database Helpers file.
+    """
+
+    def test_request_returns_correct_num_transactions(self):
+        """
+        This test makes sure that a request results in the every transaction being returned. Note a request will
+        include a start and end date.
+        """
+        start_date = date(2015, 3, 10)
+        end_date = date(2018, 2, 6)
+
+        # Determine how many entries are in the database:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM all_transaction "
+                    f"WHERE transaction_date BETWEEN '{start_date.isoformat()}' AND '{end_date.isoformat()}' ")
+        conn.commit()
+        transaction_count = len(cur.fetchall())
+
+        self.assertEqual(transaction_count, len(get_transactions_btwn_years(start_date, end_date)))
