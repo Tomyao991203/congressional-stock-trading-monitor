@@ -81,13 +81,12 @@ The ```tests``` directory contains all test files.
 * ```unit``` directory: contains all unit tests
     * ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
     * ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
-    * ```test_state_enum.p```: tests the `State` enumerated type
+    * ```test_state_enum.py```: tests the `State` enumerated type
     * ```test_transaction_dataclass.py```: tests the Transaction dataclass
     * ```test_disctrict_dataclasss.py```: tests the District dataclass
     * ```test_state_enum.py```: tests the State enum
     * ```test_representative_helpers.py```: tests the representative helper functions
 
->>>>>>> README.md
 
 ### Docker Files
 * ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.
