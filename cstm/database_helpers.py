@@ -102,55 +102,6 @@ def get_latest_year() -> int:
     return 2022
 
 
-def transaction_query(request: Request) -> list:
-    """
-    This method makes a database query for all transactions that match the details in the given request. This request
-    is expected to be generated from an HTML form, and could contain all the fields present in the form found in
-    index.html's form
-
-    :param request: Flask Request containing the HTML Form Results from index.html
-    :return: A list of all transactions in the database matching the given search parameters
-    """
-    # TODO: make a condition in which if the full equal query return nothing, use the like query
-
-    member_name = request.form['member_name']
-    transaction_year = request.form['transaction_year']
-    company = request.form['company']
-
-    # query_member_name = f"member_name = \'{member_name}\'" if member_name != "" else 'TRUE'
-    # query_company = f"AND company = \'{company}\'" if company != "" else 'AND TRUE'
-    # query_transaction_year = f"AND strftime(\'%Y\',transaction_date) = \'{transaction_year}\'" \
-    #     if transaction_year != "" else 'AND TRUE'
-    full_equal_conditions = [generate_string_equal_condition('member_name', member_name),
-                             generate_year_equal_condition('transaction_date', transaction_year),
-                             generate_string_equal_condition('company', company)]
-
-    string_like_time_equal_conditions = [generate_string_like_condition('member_name', member_name),
-                                         generate_year_equal_condition('transaction_date', transaction_year),
-                                         generate_string_like_condition('company', company)]
-
-    selected_keys = []
-    equal_query = generate_select_query(selected_keys, table_name, full_equal_conditions)
-    like_query = generate_select_query(selected_keys, table_name, string_like_time_equal_conditions)
-
-    connection = get_db_connection(db_file_path)
-    cur = connection.cursor()
-
-    cur.execute(equal_query)
-
-    connection.commit()
-    data = cur.fetchall()
-    if len(data) == 0:
-        if member_name == 'all':
-            cur.execute(f"select * from {table_name}")
-        else:
-            cur.execute(like_query)
-        connection.commit()
-        data = cur.fetchall()
-
-    return data
-
-
 def get_transactions_between(date_lower: date, date_upper: date) -> list[Transaction]:
     """
     This method makes a database query for all transactions that fall in the inclusive range from date_lower

@@ -42,7 +42,6 @@ The ```app.py``` file uses the Flask framework to create the web application.
 
 ### *ctsm* Directory
 The ```ctsm``` directory contains backend python files to retreive, modify, and send information to the Flask application.
-* ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
 * ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
 * ```database_helpers.py```: connects html code form requests with queries on the database.
 * ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
