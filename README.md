@@ -42,9 +42,6 @@ The ```app.py``` file uses the Flask framework to create the web application.
 
 ### *ctsm* Directory
 The ```ctsm``` directory contains backend python files to retreive, modify, and send information to the Flask application.
-* ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
-* ```input_validator.py```: includess an abstract base class ```InputValidator``` that validates inputs of the webpage.
-* ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
 * ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
 * ```database_helpers.py```: connects html code form requests with queries on the database.
 * ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
@@ -84,15 +81,12 @@ The ```tests``` directory contains all test files.
 * ```unit``` directory: contains all unit tests
     * ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
     * ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
-    * ```test_query.py```:  tests ```query.py```.
-    * ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
-    * ```test_state_enum.p```: tests the `State` enumerated type
+    * ```test_state_enum.py```: tests the `State` enumerated type
     * ```test_transaction_dataclass.py```: tests the Transaction dataclass
     * ```test_disctrict_dataclasss.py```: tests the District dataclass
     * ```test_state_enum.py```: tests the State enum
     * ```test_representative_helpers.py```: tests the representative helper functions
 
->>>>>>> README.md
 
 ### Docker Files
 * ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.

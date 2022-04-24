@@ -3,7 +3,7 @@ from datetime import date
 import sqlite3
 from flask import Request
 
-from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between, \
+from cstm.database_helpers import get_db_connection, get_transactions_between, \
     get_most_popular_companies, get_most_popular_companies_helper, table_name, \
     convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
     generate_string_like_condition, generate_string_equal_condition, generate_select_query, \
@@ -40,66 +40,6 @@ def transaction_partial_search_request():
     request.form = {'member_name': "a", 'transaction_year': "", 'company': ""}
 
     return request
-
-
-class TransactionQueryTestCase(unittest.TestCase):
-    """
-    This test case is meant to test the transaction_query method in the Database Helpers file
-    Currently the database is only populated with a representative data subset. Any tests that rely on this
-        (starting with "test_sample_database_") should be updated when the full database is in place
-    """
-
-    def test_empty_request_returns_all(self):
-        """
-        This test makes sure that an empty request results in the every transaction being returned.
-        """
-        # Determine how many entries are in the database:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("select * from all_transaction")
-        conn.commit()
-        transaction_count = len(cur.fetchall())
-        self.assertEqual(transaction_count, len(transaction_query(transaction_empty_request())))
-
-    def test_partial_search_when_no_entry_found(self):
-        """
-        This test makes sure that an empty request results in the every transaction being returned.
-        """
-        # Determine how many entries are in the database:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("select * from all_transaction where member_name like '%a%'")
-        conn.commit()
-        transaction_count = len(cur.fetchall())
-        self.assertEqual(transaction_count, len(transaction_query(transaction_partial_search_request())))
-
-    def test_sample_database_correct_years(self):
-        """
-        This test makes a query for each year in the database, ensuring that the number of
-        transactions returned match up with the sample database transactions
-        """
-        transaction_counts = {
-            2013: 1,
-            2014: 12,
-            2015: 11,
-            2016: 4,
-            2017: 2,
-            2018: 1,
-            2019: 0,
-            2020: 0,
-            2021: 0,
-            2022: 1
-        }
-
-        for year in transaction_counts.keys():
-            request = transaction_empty_request()
-            request.form['transaction_year'] = year
-            self.assertEqual(transaction_counts[year], len(transaction_query(request)))
-
-    def test_empty_request_with_member_all(self):
-        request = transaction_empty_request()
-        request.form['member_name'] = 'all'
-        self.assertEqual(32, len(transaction_query(request)))
 
 
 class LikeConditionGenerationTestCase(unittest.TestCase):
