@@ -34,6 +34,39 @@ function getCookie(cookie_name) {
   return "";
 }
 
+/**
+ * Updates the innerHTML of the button to indicate whether to add a transaction to a category
+ * or delete a transaction to a category
+ * @param toggle_value - whether or not the toggle is checked
+ * @param button_element - the categories butten element
+ */
+function updateCategoryButton(toggle_value, button_element) {
+  if (!toggle_value) {
+    button_element.innerHTML = "Save";
+  } else {
+    button_element.innerHTML = "Delete";
+  }
+}
+
+/**
+ * Adds the transaction to its category if the toggle_value is not checked, else it deletes the
+ * transaction from its category.
+ * @param transaction_id - the unique id of the transaction that would be associated with category_name
+ * @param category_name - the name of the category
+ * @param toggle_element - the ID of the toggleable button element
+ */
+function callCorrectCookieFunction(transaction_id, category_name, toggle_element) {
+  if (category_name === "") {
+    return;
+  }
+  // If the class 'active' is included in the element, the user clicked the toggle and wants to add to a category
+  if (document.getElementById(toggle_element).className.split(' ').includes('active')) {
+    assignTransactionIDToCategory(transaction_id, category_name);
+  } else {
+    removeTransactionIDFromCategory(transaction_id, category_name);
+  }
+}
+
 /** 
  * Adds the transaction_id to a dictionary where the key is category_name and value is a list of all transaction_ids
  * in that category
@@ -41,6 +74,10 @@ function getCookie(cookie_name) {
  * @param category_name - the name of the category
  **/
 function assignTransactionIDToCategory(transaction_id, category_name) {
+  if (category_name === "") {
+    return;
+  }
+
   categories_dict_string = getCookie("categories");
   var categories_dict = {};
 
@@ -54,7 +91,7 @@ function assignTransactionIDToCategory(transaction_id, category_name) {
   } else {
     categories_dict[category_name] = [transaction_id];
   }
-
+  alert("Added transaction " + transaction_id + " to category " + category_name);
   setCookie("categories", JSON.stringify(categories_dict), 365);
 }
 
@@ -74,6 +111,7 @@ function removeTransactionIDFromCategory(transaction_id, category_name) {
       transaction_ids_list = categories_dict[category_name];
       categories_dict[category_name] = transaction_ids_list.filter(function (e) { return e !== transaction_id });
 
+      alert("Deleted transaction " + transaction_id + " from category " + category_name);
       setCookie("categories", JSON.stringify(categories_dict), 365);
     }
   }

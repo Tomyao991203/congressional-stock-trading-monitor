@@ -18,15 +18,43 @@ You can visit the Congressional Stock Trading Monitor webpage [here](http://cstm
 
 ## User Documentation
 
-On the front page of the Congressional Stock Trading Monitor webpage, users can input different searches to get information and data pertaining to the U.S. House of Representatives stock market transactions. The user interface allows users to search by *Representative Name*, *State District Number*, *Company*, *Transaction Type*, and *Year*.
+On the Congressional Stock Trading Monitor webpage, users can retrieve information and data pertaining to the U.S. House of Representatives stock market transactions. The Congressional Stock Trading monitor consists of three main pages that can be accessed through the navigation panel:
+1. Transactions page (homepage): shows list of transactions
+    * *Includes the following data for each transaction*: U.S. House of Representatives member name, member district, company, ticker, type of transaction (purchase/sale), lower bound value of the transaction, higher bound value of the transaction, transaction description, a link to the official pdf of the stock transaction, and an option to add/delete the transaction to a category.
 
-In future updates, the User Interface will also contain a *Menu Button* that allows users to navigate to different pages of the Congressional Stock Trading Monitor. These pages include:
-1. List of Transactions
-2. List of U.S. House of Representatives
-3. List of Companies
+    ![alt text](./images/transactions_page.png)
+2. Representatives page: shows list of representatives along with their aggregated purchased/sold stock data
+    * *Includes the following data for each transaction*: U.S. House of Representatives member name, trade count, transaction purchase count, transaction sale count, average transaction value, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
 
-***Searches that are currently supported:***
-1. Select a year to see a list of all the House members that traded within that year.
+    ![alt text](./images/representatives_page.png)
+3. Companies page: shows list of companies along with their aggregated purchased/sold data
+    * *Includes the following data for each transaction*: Company, ticker, transaction count, count of members having transactions with this company, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
+
+    ![alt text](./images/companies_page.png)
+
+***User Directions***
+* On each page, select the date range (a calender will pop up to specify specific dates) at the top of the page, and click the submit button to see transactions in the specified date range.
+    * Note: To see all possible transactions, select date range 2013-01-01 to the current date.
+    ![alt text](./images/date_range.png)
+
+***Additional Features***
+* Light and Dark Mode button on the top right of the webpage
+* Search through the list of transactions (accepts partial searches and is case insensitive)
+* Pick to show different number of entries on the page (ex.10, 25, 50, 100). Clicking on the next/previous buttons lets you go to different pages of entries.
+* The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the right of the column name shows the direction of the sort)
+* On the transaction page, the *Update Transactions to a Category* column saves the current transaction to a category through a cookie. *In future updates, the these transactions that were saved to a category will be displayed on its own page for the user.*
+    * Click the "Category" button for a transaction, and type in the name of the category you want to save the transaction to.
+
+    ![alt text](./images/add_category.png)
+    
+    * Clicking the toggle will change whether the user will add the transaction to the category or delete the transaction from the category.
+
+    * Click the button *Save*/*Delete* to save the changes in a cookie. An alert will show on the page to indicate the cookie has been updated.
+
+    ![alt text](./images/add_category_alert.png)
+
+* Highlighted column names are hoverable to show a tooltip giving more information about what the column represents. *In future updates, tooltips will be updated for more columns. The tooltips are currently shown in the Companies page*
+![alt text](./images/tooltip.png)
 
 ## Developer Documentation
 The goal of this application is to utilize webscraping tools to gather information from the Financial Disclosures of U.S. House of Representatives into a database. This database will be queried to provide structured and formatted data to users on the webpage, along with unique visualizations. *The website containing information pertaining to the Financial Disclosures of U.S. House of Representatives can be found at: https://disclosures-clerk.house.gov/PublicDisclosure/FinancialDisclosure.*
@@ -73,6 +101,7 @@ The ```templates``` directory contains html files.
 The ```static``` directory contains any scripts, css, and javascript files.
 * ```darkly.bootstrap.min.css```: css file with the darkly bootstrap theme
 * ```flatly.bootstrap.min.css```: css file with the darkly bootstrap theme
+* ```toggle.css```: css file defining the toggle style 
 * ```tooltip.js```: javascript file supporting bootstrap tooltips
 * ```categories_cookies.js```: javascript file with functions to set cookies
 
@@ -93,9 +122,16 @@ The ```tests``` directory contains all test files.
 * ```compose.yaml```: configuration file that defines services, networks, and volumes for Docker containers.
 * ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
 
-## Level of Effort by Each Member
+## Sprint 1 - Level of Effort by Each Member
 * (30%) Brian Spates - Organized group meetings, dealt with merge requests and resolving probelms before merging, setup AWS, setup CI/CD pipeline, wrote tests for the database code.
 * (25%) Jiaming Yao - Responsible for all code regarding the database and connecting HTML forms to the querying the database. 
 * (15%) Jake Wilson - Responsible for coding webscraping python files and corresponding tests.
 * (15%) Xue Qiu - Responsible for writing documentation and some html/css code.
 * (15%) Michelle Zheng - Responsible for some html code and collecting data entries into a .cvs file.
+
+## Sprint 2 - Level of Effort by Each Member
+* (26%) Brian Spates - 
+* (22%) Jake Wilson - 
+* (22%) Xue Qiu - Updated Transaction and Companies pages to the format from Brian. Wrote functions in database_helpers.py to assist with querying aggregated information for the Companies page, and wrote corresponding tests. Created a toggle button to connect Brian's frontend with Michelle's backend. Updated user documentation.
+* (18%) Jiaming Yao - 
+* (12%) Michelle Zheng - Worked on saving transaction searches(not merged/decided this feature would not be needed). Worked javascript functions to save cookies.
