@@ -4,7 +4,7 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 
 ## How To Run the Software
 
-### A. Running Software Through a Docker Container
+### Running Software Through a Docker Container
 
 1. Open docker and a terminal window to this folder
 2. Type the following docker commands into the terminal window:
@@ -12,21 +12,60 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 3. Visit http://127.0.0.1:5000/  or localhost:5000 in a browser to see the webpage.
 4. When finished, run `docker-compose down` to remove leftover container artifacts.
 
-### B. Visiting the Website
+### Visiting the Website
 
 You can visit the Congressional Stock Trading Monitor webpage [here](http://cstm-testing.eba-2jr5ivme.us-east-1.elasticbeanstalk.com/).
 
+### Running Tests
+
+Tests are automatically run on GitLab for each commit, you can find them in the CI/CD tab. To run tests locally, execute the command `pytest tests/` from the project root.
+
 ## User Documentation
 
-On the front page of the Congressional Stock Trading Monitor webpage, users can input different searches to get information and data pertaining to the U.S. House of Representatives stock market transactions. The user interface allows users to search by *Representative Name*, *State District Number*, *Company*, *Transaction Type*, and *Year*.
+On the Congressional Stock Trading Monitor webpage, users can retrieve information and data pertaining to the U.S. House of Representatives stock market transactions. The Congressional Stock Trading monitor consists of three main pages that can be accessed through the navigation panel:
+1. Transactions page (homepage): shows list of transactions
+    * *Includes the following data for each transaction*: U.S. House of Representatives member name, member district, company, ticker, type of transaction (purchase/sale), lower bound value of the transaction, higher bound value of the transaction, transaction description, a link to the official pdf of the stock transaction, and an option to add/delete the transaction to a category.
 
-In future updates, the User Interface will also contain a *Menu Button* that allows users to navigate to different pages of the Congressional Stock Trading Monitor. These pages include:
-1. List of Transactions
-2. List of U.S. House of Representatives
-3. List of Companies
+    ![alt text](./images/transactions_page.png)
+2. Representatives page: shows list of representatives along with their aggregated purchased/sold stock data
+    * *Includes the following data for each representative*: U.S. House of Representatives member name, trade count, transaction purchase count, transaction sale count, average transaction value, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
 
-***Searches that are currently supported:***
-1. Select a year to see a list of all the House members that traded within that year.
+    ![alt text](./images/representatives_page.png)
+3. Companies page: shows list of companies along with their aggregated purchased/sold data
+    * *Includes the following data for each company*: Company, ticker, transaction count, count of members having transactions with this company, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
+
+    ![alt text](./images/companies_page.png)
+
+***User Directions***
+* On each page, select the date range (a calender will pop up to specify specific dates) at the top of the page, and click the submit button to see transactions in the specified date range.
+    * Note: To see all possible transactions, select date range 2013-01-01 to the current date.
+    ![alt text](./images/date_range.png)
+
+***Additional Features***
+* Light and Dark Mode button on the top right of the webpage
+* Search through the list of transactions (accepts partial searches and is case insensitive)
+* Pick to show different number of entries on the page (ex.10, 25, 50, 100). Clicking on the next/previous buttons lets you go to different pages of entries.
+* The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the right of the column name shows the direction of the sort)
+* On the transaction page, the *Update Transactions to a Category* column saves the current transaction to a category through a cookie. *In future updates, the transactions that were saved to a category will be displayed on its own page for the user.*
+    * Click the "Category" button for a transaction, and type in the name of the category you want to save the transaction to.
+
+    ![alt text](./images/add_category.png)
+    
+
+    * Click the *Save* button to save the changes to a cookie. An alert will show on the page to indicate the cookie has been updated to save the transaction to a category.
+
+    ![alt text](./images/add_category_alert.png)
+
+    * After refreshing the page, you can see categories at the bottom that you have previously saved transactions to.
+
+    ![alt text](./images/list_previous_categories.png)
+
+    * Clicking on a category button at the bottom will add or delete the current transaction from that category (the category button acts as a toggle button).
+
+    ![alt text](./images/delete_transaction.png)
+
+* Highlighted column names are hoverable to show a tooltip giving more information about what the column represents. *The tooltips are currently shown in the Companies and Representatives page*
+![alt text](./images/tooltip.png)
 
 ## Developer Documentation
 The goal of this application is to utilize webscraping tools to gather information from the Financial Disclosures of U.S. House of Representatives into a database. This database will be queried to provide structured and formatted data to users on the webpage, along with unique visualizations. *The website containing information pertaining to the Financial Disclosures of U.S. House of Representatives can be found at: https://disclosures-clerk.house.gov/PublicDisclosure/FinancialDisclosure.*
@@ -42,9 +81,6 @@ The ```app.py``` file uses the Flask framework to create the web application.
 
 ### *ctsm* Directory
 The ```ctsm``` directory contains backend python files to retreive, modify, and send information to the Flask application.
-* ```view_interface.py```: includes an abstract base class ```ViewInterface``` that defines the interface for the views of the webpage. 
-* ```input_validator.py```: includess an abstract base class ```InputValidator``` that validates inputs of the webpage.
-* ```proxy.py```: includes a class ```Proxy``` that acts as a mediator between the Flask application and python backend.
 * ```query.py```: contains a function that returns a key-value pair as a string to assist with database queries.
 * ```database_helpers.py```: connects html code form requests with queries on the database.
 * ```representative_helpers.py```: contains code responsible for obtaining and processing representative information
@@ -79,38 +115,38 @@ The ```templates``` directory contains html files.
 The ```static``` directory contains any scripts, css, and javascript files.
 * ```darkly.bootstrap.min.css```: css file with the darkly bootstrap theme
 * ```flatly.bootstrap.min.css```: css file with the darkly bootstrap theme
+* ```toggle.css```: css file defining the toggle style 
 * ```tooltip.js```: javascript file supporting bootstrap tooltips
+* ```categories_cookies.js```: javascript file with functions to set cookies
 
 ### *tests* Directory
 The ```tests``` directory contains all test files.
 * ```unit``` directory: contains all unit tests
     * ```test_process_congress_records.py```: tests that ```process_congress_records.py``` webscrapes pdf files.
     * ```test_database_helpers.py```: tests the database created in ```database_helpers.py```.
-    * ```test_query.py```:  tests ```query.py```.
-    * ```text_proxy.py```: tests the ```Proxy``` class *[currently a placeholder for more tests to come in the future as the application is developed]*.
-    * ```test_state_enum.p```: tests the `State` enumerated type
+    * ```test_state_enum.py```: tests the `State` enumerated type
     * ```test_transaction_dataclass.py```: tests the Transaction dataclass
     * ```test_disctrict_dataclasss.py```: tests the District dataclass
     * ```test_state_enum.py```: tests the State enum
     * ```test_representative_helpers.py```: tests the representative helper functions
 
->>>>>>> README.md
 
 ### Docker Files
 * ```Dockerfile```: text file that includes instructions to automatically install and configure the Docker image.
 * ```compose.yaml```: configuration file that defines services, networks, and volumes for Docker containers.
 * ```requirements.txt```: text file storing all the information about libraries, modules, and packages that are required for this webpage. This file is used by Docker to build the Docker image.
 
-## Level of Effort by Each Member for Sprint 1
+## Sprint 1 - Level of Effort by Each Member
 * (30%) Brian Spates - Organized group meetings, dealt with merge requests and resolving probelms before merging, setup AWS, setup CI/CD pipeline, wrote tests for the database code.
 * (25%) Jiaming Yao - Responsible for all code regarding the database and connecting HTML forms to the querying the database. 
 * (15%) Jake Wilson - Responsible for coding webscraping python files and corresponding tests.
 * (15%) Xue Qiu - Responsible for writing documentation and some html/css code.
 * (15%) Michelle Zheng - Responsible for some html code and collecting data entries into a .cvs file.
 
-## Level of Effort By Each Member For Sprint 2
-+ (26%) Brian Spates - Worked a frontend and searching. 
-+ (22%) Jake Wilson - Worked on the backend and the pdf parsing so the database can be full.
-+ (22%) Xue Qiu
-+ (18%) Jiaming Yao
-+ (12%) Michelle Zheng
+
+## Sprint 2 - Level of Effort by Each Member
+* (26%) Brian Spates - Made the backend + frontend (calendar range and datatables module) for the representatives view. Implemented continuous deployment. Made a frontend for assigning transactions to categories
+* (22%) Jake Wilson - Worked on the backend and the pdf parsing so the database can be full.
+* (22%) Xue Qiu - Updated Transaction and Companies pages to the format from Brian. Wrote functions in database_helpers.py to assist with querying aggregated information for the Companies page, and wrote corresponding tests. Created a toggle button to connect Brian's frontend with Michelle's backend. Updated user documentation.
+* (18%) Jiaming Yao - 
+* (12%) Michelle Zheng - Worked on saving transaction searches(not merged/decided this feature would not be needed). Worked javascript functions to save cookies.

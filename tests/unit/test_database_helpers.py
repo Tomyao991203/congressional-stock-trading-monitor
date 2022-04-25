@@ -3,12 +3,10 @@ from datetime import date
 import sqlite3
 from flask import Request
 
-
-from cstm.database_helpers import get_db_connection, transaction_query, get_transactions_between, \
-get_most_popular_companies, get_most_popular_companies_helper, table_name, \
-convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, \
-generate_string_like_condition, generate_string_equal_condition, generate_select_query
-
+from cstm.database_helpers import get_db_connection, get_transactions_between, \
+    get_most_popular_companies, get_most_popular_companies_helper, table_name, \
+    convert_db_transactions_to_dataclass, get_most_popular_companies_btwn_years, generate_string_like_condition, \
+    equal_condition, generate_select_query, generate_year_equal_condition, get_transactions_btwn_years
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -35,54 +33,6 @@ def transaction_empty_request():
 
     return request
 
-
-class TransactionQueryTestCase(unittest.TestCase):
-    """
-    This test case is meant to test the transaction_query method in the Database Helpers file
-    Currently the database is only populated with a representative data subset. Any tests that rely on this
-        (starting with "test_sample_database_") should be updated when the full database is in place
-    """
-
-    def test_empty_request_returns_all(self):
-        """
-        This test makes sure that an empty request results in the every transaction being returned.
-        """
-        # Determine how many entries are in the database:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("select * from all_transaction")
-        conn.commit()
-        transaction_count = len(cur.fetchall())
-        self.assertEqual(transaction_count, len(transaction_query(transaction_empty_request())))
-
-    def test_sample_database_correct_years(self):
-        """
-        This test makes a query for each year in the database, ensuring that the number of
-        transactions returned match up with the sample database transactions
-        """
-        transaction_counts = {
-            2013: 1,
-            2014: 12,
-            2015: 11,
-            2016: 4,
-            2017: 2,
-            2018: 1,
-            2019: 0,
-            2020: 0,
-            2021: 0,
-            2022: 1
-        }
-
-        for year in transaction_counts.keys():
-            request = transaction_empty_request()
-            request.form['transaction_year'] = year
-            self.assertEqual(transaction_counts[year], len(transaction_query(request)))
-
-    def test_empty_request_with_member_all(self):
-        request = transaction_empty_request()
-        request.form['member_name'] = 'all'
-        self.assertEqual(32, len(transaction_query(request)))
-
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
         self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
@@ -97,14 +47,14 @@ class LikeConditionGenerationTestCase(unittest.TestCase):
 
 class EqualConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="aa") == "TRUE")
 
     def test_empty_partial_value(self):
-        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+        self.assertTrue(equal_condition(expression="aa", exact_value="") == "TRUE")
 
     def test_regular_query(self):
-        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+        self.assertEqual(equal_condition(expression="aa", exact_value="bb"), "aa = \"bb\"")
 
 
 class SelectQueryGenerationTestCase(unittest.TestCase):
@@ -181,6 +131,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
+
 class LikeConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
         self.assertTrue(generate_string_like_condition(key_name="", partial_string="") == "TRUE")
@@ -195,14 +146,14 @@ class LikeConditionGenerationTestCase(unittest.TestCase):
 
 class EqualConditionGenerationTestCase(unittest.TestCase):
     def test_empty_variable_name(self):
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="") == "TRUE")
-        self.assertTrue(generate_string_equal_condition(key_name="", exact_string="aa") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="") == "TRUE")
+        self.assertTrue(equal_condition(expression="", exact_value="aa") == "TRUE")
 
     def test_empty_partial_value(self):
-        self.assertTrue(generate_string_equal_condition(key_name="aa", exact_string="") == "TRUE")
+        self.assertTrue(equal_condition(expression="aa", exact_value="") == "TRUE")
 
     def test_regular_query(self):
-        self.assertEqual(generate_string_equal_condition(key_name="aa", exact_string="bb"), "aa = \"bb\"")
+        self.assertEqual(equal_condition(expression="aa", exact_value="bb"), "aa = \'bb\'")
 
 
 class SelectQueryGenerationTestCase(unittest.TestCase):
@@ -221,7 +172,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.one_condition)
         select_string = "Select *"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
+        where_string = " Where (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
@@ -266,7 +217,7 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.one_condition)
         select_string = "Select one"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\'"
+        where_string = " Where (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
@@ -275,9 +226,22 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
                                            where_conditions=self.two_condition)
         select_string = "Select one"
         from_string = " From TABLE"
-        where_string = " Where A = \'B\' And C = \'D\'"
+        where_string = " Where (A = \'B\' AND C = \'D\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
+
+
+class YearEqualConditionGenerationTestCase(unittest.TestCase):
+    def test_empty_variable_name(self):
+        self.assertTrue(generate_year_equal_condition(key_name="", exact_year="") == "TRUE")
+        self.assertTrue(generate_year_equal_condition(key_name="", exact_year="2014") == "TRUE")
+
+    def test_empty_partial_value(self):
+        self.assertTrue(generate_year_equal_condition(key_name="aa", exact_year="") == "TRUE")
+
+    def test_regular_query(self):
+        self.assertEqual(generate_year_equal_condition(key_name="aa", exact_year="2014"),
+                         "strftime(\'%Y\', aa) = \'2014\'")
 
 
 class TransactionsBetweenTestCase(unittest.TestCase):
@@ -425,9 +389,9 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
             get_most_popular_companies_helper(company_empty_request_purchase())
 
         self.assertEqual(query_transaction_year, "TRUE")
-        self.assertEqual(query_company, "AND TRUE")
-        self.assertEqual(query_ticker, "AND TRUE")
-        self.assertEqual(query_trans_type, "AND transaction_type = \'P\'")
+        self.assertEqual(query_company, "TRUE")
+        self.assertEqual(query_ticker, "TRUE")
+        self.assertEqual(query_trans_type, "transaction_type = \'P\'")
         self.assertEqual(select_query_year, "NULL")
 
     def test_nonempty_request_returns_correct_tuple(self):
@@ -443,11 +407,11 @@ class GetMostPopularCompaniesHelperTestCase(unittest.TestCase):
         query_company, query_ticker, query_trans_type, query_transaction_year, select_query_year = \
             get_most_popular_companies_helper(request)
 
-        self.assertEqual(query_transaction_year, "strftime(\'%Y\',transaction_date) = \'2016\'")
-        self.assertEqual(query_company, "AND company = \'EMC Corporation\'")
-        self.assertEqual(query_ticker, "AND ticker = \'EMC\'")
-        self.assertEqual(query_trans_type, "AND transaction_type = \'S\'")
-        self.assertEqual(select_query_year, "strftime(\'%Y\',transaction_date)")
+        self.assertEqual(query_transaction_year, "strftime(\'%Y\', transaction_date) = \'2016\'")
+        self.assertEqual(query_company, "company = \'EMC Corporation\'")
+        self.assertEqual(query_ticker, "ticker = \'EMC\'")
+        self.assertEqual(query_trans_type, "transaction_type = \'S\'")
+        self.assertEqual(select_query_year, "strftime(\'%Y\', transaction_date)")
 
 
 class GetMostPopularCompaniesBtwnYearsTestCase(unittest.TestCase):
@@ -537,3 +501,27 @@ class GetMostPopularCompaniesBtwnYearsTestCase(unittest.TestCase):
 
         self.assertEqual(cur.fetchall()[0][0],
                          get_most_popular_companies_btwn_years(date(2013, 7, 11), date(2022, 4, 21))[2][7])
+
+
+class GetTransactionsBtwnYearsTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_transactions_btwn_years method in the Database Helpers file.
+    """
+
+    def test_request_returns_correct_num_transactions(self):
+        """
+        This test makes sure that a request results in the every transaction being returned. Note a request will
+        include a start and end date.
+        """
+        start_date = date(2015, 3, 10)
+        end_date = date(2018, 2, 6)
+
+        # Determine how many entries are in the database:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM all_transaction "
+                    f"WHERE transaction_date BETWEEN '{start_date.isoformat()}' AND '{end_date.isoformat()}' ")
+        conn.commit()
+        transaction_count = len(cur.fetchall())
+
+        self.assertEqual(transaction_count, len(get_transactions_btwn_years(start_date, end_date)))

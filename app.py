@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect
 from datetime import date
+from json import loads
 
-from cstm.database_helpers import get_most_popular_companies, get_most_popular_companies_btwn_years, transaction_query, get_latest_year, get_earliest_year
+from cstm.database_helpers import get_transactions_btwn_years, get_most_popular_companies_btwn_years, get_earliest_year
 from cstm.representative_helpers import representative_list
 
 application = app = Flask(__name__)
@@ -9,9 +10,21 @@ application = app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def root_dir():
-    if request.method == "POST":
-        return render_template("transactions.html", data=transaction_query(request), dark_mode=is_dark_mode())
-    return render_template("transactions.html", dark_mode=is_dark_mode())
+    today = date.today()
+    year_start = date(today.year, 1, 1)
+    cookie = request.cookies.get('categories')
+    if cookie:
+        categories = list(loads(cookie).keys())
+    else:
+        categories = []
+    if request.method == 'POST':
+        range_start = date.fromisoformat(request.form["range_start"])
+        range_end = date.fromisoformat(request.form["range_end"])
+        transactions_list = get_transactions_btwn_years(range_start, range_end)
+    else:
+        transactions_list = get_transactions_btwn_years(year_start, today)
+    return render_template("transactions.html", data=transactions_list, start=get_earliest_year(),
+                           today=today, year_start=year_start, dark_mode=is_dark_mode(), categories=categories)
 
 
 @app.route('/companies', methods=['GET', 'POST'])
