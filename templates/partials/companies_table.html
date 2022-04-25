@@ -1,0 +1,42 @@
+<div class="mx-auto" style="width: 90vw">
+    <table id="data" class="table table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th rowspan="2">Company</th>
+            <th rowspan="2">Ticker</th>
+                <th rowspan="2">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="The total number of transactions <i>purchased/sold</i> from a company." href="#" style="text-decoration: none;">Transaction Count</a>
+                </th>
+                <th rowspan="2">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="The total number of House of Representative Members that <i>purchased/sold</i> stock from a company." href="#" style="text-decoration: none;">Member Count</a>
+                </th>
+                <th colspan="2">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="The total amount of dollars in <i>purchases</i> of a company's stock." href="#" style="text-decoration: none;">Total Purchase Range</a>
+                </th>
+                <th colspan="2">
+                    <a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="The the total amount of dollars in <i>sales</i> of a company's stock." href="#" style="text-decoration: none;">Total Sale Range</a>
+                </th>
+          </tr>
+          <tr>
+              <th>Min Value</th>
+              <th>Max Value</th>
+              <th>Min Value</th>
+              <th>Max Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for company in companies %}
+            <tr>
+                <td>{{ company.company }}</td>
+                <td>{{ company.ticker }}</td>
+                <td>{{ company.num_transactions }}</td>
+                <td>{{ company.num_members }}</td>
+                <td>{{ "${:,.2f}".format(company.purchase_lb) }}</td>
+                <td>{{ "${:,.2f}".format(company.purchase_ub) }}</td>
+                <td>{{ "${:,.2f}".format(company.sale_lb) }}</td>
+                <td>{{ "${:,.2f}".format(company.sale_ub) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>

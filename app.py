@@ -1,15 +1,76 @@
-from flask import Flask, render_template, request
-from cstm.database_helpers import transaction_query
-import sqlite3
+from flask import Flask, render_template, request, redirect
+from datetime import date
+from json import loads
+
+from cstm.database_helpers import get_transactions_btwn_years, get_most_popular_companies_btwn_years, get_earliest_year
+from cstm.representative_helpers import representative_list
 
 application = app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def root_dir():
-    if request.method == "POST":
-        return render_template('index.html', data=transaction_query(request))
-    return render_template("index.html")
+    today = date.today()
+    year_start = date(today.year, 1, 1)
+    cookie = request.cookies.get('categories')
+    if cookie:
+        categories = list(loads(cookie).keys())
+    else:
+        categories = []
+    if request.method == 'POST':
+        range_start = date.fromisoformat(request.form["range_start"])
+        range_end = date.fromisoformat(request.form["range_end"])
+        transactions_list = get_transactions_btwn_years(range_start, range_end)
+    else:
+        transactions_list = get_transactions_btwn_years(year_start, today)
+    return render_template("transactions.html", data=transactions_list, start=get_earliest_year(),
+                           today=today, year_start=year_start, dark_mode=is_dark_mode(), categories=categories)
+
+
+@app.route('/companies', methods=['GET', 'POST'])
+def companies():
+    today = date.today()
+    year_start = date(today.year, 1, 1)
+    if request.method == 'POST':
+        range_start = date.fromisoformat(request.form["range_start"])
+        range_end = date.fromisoformat(request.form["range_end"])
+        companies_list = get_most_popular_companies_btwn_years(range_start, range_end)
+    else:
+        companies_list = get_most_popular_companies_btwn_years(year_start, today)
+    return render_template("companies.html", companies=companies_list, start=get_earliest_year(),
+                           today=today, year_start=year_start, dark_mode=is_dark_mode())
+
+
+@app.route('/representatives', methods=['GET', 'POST'])
+def representatives():
+    today = date.today()
+    year_start = date(today.year, 1, 1)
+    if request.method == 'POST':
+        range_start = date.fromisoformat(request.form["range_start"])
+        range_end = date.fromisoformat(request.form["range_end"])
+        rep_list = representative_list(range_start, range_end)
+    else:
+        rep_list = representative_list(year_start, today)
+    return render_template("representatives.html", representatives=rep_list, start=get_earliest_year(),
+                           today=today, year_start=year_start, dark_mode=is_dark_mode())
+
+
+@app.route('/dark_mode')
+def set_dark_mode():
+    res = redirect("/")
+    res.set_cookie('dark_mode', "True")
+    return res
+
+
+@app.route('/light_mode')
+def set_light_mode():
+    res = redirect("/")
+    res.set_cookie("dark_mode", "False")
+    return res
+
+
+def is_dark_mode():
+    return "False" if "dark_mode" not in request.cookies else request.cookies["dark_mode"]
 
 
 if __name__ == '__main__':

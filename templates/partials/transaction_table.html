@@ -1,0 +1,49 @@
+{% block content %}
+<div class="mx-auto" style="width: 90vw">
+    <table id="data" class="table table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>Member Name</th>
+            <th>Member District</th>
+            <th>Company</th>
+            <th>Ticker</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Value Lower Bound</th>
+            <th>Value Upper Bound</th>
+            <th>Description</th>
+            <th>Link</th>
+            <th><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Add transaction to categories" href="#" style="text-decoration: none;">Categories</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in data %}
+            <tr>
+                <td>{{ entry.member_name }}</td>
+                <td>{{ entry.state_district_number }}</td>
+                <td>{{ entry.company }}</td>
+                <td>{{ entry.ticker }}</td>
+                <td>{{ "Purchase" if "P" == entry.transaction_type else "Sale" }}</td>
+                <td>{{ entry.transaction_date }}</td>
+                <td>{{ "${:,.2f}".format(entry.value_lb) }}</td>
+                <td>{{ "${:,.2f}".format(entry.value_ub) }}</td>
+                <td>
+                    {% if entry.description == "None" %}
+                        None
+                    {% else %}
+                        {% set modal_id = "modal_" + entry.id|string %}
+                        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#{{modal_id}}">Description</button>
+                    {% endif %}
+                </td>
+                <td><a href="{{ entry.link }}">Source</a></td>
+                <td>
+                  {% include "partials/category_dropdown.html" %}
+                </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% include "partials/description_modal.html" %}
+    </div>
+{% endblock %}

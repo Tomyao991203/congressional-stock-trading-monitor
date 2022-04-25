@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+    {% include "partials/representatives_range.html" %}
+    {% include "partials/representatives_table.html" %}
+    
+
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+    <script>
+        $(document).ready(function () {
+          $('#data').DataTable();
+        });
+      </script>    
+      <script>
+        $('.input-daterange input').each(function() {
+            $(this).datepicker();
+        });        
+      </script>
+{% endblock %}
+{% block styles %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+{% endblock %}
