@@ -13,7 +13,6 @@ table_name = r"all_transaction"
 
 def get_db_connection(db_file: str = db_file_path):
     """
-    Get the database connection
     :param db_file: Database file path
     :return: SQL3 Database Connection for the given file
     """
