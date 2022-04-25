@@ -5,6 +5,7 @@ from typing import List, Union
 
 from cstm.enums import TransactionType
 from cstm.dataclasses import Transaction, District
+from cstm.query import expression_wrapper, value_between, equal_condition, aggregating_conditions
 
 db_file_path = r"database/database.db"
 table_name = r"all_transaction"
@@ -35,21 +36,6 @@ def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     return f"{key_name} like \'%{partial_string}%\'"
 
 
-def equal_condition(expression: str, exact_value: str, value_is_string: bool = True) -> str:
-    """
-    return an equal condition for string (SQLite)
-    :param value_is_string: whether the exact value is string or not
-    :type value_is_string: bool
-    :param expression: the expression we are evaluating
-    :param exact_value: the expect value
-    :return: an equal condition for string in the form of XXX = 'aa' or 'TRUE' if one
-        of input is empty
-    """
-    if exact_value == "" or expression == "":
-        return "TRUE"
-    return f"{expression} = {expression_wrapper(exact_value, value_is_string)}"
-
-
 def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     """
     return an equal condition for year
@@ -64,65 +50,6 @@ def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     if key_name == "" or exact_year == "":
         return "TRUE"
     return f"strftime(\'%Y\', {key_name}) = \'{exact_year}\'"
-
-
-def aggregating_conditions(conditions: List[str]):
-    """
-    aggregating a list of conditions. Auto-inject "AND" between conditions unless detect a specified "OR" condition
-    :param conditions: list of conditions
-    :type conditions: list[str]
-    :return: aggregated condition
-    :rtype: str
-    """
-    if len(conditions) == 0 or conditions[-1] == 'OR':
-        return "TRUE"
-    result = f"({conditions[0]}"
-    for condition in conditions[1:]:
-        result = f"{result}) OR (" if condition == 'OR' else f"{result} AND {condition}"
-    return result + ")"
-
-
-def cases_str(expression: str, case_value_pairs: dict, else_value: Union[int, str], as_var_name: str,
-              key_is_str: bool = False, value_is_str: bool = False):
-    """
-    return a string in the format of "CASE expression when exp_1 then ... when exp_n then ... ELSE else_value END as
-        as_var_name". Used as a selected key. Currently, user has to make sure input is correct
-    :param key_is_str: if the key should be a string, then TRUE, FALSE otherwise
-    :type key_is_str: bool
-    :param value_is_str:  if the value should be a string, then TRUE, FALSE otherwise
-    :type value_is_str: bool
-    :param as_var_name: the name we assign to this variable
-    :type as_var_name: str
-    :param expression: the expression we are evaluating, could be empty
-    :type expression: str
-    :param case_value_pairs: a dictionary where the key is the possible expression value, the value is the assign value
-    :type case_value_pairs: dict
-    :param else_value: the final assign value
-    :type else_value: str or int
-    :return: the final case string
-    :rtype: str
-    """
-
-    case = f'CASE {expression}'
-    assert len(case_value_pairs) >= 1
-    for key, value in case_value_pairs.items():
-        case = f'{case} WHEN {expression_wrapper(key, key_is_str)} THEN {expression_wrapper(value, value_is_str)}'
-    else_str = f' ELSE {expression_wrapper(else_value, value_is_str)}'
-    end_as_str = f' END AS {as_var_name}'
-    return case + else_str + end_as_str
-
-
-def expression_wrapper(expression: Union[str, int], is_str: bool) -> str:
-    """
-    wrap the value with quotation marks if we want it to be a string value in the query
-    :param expression: the expression we want to wrap up
-    :type expression:  Union[str, int]
-    :param is_str: a boolean indicating if the expression will be a str value in the query.
-    :type is_str: bool
-    :return: a str that is either 'a' or '\'a\''
-    :rtype: str
-    """
-    return f'\'{expression}\'' if is_str else f'{expression}'
 
 
 def generate_select_query(selected_key: List[str], the_table_name: str, where_conditions: List[str] = [],
@@ -151,7 +78,6 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
     group_by_string = " GROUP BY " + group_by if group_by != '' else ''
     order_by_string = " ORDER BY " + order_by if order_by != '' else ''
     return select_string + from_string + where_string + group_by_string + order_by_string
-
 
 def value_between(expression: str, lower_bound: Union[int, str], upper_bound: Union[int, str],
                   bound_is_str: bool = False):
@@ -260,12 +186,12 @@ def get_most_popular_companies_btwn_years(date_lower: date, date_upper: date) ->
     transaction_value = [('P', 'purchase'), ('S', 'sale')]
     boudnary = ['lb', 'ub']
 
-    temp_table_keys = ["company", "ticker", "id", "member_name"]
-    for val, full_str in transaction_value:
-        for b in boudnary:
-            temp_table_keys += [
-                cases_str(expression="transaction_type", case_value_pairs={val: f'value_{b}'}, else_value=0,
-                          as_var_name=f'{full_str}_lb', key_is_str=True)]
+    # temp_table_keys = ["company", "ticker", "id", "member_name"]
+    # for val, full_str in transaction_value:
+    #     for b in boudnary:
+    #         temp_table_keys += [
+    #             cases_str(expression="transaction_type", case_value_pairs={val: f'value_{b}'}, else_value=0,
+    #                       as_var_name=f'{full_str}_lb', key_is_str=True)]
     full_query = f" {temp_query} " \
                  f"SELECT company, ticker, " \
                  f"COUNT(id) AS num_transactions, " \
@@ -298,10 +224,14 @@ def get_transactions_btwn_years(date_lower: date, date_upper: date) -> list:
 
     connection = get_db_connection(db_file_path)
     cur = connection.cursor()
-    
-    full_query = f"SELECT * from {table_name} "\
-                 f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}'"
 
+    keys = []
+    where_conditions = value_between("transaction_date", date_lower.isoformat(), date_upper.isoformat(),
+                                     bound_is_str=True)
+
+    # full_query = f"SELECT * from {table_name} "\
+    #              f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}'"
+    full_query = generate_select_query(keys, table_name, [where_conditions])
     cur.execute(full_query)
 
     connection.commit()
@@ -336,16 +266,6 @@ def get_most_popular_companies(request: Request) -> list:
     group_by_key = 'company'
     order_by_key = 'num_transactions DESC'
     where_conditions = [query_company, query_ticker, query_trans_type, query_transaction_year]
-    # full_query = f'SELECT ROW_NUMBER() OVER(ORDER BY COUNT(id) DESC) AS rank,' \
-    #              f' company, ticker, transaction_type, ' \
-    #              f'IFNULL({select_query_year}, \'All\') AS year,' \
-    #              f'COUNT(id) AS num_transactions, ' \
-    #              f'COUNT(DISTINCT member_name) AS num_members, ' \
-    #              f'SUM(value_lb) AS value_lb, SUM(value_ub) AS value_ub ' \
-    #              f'FROM {table_name} ' \
-    #              f'WHERE {aggregating_conditions()}' \
-    #              f'GROUP BY company ' \
-    #              f'ORDER BY num_transactions DESC'
     full_query = generate_select_query(selected_key=keys, the_table_name=table_name, where_conditions=where_conditions,
                                        group_by=group_by_key, order_by=order_by_key)
 
