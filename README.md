@@ -130,7 +130,7 @@ The ```tests``` directory contains all test files.
 * (15%) Michelle Zheng - Responsible for some html code and collecting data entries into a .cvs file.
 
 ## Sprint 2 - Level of Effort by Each Member
-* (26%) Brian Spates - 
+* (26%) Brian Spates - Made the backend + frontend (calendar range and datatables module) for the representatives view. Implemented continuous deployment. Made a frontend for assigning transactions to categories
 * (22%) Jake Wilson - 
 * (22%) Xue Qiu - Updated Transaction and Companies pages to the format from Brian. Wrote functions in database_helpers.py to assist with querying aggregated information for the Companies page, and wrote corresponding tests. Created a toggle button to connect Brian's frontend with Michelle's backend. Updated user documentation.
 * (18%) Jiaming Yao - 
