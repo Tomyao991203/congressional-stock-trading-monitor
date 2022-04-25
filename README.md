@@ -4,7 +4,7 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 
 ## How To Run the Software
 
-### A. Running Software Through a Docker Container
+### Running Software Through a Docker Container
 
 1. Open docker and a terminal window to this folder
 2. Type the following docker commands into the terminal window:
@@ -12,9 +12,13 @@ The Congressional Stock Trading Monitor will be a tool that assists users in col
 3. Visit http://127.0.0.1:5000/  or localhost:5000 in a browser to see the webpage.
 4. When finished, run `docker-compose down` to remove leftover container artifacts.
 
-### B. Visiting the Website
+### Visiting the Website
 
 You can visit the Congressional Stock Trading Monitor webpage [here](http://cstm-testing.eba-2jr5ivme.us-east-1.elasticbeanstalk.com/).
+
+### Running Tests
+
+Tests are automatically run on GitLab for each commit, you can find them in the CI/CD tab. To run tests locally, execute the command `pytest tests/` from the project root.
 
 ## User Documentation
 
