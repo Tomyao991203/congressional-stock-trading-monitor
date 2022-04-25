@@ -1,0 +1,23 @@
+{# 
+    Requires the variables:
+    - `entry.id`: int - Transaction ID that this dropdown is for 
+    - `categories`: list[str] - list of all category names
+#}
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+        Categories
+      </button>
+    <div class="dropdown-menu">
+        <div class="mb-3">
+            <input type="text" class="form-control" id="categoryDropdown{{ entry.id }}" placeholder="Category name">
+        </div>
+        <div class="mb-3">
+            <button id="categoriesButton{{ entry.id }}" type="submit" class="btn btn-primary" onclick="assignTransactionIDToCategory('{{entry.id}}', document.getElementById('categoryDropdown{{ entry.id }}').value)");">Save</button>
+        </div>
+        <div class="dropdown-divider"></div>
+        {% for category in categories %}
+            <li>
+                <button type="button" class="dropdown-item" data-bs-toggle="button" id="entry{{ category }}{{ entry.id }}" autocomplete="off" onclick="callCorrectCookieFunction('{{entry.id}}', '{{ category }}', 'entry{{ category }}{{ entry.id }}');">{{category}}</button>
+            </li>
+        {% endfor %}
+</div>
