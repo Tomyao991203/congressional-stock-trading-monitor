@@ -1,4 +1,5 @@
-from cstm.query import where_condition, equal_condition, expression_wrapper, cases_str
+from cstm.query import value_between, value_greater_equal, value_less_equal, where_condition, equal_condition, \
+    expression_wrapper, cases_str
 import unittest
 
 
@@ -17,14 +18,54 @@ class ExpressionWrapperTestCases(unittest.TestCase):
         self.assertEqual(expression_wrapper("", is_str=True), "")
         self.assertEqual(expression_wrapper("", is_str=False), "")
 
-    def test_is_str_True(self):
+    def test_is_str_true(self):
         self.assertEqual(expression_wrapper("a", is_str=True), "\'a\'")
         self.assertEqual(expression_wrapper("0", is_str=True), "\'0\'")
 
-    def test_is_str_False(self):
+    def test_is_str_false(self):
         self.assertEqual(expression_wrapper("a", is_str=False), "a")
         self.assertEqual(expression_wrapper("0", is_str=False), "0")
         self.assertEqual(expression_wrapper("0 > -1", is_str=False), "0 > -1")
+
+
+class ValueBetweenTestCases(unittest.TestCase):
+    def test_empty_value(self):
+        self.assertEqual(value_between("", "a", ""), "TRUE")
+        self.assertEqual(value_between("", "", ""), "TRUE")
+        self.assertEqual(value_between("b", "c", ""), "TRUE")
+        self.assertEqual(value_between("", "a", "b"), "TRUE")
+
+    def test_string_value(self):
+        self.assertEqual(value_between("a", "b", "c", True), "a BETWEEN \'b\' AND \'c\'")
+
+    def test_non_string_value(self):
+        self.assertEqual(value_between("a", "b", "c"), "a BETWEEN b AND c")
+
+
+class ValueGreaterEqualTestCases(unittest.TestCase):
+    def test_empty_value(self):
+        self.assertEqual(value_greater_equal("", "a"), "TRUE")
+        self.assertEqual(value_greater_equal("", ""), "TRUE")
+        self.assertEqual(value_greater_equal("b", ""), "TRUE")
+
+    def test_string_value(self):
+        self.assertEqual(value_greater_equal("a", "b", True), "a >= \'b\'")
+
+    def test_non_string_value(self):
+        self.assertEqual(value_greater_equal("a", "b"), "a >= b")
+
+
+class ValueLessEqualTestCases(unittest.TestCase):
+    def test_empty_value(self):
+        self.assertEqual(value_less_equal("", "a"), "TRUE")
+        self.assertEqual(value_less_equal("", ""), "TRUE")
+        self.assertEqual(value_less_equal("b", ""), "TRUE")
+
+    def test_string_value(self):
+        self.assertEqual(value_less_equal("a", "b", True), "a <= \'b\'")
+
+    def test_non_string_value(self):
+        self.assertEqual(value_less_equal("a", "b"), "a <= b")
 
 
 class EqualConditionTestCases(unittest.TestCase):
@@ -76,7 +117,7 @@ class CasesStrTestCases(unittest.TestCase):
 
     def test_one_plus_conditions(self):
         key_value_pairs = dict()
-        for i in range(1,4):
+        for i in range(1, 4):
             key_value_pairs[f'A_{i}'] = f'V_{i}'
         run_result = cases_str(expression="expression", case_value_pairs=key_value_pairs,
                                else_value='V_n', key_is_str=False, value_is_str=False, as_var_name='var_name')

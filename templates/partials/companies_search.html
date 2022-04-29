@@ -1,0 +1,45 @@
+{% block rep_range %}
+<div class="mx-auto" style="width: 35vw; min-width:50ch" >
+    <form action="" method="POST">
+    <div class="input-group input-daterange">
+
+        <div class="input-group-addon">Date Range:&nbsp;&nbsp; </div>
+
+        <input name="range_start" type="text" class="form-control" data-date-format="yyyy-mm-dd" 
+            data-date-start-date ="{{start}}-01-01" value="{{year_start.isoformat()}}">
+        <div class="input-group-addon">&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;</div>
+        <input name="range_end" type="text" class="form-control" data-date-format="yyyy-mm-dd"
+             data-date-start-date ="{{start}}-01-01" value="{{today.isoformat()}}">
+        <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" type="submit">Submit</button></div>
+
+    </div>
+    
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv" aria-expanded="false" aria-controls="collapseDiv">
+        <i class="fa fa-search"></i>
+    </button>
+
+    <div class="collapse" id="collapseDiv">
+        <label>Company: <input name="company" type="text" class="form-control"></label>
+        <label>Ticker: <input name="ticker"  type="text" class="form-control"></label>
+        <label>Transaction Count: <input name="transCount" type="number" min="0" class="form-control"></label>
+        
+        <label>Member Count: <input name="memberCount" type="number" min="0" class="form-control"></label>
+        
+        <label>Total Purchase Range: 
+            <input name="purchaselb" type="number" min="0" placeholder="min value" class="form-control">
+            <input name="purchaseub" type="number" min="0" placeholder="max value" class="form-control">
+        </label>
+        <label>Total Sale Range: 
+            <input name="salelb" type="number" min="0" placeholder="min value" class="form-control">
+            <input name="saleub" type="number" min="0" placeholder="max value" class="form-control">
+        </label>
+    </div>
+
+    </form>
+    
+</div>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}

@@ -1,0 +1,44 @@
+{% block rep_range %}
+<div class="mx-auto" style="width: 35vw; min-width:50ch" >
+    <form action="" method="POST">
+    <div class="input-group input-daterange">
+
+        <div class="input-group-addon">Date Range:&nbsp;&nbsp; </div>
+
+        <input name="range_start" type="text" class="form-control" data-date-format="yyyy-mm-dd" 
+            data-date-start-date ="{{start}}-01-01" value="{{year_start.isoformat()}}">
+        <div class="input-group-addon">&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;</div>
+        <input name="range_end" type="text" class="form-control" data-date-format="yyyy-mm-dd"
+             data-date-start-date ="{{start}}-01-01" value="{{today.isoformat()}}">
+        <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" type="submit">Submit</button></div>
+
+    </div>
+
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv" aria-expanded="false" aria-controls="collapseDiv">
+        <i class="fa fa-search"></i>
+    </button>
+
+    <div class="collapse" id="collapseDiv">
+        <label>Member Name: <input name="member_name" type="text" class="form-control"></label>
+        <label>Member District: <input name="distrNum" type="text" class="form-control"></label>
+        <label>Company: <input name="company" type="text" class="form-control"></label>
+        <label>Ticker: <input name="ticker" type="text" class="form-control"></label>
+        <label>Value Lower Bound: <input name="lowerBound" type="number" min="0" class="form-control"></label>
+        <label>Value Upper Bound: <input name="upperBound" type="number" min="0" class="form-control"></label>
+        <label> Transaction Type:
+            <select name="transType" class="form-select">
+                <option value=""></option>
+                <option value="P">Purchase</option>
+                <option value="S">Sale</option>
+            </select>
+        </label>
+    </div>
+
+    </form>
+    
+</div>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
