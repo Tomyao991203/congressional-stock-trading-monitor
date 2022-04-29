@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 from datetime import date
 from json import loads
 
-from cstm.database_helpers import get_transactions_btwn_years, get_most_popular_companies_btwn_years, get_earliest_year
+from cstm.database_helpers import get_transactions_btwn_years, get_companies_btwn_years, get_earliest_year
 from cstm.representative_helpers import representative_list
 
 application = app = Flask(__name__)
@@ -20,9 +20,9 @@ def root_dir():
     if request.method == 'POST':
         range_start = date.fromisoformat(request.form["range_start"])
         range_end = date.fromisoformat(request.form["range_end"])
-        transactions_list = get_transactions_btwn_years(range_start, range_end)
+        transactions_list = get_transactions_btwn_years("POST", request, range_start, range_end)
     else:
-        transactions_list = get_transactions_btwn_years(year_start, today)
+        transactions_list = get_transactions_btwn_years("GET", request, year_start, today)
     return render_template("transactions.html", data=transactions_list, start=get_earliest_year(),
                            today=today, year_start=year_start, dark_mode=is_dark_mode(), categories=categories)
 
@@ -34,9 +34,9 @@ def companies():
     if request.method == 'POST':
         range_start = date.fromisoformat(request.form["range_start"])
         range_end = date.fromisoformat(request.form["range_end"])
-        companies_list = get_most_popular_companies_btwn_years(range_start, range_end)
+        companies_list = get_companies_btwn_years("POST", request, range_start, range_end)
     else:
-        companies_list = get_most_popular_companies_btwn_years(year_start, today)
+        companies_list = get_companies_btwn_years("GET", request, year_start, today)
     return render_template("companies.html", companies=companies_list, start=get_earliest_year(),
                            today=today, year_start=year_start, dark_mode=is_dark_mode())
 
