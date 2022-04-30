@@ -4,7 +4,7 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-
+    {% include "partials/category_listing_dropdown.html" %}
     {% include "partials/transaction_search.html" %}
     {% include "partials/transaction_table.html" %}
 
