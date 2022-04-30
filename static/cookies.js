@@ -6,7 +6,7 @@
  * @param cookie_value - the value of the cookie 
  * @param exdays - the number of days before the cookie is set to expire
  **/
-function setCookie(cookie_name, cookie_value, exdays) {
+ function setCookie(cookie_name, cookie_value, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   let expires = "expires=" + d.toUTCString();
@@ -118,3 +118,70 @@ function removeTransactionIDFromCategory(transaction_id, category_name) {
 }
 
 
+function getAdvancedSearchTransaction() {
+  return encodeURI(document.transaction_search_form.member_name.value) + ","
+    + encodeURI(document.transaction_search_form.distrNum.value) + ","
+    + encodeURI(document.transaction_search_form.company.value) + ","
+    + encodeURI(document.transaction_search_form.ticker.value) + ","
+    + encodeURI(document.transaction_search_form.lowerBound.value) + ","
+    + encodeURI(document.transaction_search_form.upperBound.value) + ","
+    + encodeURI(document.transaction_search_form.transType.value);
+}
+
+function getAdvancedSearchRepresentative() {
+  return encodeURI(document.representative_search_form.member_name.value) + ","
+    + encodeURI(document.representative_search_form.ticker.value) + ","
+    + encodeURI(document.representative_search_form.tradeCount.value) + ","
+    + encodeURI(document.representative_search_form.purchaseCount.value) + ","
+    + encodeURI(document.representative_search_form.saleCount.value) + ","
+    + encodeURI(document.representative_search_form.avgTransactionVal.value) + ","
+    + encodeURI(document.representative_search_form.purchaseLowerBound.value) + ","
+    + encodeURI(document.representative_search_form.purchaseUpperBound.value) + ","
+    + encodeURI(document.representative_search_form.saleLowerBound.value) + ","
+    + encodeURI(document.representative_search_form.saleUpper.value);
+}
+
+function getAdvancedSearchCompany() {
+  return encodeURI(document.company_search_form.company.value) + ","
+    + encodeURI(document.company_search_form.ticker.value) + ","
+    + encodeURI(document.company_search_form.transCount.value) + ","
+    + encodeURI(document.company_search_form.memberCount.value) + ","
+    + encodeURI(document.company_search_form.purchaselb.value) + ","
+    + encodeURI(document.company_search_form.purchaseub.value) + ","
+    + encodeURI(document.company_search_form.salelb.value) + ","
+    + encodeURI(document.company_search_form.saleub.value);
+}
+
+function setAdvancedSearchCookie(cookie_name) {
+  search_cookie_str = getCookie(cookie_name);
+  search_cookie_list = [];
+  if (search_cookie_str !== "") {
+    search_cookie_list = JSON.parse(search_cookie_str);
+  }
+  switch (cookie_name) {
+    case "advanced_search_transaction":
+      search_cookie_list.push(getAdvancedSearchTransaction());
+      setCookie("advanced_search_transaction", JSON.stringify(search_cookie_list), 365);
+      break;
+    case "advanced_search_representative":
+      search_cookie_list.push(getAdvancedSearchRepresentative());
+      setCookie("advanced_search_representative", JSON.stringify(search_cookie_list), 365);
+      break;
+    case "advanced_search_company":
+      search_cookie_list.push(getAdvancedSearchCompany());
+      setCookie("advanced_search_company", JSON.stringify(search_cookie_list), 365);
+      break;
+  }
+}
+
+function setAdvancedSearchTransactionCookie() {
+  setAdvancedSearchCookie("advanced_search_transaction");
+}
+
+function setAdvancedSearchRepresentativeCookie() {
+  setAdvancedSearchCookie("advanced_search_representative");
+}
+
+function setAdvancedSearchCompanyCookie() {
+  setAdvancedSearchCookie("advanced_search_company");
+}
