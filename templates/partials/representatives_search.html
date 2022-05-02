@@ -1,6 +1,6 @@
 {% block rep_range %}
 <div class="mx-auto" style="width: 35vw; min-width:50ch" >
-    <form action="" method="POST">
+    <form action="" name="representative_search_form" method="POST">
     <div class="input-group input-daterange">
         <div class="input-group-addon">Date Range:&nbsp;&nbsp; </div>
 
@@ -9,7 +9,7 @@
         <div class="input-group-addon">&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;</div>
         <input name="range_end" type="text" class="form-control" data-date-format="yyyy-mm-dd"
              data-date-start-date ="{{start}}-01-01" value="{{today.isoformat()}}">
-        <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" type="submit">Submit</button></div>
+        <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" onclick="setAdvancedSearchRepresentativeCookie()" type="submit">Submit</button></div>
     </div>
 
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv" aria-expanded="false" aria-controls="collapseDiv">
