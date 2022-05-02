@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to Congressional Stock Trading Monitor’s documentation! &#8212; Congressional Stock Trading Monitor v0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to Congressional Stock Trading Monitor’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-congressional-stock-trading-monitor-s-documentation">
+<h1>Welcome to Congressional Stock Trading Monitor’s documentation!<a class="headerlink" href="#welcome-to-congressional-stock-trading-monitor-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="module-cstm.database_helpers">
+<span id="cstm-data-helpers"></span><h2>CSTM Data Helpers<a class="headerlink" href="#module-cstm.database_helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.check_companies_advanced_search">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">check_companies_advanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cstm.database_helpers.check_companies_advanced_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks whether or not an advanced search was requested</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> – Flask Request containing the HTML Form Results from companies_table.html</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if an advanced search was requested or False if an advanced search was not requested.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.check_transactions_advanced_search">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">check_transactions_advanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cstm.database_helpers.check_transactions_advanced_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks whether or not an advanced search was requested</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> – Flask Request containing the HTML Form Results from transactions_table.html</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if an advanced search was requested or False if an advanced search was not requested.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.convert_db_transactions_to_dataclass">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">convert_db_transactions_to_dataclass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_transactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">sqlite3.Row</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Transaction" title="cstm.dataclasses.Transaction"><span class="pre">cstm.dataclasses.Transaction</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cstm.database_helpers.convert_db_transactions_to_dataclass" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method takes a list of transactions from the database (matching the sql schema)
+and converts it to a list of Transaction dataclass objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>db_transactions</strong> – The list of transactions returned from a database query</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The given list of transactions represented as Transaction objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.generate_select_query">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">generate_select_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">the_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where_conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.database_helpers.generate_select_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vanilla, naive method of constructing a select query string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_by</strong> (<em>str</em>) – group by condition</p></li>
+<li><p><strong>order_by</strong> (<em>str</em>) – order by condition</p></li>
+<li><p><strong>the_table_name</strong> (<em>string</em>) – the name of the table which contains the keys we are looking for</p></li>
+<li><p><strong>selected_key</strong> (<em>List of string</em>) – name of keys that will be returned by the query</p></li>
+<li><p><strong>where_conditions</strong> (<em>List of string</em>) – list of where conditions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a string represent the SQLite select query</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.generate_string_like_condition">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">generate_string_like_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.database_helpers.generate_string_like_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a like condition for string(SQLite)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key_name</strong> – the name of the key</p></li>
+<li><p><strong>partial_string</strong> – substring of the goal string (first name of the person for instance, or “Samsung”, instead     of its full legal name).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a like condition for string in the form of XXX Like ‘%aa%’ or ‘TRUE’ if one of input is empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.generate_year_equal_condition">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">generate_year_equal_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.database_helpers.generate_year_equal_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>return an equal condition for year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key_name</strong> (<em>str</em>) – the name of the key</p></li>
+<li><p><strong>exact_year</strong> (<em>str</em>) – a string represent the exact year we are looking for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an equal condition for time in the form of strftime(‘%Y’,key_name) = ‘exact_time}’ or ‘TRUE’ if one     of input is empty</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_companies_advanced_search">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_companies_advanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_companies_advanced_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method creates the string for a database query for all companies
+that match the details in the given request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> – Flask Request containing the HTML Form Results from companies_table.html</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all companies from the database matching the given search parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_companies_advanced_search_helper">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_companies_advanced_search_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_companies_advanced_search_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a helper method for get_companies_advanced_search() that gets values from the HTML form
+in companies_table.html. This helper function also breaks down the queries into strings
+for get_companies_advanced_search() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> – Flask Request containing the HTML Form Results from companies_table.html</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of strings used for querying the database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_companies_btwn_years">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_companies_btwn_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_companies_btwn_years" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method makes a database query to list all companies with their corresponding ticker,
+the number of transactions including this company, the number of house members that made a transaction
+with this company, and the lower and upper bounds of stock purchases/sales.
+The query will return data that is between the date_lower and date_upper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – string representing method calling this function (ex. “POST”, “GET”…)</p></li>
+<li><p><strong>request</strong> – Flask Request containing the HTML Form Results from companies_table.html</p></li>
+<li><p><strong>date_lower</strong> – The lower range of the transaction query</p></li>
+<li><p><strong>date_upper</strong> – The upper range of the transaction query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all companies along with aggregated columns from the database within the given date range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_db_connection">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_db_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'database/database.db'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.database_helpers.get_db_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the database connection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>db_file</strong> – Database file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SQL3 Database Connection for the given file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_earliest_year">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_earliest_year</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_earliest_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: Don’t hardcode this
+:return: The first year for which a transaction exists in the database</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_latest_year">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_latest_year</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_latest_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: Don’t hardcode this
+:return: The last year for which a transaction exists in the database</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_transactions_advanced_search">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_transactions_advanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_transactions_advanced_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method creates the string for a database query for all transactions
+that match the details in the given request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> – Flask Request containing the HTML Form Results from transaction_table.html</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all transactions from the database matching the given search parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_transactions_between">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_transactions_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Transaction" title="cstm.dataclasses.Transaction"><span class="pre">cstm.dataclasses.Transaction</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cstm.database_helpers.get_transactions_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method makes a database query for all transactions that fall in the inclusive range from date_lower
+to date_upper. The transactions will be represented using the Transaction Dataclass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_lower</strong> – The lower range of the transaction query</p></li>
+<li><p><strong>date_upper</strong> – The upper range of the transaction query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all transactions from the database within the given range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.database_helpers.get_transactions_btwn_years">
+<span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">get_transactions_btwn_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#cstm.database_helpers.get_transactions_btwn_years" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method makes a database query to list all transactions, with information including the U.S. House
+of Representatives name, U.S. House of Representative district, company, ticker, transaction
+type (purchase or sale), date, the lower and upper bound of the stock purchased/sold,
+description, and link to the official document showing the transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – string represeting method calling this function (ex. “POST”, “GET”…)</p></li>
+<li><p><strong>request</strong> – Flask Request containing the HTML Form Results from transactions_table.html</p></li>
+<li><p><strong>date_lower</strong> – The lower range of the transaction query</p></li>
+<li><p><strong>date_upper</strong> – The upper range of the transaction query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all transactions from the database within the given date range</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cstm.dataclasses">
+<span id="cstm-data-classes"></span><h2>CSTM Data Classes<a class="headerlink" href="#module-cstm.dataclasses" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cstm.dataclasses.District">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.dataclasses.</span></span><span class="sig-name descname"><span class="pre">District</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cstm.enums.State" title="cstm.enums.State"><span class="pre">cstm.enums.State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.dataclasses.District" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible for storing information about a state congressional district</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cstm.dataclasses.Representative">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.dataclasses.</span></span><span class="sig-name descname"><span class="pre">Representative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">district_by_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#cstm.dataclasses.District" title="cstm.dataclasses.District"><span class="pre">cstm.dataclasses.District</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trade_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">purchase_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sale_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_transaction_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_purchase_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_sale_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.dataclasses.Representative" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible for holding information about a member of the House of Representatives
+as well as facilitating computations using this data</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cstm.dataclasses.Transaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.dataclasses.</span></span><span class="sig-name descname"><span class="pre">Transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">member_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">member_district</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cstm.dataclasses.District" title="cstm.dataclasses.District"><span class="pre">cstm.dataclasses.District</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">company</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cstm.enums.TransactionType" title="cstm.enums.TransactionType"><span class="pre">cstm.enums.TransactionType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.dataclasses.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible for holding information about a single Transaction stored in the database.
+Database query functions will return a list of this type, providing a common data type and API system-wide.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cstm.dataclasses.Transaction.get_average_value">
+<span class="sig-name descname"><span class="pre">get_average_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#cstm.dataclasses.Transaction.get_average_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The average value of this transaction, which is the midpoint between its value bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cstm.representative_helpers">
+<span id="cstm-representative-helpers"></span><h2>CSTM Representative Helpers<a class="headerlink" href="#module-cstm.representative_helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.representative_helpers.representative_list">
+<span class="sig-prename descclassname"><span class="pre">cstm.representative_helpers.</span></span><span class="sig-name descname"><span class="pre">representative_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Representative" title="cstm.dataclasses.Representative"><span class="pre">cstm.dataclasses.Representative</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cstm.representative_helpers.representative_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method make a database query for all Representatives that were in office at some point in the
+given date range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_lower</strong> – The lower bound of the query</p></li>
+<li><p><strong>date_upper</strong> – The upper bound of the query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of Representative objects populated from all transactions in the given range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.representative_helpers.representatives_from_transactions">
+<span class="sig-prename descclassname"><span class="pre">cstm.representative_helpers.</span></span><span class="sig-name descname"><span class="pre">representatives_from_transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Transaction" title="cstm.dataclasses.Transaction"><span class="pre">cstm.dataclasses.Transaction</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Representative" title="cstm.dataclasses.Representative"><span class="pre">cstm.dataclasses.Representative</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cstm.representative_helpers.representatives_from_transactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method populates Representative objects with the information found in the
+given list of transactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>transactions</strong> – The list of transactions to determine Representative info from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of Representative objects populated from the given transaction list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cstm.query">
+<span id="cstm-query"></span><h2>CSTM Query<a class="headerlink" href="#module-cstm.query" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.aggregating_conditions">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">aggregating_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.aggregating_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>aggregating a list of conditions. Auto-inject “AND” between conditions unless detect a specified “OR” condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conditions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of conditions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>aggregated condition</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.cases_str">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">cases_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_value_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">else_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_var_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.cases_str" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>return a string in the format of “CASE expression when exp_1 then … when exp_n then … ELSE else_value END as</dt><dd><p>as_var_name”. Used as a selected key. Currently, user has to make sure input is correct</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key_is_str</strong> (<em>bool</em>) – if the key should be a string, then TRUE, FALSE otherwise</p></li>
+<li><p><strong>value_is_str</strong> (<em>bool</em>) – if the value should be a string, then TRUE, FALSE otherwise</p></li>
+<li><p><strong>as_var_name</strong> (<em>str</em>) – the name we assign to this variable</p></li>
+<li><p><strong>expression</strong> (<em>str</em>) – the expression we are evaluating, could be empty</p></li>
+<li><p><strong>case_value_pairs</strong> (<em>dict</em>) – a dictionary where the key is the possible expression value, the value is the assign value</p></li>
+<li><p><strong>else_value</strong> (<em>str</em><em> or </em><em>int</em>) – the final assign value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the final case string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.equal_condition">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">equal_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_is_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.query.equal_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>return an equal condition for string (SQLite)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value_is_string</strong> (<em>bool</em>) – whether the exact value is string or not</p></li>
+<li><p><strong>expression</strong> – the expression we are evaluating</p></li>
+<li><p><strong>exact_value</strong> – the expect value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an equal condition for string in the form of XXX = ‘aa’ or ‘TRUE’ if one
+of input is empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.expression_wrapper">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">expression_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.query.expression_wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>wrap the value with quotation marks if we want it to be a string value in the query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>) – the expression we want to wrap up</p></li>
+<li><p><strong>is_str</strong> (<em>bool</em>) – a boolean indicating if the expression will be a str value in the query.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a str that is either ‘a’ or ‘’a’’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.value_between">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">value_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.value_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a between condition string (i.e.: A between lower_bound and upper_bound)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bound_is_str</strong> (<em>bool</em>) – whether the bound value is str type or not</p></li>
+<li><p><strong>expression</strong> (<em>str</em>) – the expression we are examining</p></li>
+<li><p><strong>lower_bound</strong> (<em>str</em><em> or </em><em>int</em>) – value lower bound</p></li>
+<li><p><strong>upper_bound</strong> (<em>str</em><em> or </em><em>int</em>) – value upper bound</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a between condition string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.value_greater_equal">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">value_greater_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.value_greater_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a greater than condition string (i.e.: greater then exact_value)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bound_is_str</strong> (<em>bool</em>) – whether the bound value is str type or not</p></li>
+<li><p><strong>expression</strong> (<em>str</em>) – the expression we are examining</p></li>
+<li><p><strong>exact_value</strong> – the expect value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a greater than condition string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.value_less_equal">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">value_less_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_is_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.value_less_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a less than condition string (i.e.: less then exact_value)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bound_is_str</strong> (<em>bool</em>) – whether the bound value is str type or not</p></li>
+<li><p><strong>expression</strong> (<em>str</em>) – the expression we are examining</p></li>
+<li><p><strong>exact_value</strong> – the expect value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a less than condition string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cstm.query.where_condition">
+<span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">where_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cstm.query.where_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a string representing the condition for where</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var_name</strong> – the name of the key which the variable corresponds to</p></li>
+<li><p><strong>var_value</strong> – the value of the variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>‘True’ if the var_value is None or empty string, ‘var_name = var_value’ otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cstm.enums">
+<span id="cstm-enums"></span><h2>CSTM Enums<a class="headerlink" href="#module-cstm.enums" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cstm.enums.State">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.enums.</span></span><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.enums.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cstm.enums.TransactionType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.enums.</span></span><span class="sig-name descname"><span class="pre">TransactionType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.enums.TransactionType" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Welcome to Congressional Stock Trading Monitor’s documentation!</a><ul>
+<li><a class="reference internal" href="#module-cstm.database_helpers">CSTM Data Helpers</a></li>
+<li><a class="reference internal" href="#module-cstm.dataclasses">CSTM Data Classes</a></li>
+<li><a class="reference internal" href="#module-cstm.representative_helpers">CSTM Representative Helpers</a></li>
+<li><a class="reference internal" href="#module-cstm.query">CSTM Query</a></li>
+<li><a class="reference internal" href="#module-cstm.enums">CSTM Enums</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to Congressional Stock Trading Monitor’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Lily Qiu, Brian Spates, Jake Wilson, Jiaming Yao, Michelle Zheng.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>
