@@ -6,7 +6,7 @@
  * @param cookie_value - the value of the cookie 
  * @param exdays - the number of days before the cookie is set to expire
  **/
- function setCookie(cookie_name, cookie_value, exdays) {
+function setCookie(cookie_name, cookie_value, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   let expires = "expires=" + d.toUTCString();
@@ -138,7 +138,7 @@ function getAdvancedSearchRepresentative() {
     + encodeURI(document.representative_search_form.purchaseLowerBound.value) + ","
     + encodeURI(document.representative_search_form.purchaseUpperBound.value) + ","
     + encodeURI(document.representative_search_form.saleLowerBound.value) + ","
-    + encodeURI(document.representative_search_form.saleUpper.value);
+    + encodeURI(document.representative_search_form.saleUpperBound.value);
 }
 
 function getAdvancedSearchCompany() {
@@ -153,8 +153,8 @@ function getAdvancedSearchCompany() {
 }
 
 function setAdvancedSearchCookie(cookie_name) {
-  search_cookie_str = getCookie(cookie_name);
-  search_cookie_list = [];
+  var search_cookie_str = getCookie(cookie_name);
+  var search_cookie_list = [];
   if (search_cookie_str !== "") {
     search_cookie_list = JSON.parse(search_cookie_str);
   }
