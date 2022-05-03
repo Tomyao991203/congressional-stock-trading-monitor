@@ -15,6 +15,7 @@ table_name = r"all_transaction"
 def get_db_connection(db_file: str = db_file_path):
     """
     Get the database connection
+
     :param db_file: Database file path
     :return: SQL3 Database Connection for the given file
     """
@@ -26,11 +27,11 @@ def get_db_connection(db_file: str = db_file_path):
 def generate_string_like_condition(key_name: str, partial_string: str) -> str:
     """
     return a like condition for string(SQLite)
+
     :param key_name: the name of the key
-    :param partial_string: substring of the goal string (first name of the person for instance, or "Samsung", instead of
-        its full legal name).
-    :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one
-        of input is empty
+    :param partial_string: substring of the goal string (first name of the person for instance, or "Samsung", instead \
+    of its full legal name).
+    :return: a like condition for string in the form of XXX Like '%aa%' or 'TRUE' if one of input is empty
     """
     if partial_string == "" or key_name == "":
         return "TRUE"
@@ -40,12 +41,13 @@ def generate_string_like_condition(key_name: str, partial_string: str) -> str:
 def generate_year_equal_condition(key_name: str, exact_year: str) -> str:
     """
     return an equal condition for year
+
     :param key_name: the name of the key
     :type key_name: str
     :param exact_year: a string represent the exact year we are looking for
     :type exact_year: str
-    :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one
-        of input is empty
+    :return: an equal condition for time in the form of strftime('%Y',key_name) = 'exact_time}' or 'TRUE' if one \
+    of input is empty
     :rtype: str
     """
     if key_name == "" or exact_year == "":
@@ -58,6 +60,7 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
                           order_by: str = '') -> str:
     """
     Vanilla, naive method of constructing a select query string
+
     :param group_by: group by condition
     :type group_by: str
     :param order_by: order by condition
@@ -219,12 +222,11 @@ def get_companies_btwn_years(method: str, request: Request, date_lower: date, da
     with this company, and the lower and upper bounds of stock purchases/sales.
     The query will return data that is between the date_lower and date_upper.
 
-    :param method: string represeting method calling this function (ex. "POST", "GET"...)
+    :param method: string representing method calling this function (ex. "POST", "GET"...)
     :param request: Flask Request containing the HTML Form Results from companies_table.html
     :param date_lower: The lower range of the transaction query
     :param date_upper: The upper range of the transaction query
-    :return: A list of all companies along with aggregated columns from the database within the given
-    date range
+    :return: A list of all companies along with aggregated columns from the database within the given date range
     """
 
     connection = get_db_connection(db_file_path)

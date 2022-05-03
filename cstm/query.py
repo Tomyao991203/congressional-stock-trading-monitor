@@ -4,9 +4,10 @@ from typing import Union, List
 def where_condition(var_name: str, var_value: Union[int, str]) -> str:
     """
     return a string representing the condition for where
-    @param var_name: the name of the key which the variable corresponds to
-    @param var_value: the value of the variable
-    @return: 'True' if the var_value is None or empty string, 'var_name = var_value' otherwise
+
+    :param var_name: the name of the key which the variable corresponds to
+    :param var_value: the value of the variable
+    :return: 'True' if the var_value is None or empty string, 'var_name = var_value' otherwise
     """
     if var_value is None or var_value == '':
         return 'True'
@@ -18,6 +19,7 @@ def where_condition(var_name: str, var_value: Union[int, str]) -> str:
 def expression_wrapper(expression: Union[str, int], is_str: bool) -> str:
     """
     wrap the value with quotation marks if we want it to be a string value in the query
+
     :param expression: the expression we want to wrap up
     :type expression:  Union[str, int]
     :param is_str: a boolean indicating if the expression will be a str value in the query.
@@ -34,6 +36,7 @@ def value_between(expression: str, lower_bound: Union[int, str], upper_bound: Un
                   bound_is_str: bool = False):
     """
     Return a between condition string (i.e.: A between lower_bound and upper_bound)
+
     :param bound_is_str: whether the bound value is str type or not
     :type bound_is_str: bool
     :param expression: the expression we are examining
@@ -54,6 +57,7 @@ def value_between(expression: str, lower_bound: Union[int, str], upper_bound: Un
 def value_greater_equal(expression: str, exact_value: Union[int, str], bound_is_str: bool = False):
     """
     Return a greater than condition string (i.e.: greater then exact_value)
+
     :param bound_is_str: whether the bound value is str type or not
     :type bound_is_str: bool
     :param expression: the expression we are examining
@@ -70,6 +74,7 @@ def value_greater_equal(expression: str, exact_value: Union[int, str], bound_is_
 def value_less_equal(expression: str, exact_value: Union[int, str], bound_is_str: bool = False):
     """
     Return a less than condition string (i.e.: less then exact_value)
+
     :param bound_is_str: whether the bound value is str type or not
     :type bound_is_str: bool
     :param expression: the expression we are examining
@@ -86,6 +91,7 @@ def value_less_equal(expression: str, exact_value: Union[int, str], bound_is_str
 def equal_condition(expression: str, exact_value: Union[int, str], value_is_string: bool = True) -> str:
     """
     return an equal condition for string (SQLite)
+
     :param value_is_string: whether the exact value is string or not
     :type value_is_string: bool
     :param expression: the expression we are evaluating
@@ -101,6 +107,7 @@ def equal_condition(expression: str, exact_value: Union[int, str], value_is_stri
 def aggregating_conditions(conditions: List[str]):
     """
     aggregating a list of conditions. Auto-inject "AND" between conditions unless detect a specified "OR" condition
+
     :param conditions: list of conditions
     :type conditions: list[str]
     :return: aggregated condition
@@ -119,6 +126,7 @@ def cases_str(expression: str, case_value_pairs: dict, else_value: Union[int, st
     """
     return a string in the format of "CASE expression when exp_1 then ... when exp_n then ... ELSE else_value END as
         as_var_name". Used as a selected key. Currently, user has to make sure input is correct
+
     :param key_is_str: if the key should be a string, then TRUE, FALSE otherwise
     :type key_is_str: bool
     :param value_is_str:  if the value should be a string, then TRUE, FALSE otherwise
