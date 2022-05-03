@@ -8,50 +8,10 @@ Welcome to Congressional Stock Trading Monitor's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-CSTM
-====
+   cstm
+   database
 
-CSTM Data Helpers
------------------
-
-.. automodule:: cstm.database_helpers
-    :members:
-
-CSTM Data Classes
------------------
-.. automodule:: cstm.dataclasses
-    :members:
-
-CSTM Representative Helpers
----------------------------
-.. automodule:: cstm.representative_helpers
-    :members:
-
-CSTM Query
----------------------------
-.. automodule:: cstm.query
-    :members:
-
-CSTM Enums
----------------------------
-.. automodule:: cstm.enums
-    :members:
-
-
-DATABASE
-========
-
-PDF Scraping
-------------
-.. automodule:: database.pdf_scraping
-    :members:
-
-PDF Scraping
-------------
-.. automodule:: database.process_congress_records
-    :members:
 
 Indices and tables
 ==================
