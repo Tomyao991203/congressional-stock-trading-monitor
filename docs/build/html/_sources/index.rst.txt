@@ -9,6 +9,7 @@ Welcome to Congressional Stock Trading Monitor's documentation!
 .. toctree::
    :maxdepth: 2
 
+   about
    cstm
    database
 

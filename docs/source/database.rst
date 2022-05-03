@@ -1,5 +1,5 @@
 
-DATABASE
+Database
 ========
 The *database* directory contains database files, python files for webscraping, and resulting pdf and text files \
 from webscraping.
