@@ -73,17 +73,17 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
     def test_no_selected_key(self):
         temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
                                            where_conditions=self.one_condition)
-        select_string = "Select *"
-        from_string = " From TABLE"
-        where_string = " Where (A = \'B\')"
+        select_string = "SELECT *"
+        from_string = " FROM TABLE"
+        where_string = " WHERE (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
     def test_no_where_conditions(self):
         temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
                                            where_conditions=self.empty_conditions)
-        select_string = "Select one"
-        from_string = " From TABLE"
+        select_string = "SELECT one"
+        from_string = " FROM TABLE"
         where_string = ""
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
@@ -91,8 +91,8 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
     def test_no_selected_keys_and_where_conditions(self):
         temp_query = generate_select_query(selected_key=self.empty_key, the_table_name=self.table_name,
                                            where_conditions=self.empty_conditions)
-        select_string = "Select *"
-        from_string = " From TABLE"
+        select_string = "SELECT *"
+        from_string = " FROM TABLE"
         where_string = ""
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
@@ -100,8 +100,8 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
     def test_one_selected_key(self):
         temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
                                            where_conditions=self.empty_conditions)
-        select_string = "Select one"
-        from_string = " From TABLE"
+        select_string = "SELECT one"
+        from_string = " FROM TABLE"
         where_string = ""
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
@@ -109,8 +109,8 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
     def test_two_selected_key(self):
         temp_query = generate_select_query(selected_key=self.two_key, the_table_name=self.table_name,
                                            where_conditions=self.empty_conditions)
-        select_string = "Select one, two"
-        from_string = " From TABLE"
+        select_string = "SELECT one, two"
+        from_string = " FROM TABLE"
         where_string = ""
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
@@ -118,18 +118,18 @@ class SelectQueryGenerationTestCase(unittest.TestCase):
     def test_one_where_condition(self):
         temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
                                            where_conditions=self.one_condition)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = " Where (A = \'B\')"
+        select_string = "SELECT one"
+        from_string = " FROM TABLE"
+        where_string = " WHERE (A = \'B\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 
     def test_two_where_condition(self):
         temp_query = generate_select_query(selected_key=self.one_key, the_table_name=self.table_name,
                                            where_conditions=self.two_condition)
-        select_string = "Select one"
-        from_string = " From TABLE"
-        where_string = " Where (A = \'B\' AND C = \'D\')"
+        select_string = "SELECT one"
+        from_string = " FROM TABLE"
+        where_string = " WHERE (A = \'B\' AND C = \'D\')"
         full_query = select_string + from_string + where_string
         self.assertEqual(temp_query, full_query)
 

@@ -12,7 +12,7 @@ db_file_path = r"database/database.db"
 table_name = r"all_transaction"
 
 
-def get_db_connection(db_file: str = db_file_path):
+def get_db_connection(db_file: str = db_file_path) -> sqlite3.Connection:
     """
     Get the database connection
 
@@ -74,11 +74,11 @@ def generate_select_query(selected_key: List[str], the_table_name: str, where_co
     :return: a string represent the SQLite select query
     :rtype: string
     """
-    select_string = 'Select ' + selected_key[0] if len(selected_key) != 0 else 'Select *'
+    select_string = 'SELECT ' + selected_key[0] if len(selected_key) != 0 else 'SELECT *'
     for variable_name in selected_key[1:]:
         select_string = select_string + ", " + variable_name
-    from_string = " From " + the_table_name
-    where_string = " Where " + aggregating_conditions(where_conditions) if len(where_conditions) != 0 else ""
+    from_string = " FROM " + the_table_name
+    where_string = " WHERE " + aggregating_conditions(where_conditions) if len(where_conditions) != 0 else ""
     group_by_string = " GROUP BY " + group_by if group_by != '' else ''
     order_by_string = " ORDER BY " + order_by if order_by != '' else ''
     return select_string + from_string + where_string + group_by_string + order_by_string
