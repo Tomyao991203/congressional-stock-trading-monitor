@@ -33,6 +33,7 @@
           <a href="cstm.html" title="CSTM"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer.html" accesskey="U">Developer Documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Database</a></li> 
       </ul>
     </div>  
@@ -44,10 +45,25 @@
             
   <section id="database">
 <h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
-<p>The <em>database</em> directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.</p>
+<p>The <cite>database</cite> directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.</p>
+<ul class="simple">
+<li><p><cite>pdfs</cite> directory: contains pdf files of stock transactions records for the U.S. House of Representatives.</p></li>
+<li><p><cite>Financial_Disclosure_txt_files</cite> directory: contains text files of the U.S. House of Representatives, separated by year.</p></li>
+<li><p><cite>process_congress_records.py</cite>: python file that scrapes the U.S. House of Representatives member names and stores them
+as text files in the Financial_Disclosure_txt_files directory; the python file also scrapes pdf files of stock
+transaction records for U.S. House of Representatives members and stores them in the pdf directory.</p></li>
+<li><p><cite>sample_data.csv</cite>: contains real stock transactions for 32 U.S. House of Representatives.</p></li>
+<li><p><cite>database.db</cite>: database file.</p></li>
+<li><p><cite>database_schema.sql</cite>: sql file that adds a table to the database to store all transactions.</p></li>
+<li><p><cite>create_database_version1.ipynb</cite>: python notebook that updates the database with data.</p></li>
+<li><p><cite>pdf_scraping.py</cite>: python file that will eventually contain all the functions for pdf scraping.</p></li>
+<li><p><cite>pdf_scraper_notebook.ipynb</cite>: a python jupyter notebook that contains all the work for the creating the pdf scraping
+functions.</p></li>
+<li><p><cite>json</cite> files all the json files are used for tabula templates, which help with parsing the pdfs.</p></li>
+</ul>
 <section id="pdf-scraping">
 <h2>PDF Scraping<a class="headerlink" href="#pdf-scraping" title="Permalink to this headline">¶</a></h2>
-<p><em>pdf_scraping.py</em>: python file that contains all the functions for pdf scraping.</p>
+<p><cite>pdf_scraping.py</cite>: python file that contains all the functions for pdf scraping.</p>
 <span class="target" id="module-database.pdf_scraping"></span><dl class="py function">
 <dt class="sig sig-object py" id="database.pdf_scraping.check_if_pdf_is_malformed">
 <span class="sig-prename descclassname"><span class="pre">database.pdf_scraping.</span></span><span class="sig-name descname"><span class="pre">check_if_pdf_is_malformed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.pdf_scraping.check_if_pdf_is_malformed" title="Permalink to this definition">¶</a></dt>
@@ -101,7 +117,7 @@ it prints the reason why the pdf file provided is incorrect, and returns none.</
 </section>
 <section id="process-congress-records">
 <h2>Process Congress Records<a class="headerlink" href="#process-congress-records" title="Permalink to this headline">¶</a></h2>
-<p><em>process_congress_records.py</em>: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the Financial_Disclosure_txt_files directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the pdf directory.</p>
+<p><cite>process_congress_records.py</cite>: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the Financial_Disclosure_txt_files directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the pdf directory.</p>
 <span class="target" id="module-database.process_congress_records"></span><dl class="py function">
 <dt class="sig sig-object py" id="database.process_congress_records.get_pdf">
 <span class="sig-prename descclassname"><span class="pre">database.process_congress_records.</span></span><span class="sig-name descname"><span class="pre">get_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_congress_records.get_pdf" title="Permalink to this definition">¶</a></dt>
@@ -215,6 +231,7 @@ directory</p>
           <a href="cstm.html" title="CSTM"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer.html" >Developer Documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Database</a></li> 
       </ul>
     </div>

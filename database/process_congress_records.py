@@ -1,4 +1,4 @@
-#import pandas as pd
+import pandas as pd
 import time
 import requests
 import os, os.path

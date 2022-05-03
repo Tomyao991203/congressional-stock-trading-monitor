@@ -10,8 +10,7 @@ Welcome to Congressional Stock Trading Monitor's documentation!
    :maxdepth: 2
 
    about
-   cstm
-   database
+   developer
 
 
 Indices and tables

@@ -15,10 +15,11 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DATABASE" href="database.html" />
-    <link rel="prev" title="Welcome to Congressional Stock Trading Monitor’s documentation!" href="index.html" /> 
+    <link rel="next" title="Database" href="database.html" />
+    <link rel="prev" title="Developer Documentation" href="developer.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,12 +31,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="database.html" title="DATABASE"
+          <a href="database.html" title="Database"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to Congressional Stock Trading Monitor’s documentation!"
+          <a href="developer.html" title="Developer Documentation"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer.html" accesskey="U">Developer Documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">CSTM</a></li> 
       </ul>
     </div>  
@@ -47,10 +49,17 @@
             
   <section id="cstm">
 <h1>CSTM<a class="headerlink" href="#cstm" title="Permalink to this headline">¶</a></h1>
-<p>The <em>ctsm</em> directory contains backend python files to retrieve, modify, and send information to the Flask application.</p>
+<p>The <cite>ctsm</cite> directory contains backend python files to retrieve, modify, and send information to the Flask application.</p>
+<ul class="simple">
+<li><p><cite>query.py</cite>: contains a function that returns a key-value pair as a string to assist with database queries.</p></li>
+<li><p><cite>database_helpers.py</cite>: connects html code form requests with queries on the database.</p></li>
+<li><p><cite>representative_helpers.py</cite>: contains code responsible for obtaining and processing representative information</p></li>
+<li><p><cite>enums.py</cite>: Contains enumerated types found in CSTM</p></li>
+<li><p><cite>dataclasses.py</cite>: Contains dataclasses found in CSTM</p></li>
+</ul>
 <section id="cstm-database-helpers">
 <h2>CSTM Database Helpers<a class="headerlink" href="#cstm-database-helpers" title="Permalink to this headline">¶</a></h2>
-<p><em>database_helpers.py</em>: connects html code form requests with queries on the database.</p>
+<p><cite>database_helpers.py</cite>: connects html code form requests with queries on the database.</p>
 <span class="target" id="module-cstm.database_helpers"></span><dl class="py function">
 <dt class="sig sig-object py" id="cstm.database_helpers.check_companies_advanced_search">
 <span class="sig-prename descclassname"><span class="pre">cstm.database_helpers.</span></span><span class="sig-name descname"><span class="pre">check_companies_advanced_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">flask.wrappers.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cstm.database_helpers.check_companies_advanced_search" title="Permalink to this definition">¶</a></dt>
@@ -293,7 +302,7 @@ description, and link to the official document showing the transaction.</p>
 </section>
 <section id="cstm-data-classes">
 <h2>CSTM Data Classes<a class="headerlink" href="#cstm-data-classes" title="Permalink to this headline">¶</a></h2>
-<p><em>dataclasses.py</em>:  Contains dataclasses found in CSTM.</p>
+<p><cite>dataclasses.py</cite>:  Contains dataclasses found in CSTM.</p>
 <span class="target" id="module-cstm.dataclasses"></span><dl class="py class">
 <dt class="sig sig-object py" id="cstm.dataclasses.District">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.dataclasses.</span></span><span class="sig-name descname"><span class="pre">District</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cstm.enums.State" title="cstm.enums.State"><span class="pre">cstm.enums.State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.dataclasses.District" title="Permalink to this definition">¶</a></dt>
@@ -327,7 +336,7 @@ Database query functions will return a list of this type, providing a common dat
 </section>
 <section id="cstm-representative-helpers">
 <h2>CSTM Representative Helpers<a class="headerlink" href="#cstm-representative-helpers" title="Permalink to this headline">¶</a></h2>
-<p><em>representative_helpers.py</em>: contains code responsible for obtaining and processing representative information</p>
+<p><cite>representative_helpers.py</cite>: contains code responsible for obtaining and processing representative information</p>
 <span class="target" id="module-cstm.representative_helpers"></span><dl class="py function">
 <dt class="sig sig-object py" id="cstm.representative_helpers.representative_list">
 <span class="sig-prename descclassname"><span class="pre">cstm.representative_helpers.</span></span><span class="sig-name descname"><span class="pre">representative_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.date</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cstm.dataclasses.Representative" title="cstm.dataclasses.Representative"><span class="pre">cstm.dataclasses.Representative</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cstm.representative_helpers.representative_list" title="Permalink to this definition">¶</a></dt>
@@ -364,7 +373,7 @@ given list of transactions</p>
 </section>
 <section id="cstm-query">
 <h2>CSTM Query<a class="headerlink" href="#cstm-query" title="Permalink to this headline">¶</a></h2>
-<p><em>query.py</em>:  contains a function that returns a key-value pair as a string to assist with database queries.</p>
+<p><cite>query.py</cite>:  contains a function that returns a key-value pair as a string to assist with database queries.</p>
 <span class="target" id="module-cstm.query"></span><dl class="py function">
 <dt class="sig sig-object py" id="cstm.query.aggregating_conditions">
 <span class="sig-prename descclassname"><span class="pre">cstm.query.</span></span><span class="sig-name descname"><span class="pre">aggregating_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.query.aggregating_conditions" title="Permalink to this definition">¶</a></dt>
@@ -532,7 +541,7 @@ of input is empty</p>
 </section>
 <section id="cstm-enums">
 <h2>CSTM Enums<a class="headerlink" href="#cstm-enums" title="Permalink to this headline">¶</a></h2>
-<p><em>enums.py</em>: contains enumerated types found in CSTM.</p>
+<p><cite>enums.py</cite>: contains enumerated types found in CSTM.</p>
 <span class="target" id="module-cstm.enums"></span><dl class="py class">
 <dt class="sig sig-object py" id="cstm.enums.State">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cstm.enums.</span></span><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cstm.enums.State" title="Permalink to this definition">¶</a></dt>
@@ -571,13 +580,13 @@ of input is empty</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="index.html"
-                          title="previous chapter">Welcome to Congressional Stock Trading Monitor’s documentation!</a></p>
+    <p class="topless"><a href="developer.html"
+                          title="previous chapter">Developer Documentation</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="database.html"
-                          title="next chapter">DATABASE</a></p>
+                          title="next chapter">Database</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -610,12 +619,13 @@ of input is empty</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="database.html" title="DATABASE"
+          <a href="database.html" title="Database"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to Congressional Stock Trading Monitor’s documentation!"
+          <a href="developer.html" title="Developer Documentation"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Congressional Stock Trading Monitor v0.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer.html" >Developer Documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">CSTM</a></li> 
       </ul>
     </div>

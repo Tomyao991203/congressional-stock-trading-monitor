@@ -1,6 +1,6 @@
 import os
 import PyPDF2
-#import tabula as tb
+import tabula as tb
 import copy
 import json
 
