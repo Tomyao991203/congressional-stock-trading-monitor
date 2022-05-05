@@ -7,7 +7,7 @@ from cstm.database_helpers import get_db_connection
 database_path = r"database/database.db"
 
 
-def purchase_sale_vs_time(request: Request):
+def purchase_sale_vs_time(request: Request) -> str:
     """
     return the purchase/sale value vs time graph json str
     :param request: Request object from flask

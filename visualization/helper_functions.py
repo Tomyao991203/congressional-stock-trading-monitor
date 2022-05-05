@@ -7,10 +7,9 @@ from datetime import date, datetime
 from plotly import express as px, graph_objs as go
 from plotly.utils import PlotlyJSONEncoder
 
-from cstm.database_helpers import generate_select_query, generate_string_like_condition, generate_year_equal_condition, \
-    table_name, get_db_connection
-from cstm.query import value_between, value_greater_equal, value_less_equal, equal_condition, aggregating_conditions, \
-    expression_wrapper, where_condition
+from cstm.database_helpers import generate_select_query, table_name
+
+from cstm.query import value_between, equal_condition
 
 
 def purchase_sale_conversion_query():
@@ -29,7 +28,8 @@ def purchase_sale_conversion_query():
     return generate_select_query(selected_key=keys, the_table_name=table_name)
 
 
-def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, company_name: str, member_name: str):
+def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, company_name: str,
+                              member_name: str) -> str:
     """
     helper function that generate the query which sum purchase/sale value that occurs on same day
     :param member_name: name of congress member
