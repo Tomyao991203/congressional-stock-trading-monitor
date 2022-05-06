@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+        <h1>Congressional Stock Trading Monitor</h1>
+
+    <fieldset>
+        <br>
+        <form action = "" method = "POST">
+        <legend class="title">Search Query</legend>
+
+        <label>Member Name: <input name="member_name" type="text"></label>
+        <label>Ticker: <input name="ticker" type="text"></label>
+        <br>
+        <br>
+        <label>Company: <input name="company" type="text"></label>
+        <input name="submitButton" type="submit" value="submit">
+        </form>
+    </fieldset>
 </body>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
+</html>
+
+
 </html>
