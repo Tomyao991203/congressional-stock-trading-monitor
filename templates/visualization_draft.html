@@ -24,13 +24,11 @@
 
 </fieldset>
 <div class="chart" id="plotly-chart"></div>
-
-</body>
-
 <script>
     var graphs = {{graphJSON | safe}};
     Plotly.plot('plotly-chart', graphs, {});
 </script>
+</body>
 
 </html>
 
