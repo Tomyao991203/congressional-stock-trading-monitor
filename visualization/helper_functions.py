@@ -28,7 +28,7 @@ def purchase_sale_conversion_query():
     return generate_select_query(selected_key=keys, the_table_name=table_name)
 
 
-def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, company_name: str,
+def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, company: str,
                               member_name: str) -> str:
     """
     helper function that generate the query which sum purchase/sale value that occurs on same day
@@ -36,8 +36,8 @@ def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, c
     :type member_name: str
     :param ticker: name of ticker
     :type ticker: str
-    :param company_name: name of company
-    :type company_name: str
+    :param company: name of company
+    :type company: str
     :param date_lower: date range lower bound (transaction_date >= date_lower)
     :type date_lower: date
     :param date_upper: date range upper bound (transaction_date <= date_lower)
@@ -58,13 +58,13 @@ def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, c
                                upper_bound=date_upper.strftime('%d-%m-%Y'), bound_is_str=True)
 
     ticker_equal = equal_condition(expression='ticker', exact_value=ticker, value_is_string=True)
-    company_name_equal = equal_condition(expression='company_name', exact_value=company_name, value_is_string=True)
+    company_equal = equal_condition(expression='company', exact_value=company, value_is_string=True)
     member_name_equal = equal_condition(expression='member_name', exact_value=member_name, value_is_string=True)
 
     full_query = f'WITH temp as ({temp_query})' + generate_select_query(selected_key=keys, the_table_name='temp',
                                                                         where_conditions=[time_range, ticker_equal,
                                                                                           member_name_equal,
-                                                                                          company_name_equal],
+                                                                                          company_equal],
                                                                         group_by='transaction_date')
     return full_query
 
