@@ -20,7 +20,7 @@ def purchase_sale_vs_time(request: Request) -> str:
 
     # TODO: check with Brian what is the format of time string returned in flask.Request
     # TODO: see if we keep 60 days default range
-    date_lower: date = datetime.now() - timedelta(days=60)
+    date_lower: date = datetime(2013,1,1)
     date_upper: date = datetime.now()
 
     ticker = str(request.form.get('ticker') or "")
