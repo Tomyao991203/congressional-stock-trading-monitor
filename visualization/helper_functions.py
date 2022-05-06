@@ -102,5 +102,7 @@ def purchase_sale_vs_time_visual_graph_json(data_frame: pandas.DataFrame) -> str
     :rtype: str
     """
     barmode = 'overlay'
-    fig = px.histogram(data_frame=data_frame, x='transaction_date', y=data_frame.columns, barmode=barmode)
+    fig = px.histogram(data_frame=data_frame,
+                       x='transaction_date', y=data_frame.columns,
+                       barmode=barmode)
     return json.dumps(fig, cls=PlotlyJSONEncoder)
