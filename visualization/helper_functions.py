@@ -106,4 +106,5 @@ def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):
     fig = px.histogram(data_frame=data_frame,
                        x='transaction_date', y=data_frame.columns,
                        barmode=barmode)
+    fig.update_xaxes(rangeslider_visible=True)
     return fig

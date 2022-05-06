@@ -33,7 +33,7 @@ def purchase_sale_vs_time(request: Request) -> str:
     cur = conn.cursor()
 
     data = cur.execute(full_query)
-    column_names = [col[0] for col in data.description]
+    column_names = ['transaction_date', 'purchase_lb', 'purchase_ub', 'sale_lb', 'sale_ub']
     data = data.fetchall()
     data_frame = row_lst_to_pandas_dataframe(data, column_names)
 
