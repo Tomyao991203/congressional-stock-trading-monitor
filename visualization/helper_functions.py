@@ -7,7 +7,7 @@ from datetime import date, datetime
 from plotly import express as px, graph_objs as go
 from plotly.utils import PlotlyJSONEncoder
 
-from cstm.database_helpers import generate_select_query, table_name
+from cstm.database_helpers import generate_select_query, table_name, generate_string_like_condition
 
 from cstm.query import value_between, equal_condition
 
@@ -58,9 +58,9 @@ def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, c
                                upper_bound=date_upper.strftime('%Y-%m-%d'), bound_is_str=True)
     time_range = f"({time_range})"
 
-    ticker_equal = equal_condition(expression='ticker', exact_value=ticker, value_is_string=True)
-    company_equal = equal_condition(expression='company', exact_value=company, value_is_string=True)
-    member_name_equal = equal_condition(expression='member_name', exact_value=member_name, value_is_string=True)
+    ticker_equal = generate_string_like_condition(key_name='ticker', partial_string=ticker)
+    company_equal = generate_string_like_condition(key_name='company', partial_string=company)
+    member_name_equal = generate_string_like_condition(key_name='member_name', partial_string=member_name)
 
     full_query = f'WITH temp as ({temp_query})' + generate_select_query(selected_key=keys, the_table_name='temp',
                                                                         where_conditions=[time_range, ticker_equal,
