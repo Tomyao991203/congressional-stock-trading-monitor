@@ -21,11 +21,11 @@ def purchase_sale_vs_time(request: Request) -> str:
     date_lower: date = datetime.now() - timedelta(days=60)
     date_upper: date = datetime.now()
 
-    ticker = request.form.get('ticker')
-    company_name = request.form.get('company_name')
-    member_name = request.form.get('member_name')
+    ticker = str(request.form.get('ticker') or "")
+    company = str(request.form.get('company') or "")
+    member_name = str(request.form.get('member_name') or "")
 
-    full_query = purchase_sale_sum_on_time(date_lower, date_upper, ticker, company_name, member_name)
+    full_query = purchase_sale_sum_on_time(date_lower, date_upper, ticker, company, member_name)
 
     conn = get_db_connection(database_path)
     cur = conn.cursor()
