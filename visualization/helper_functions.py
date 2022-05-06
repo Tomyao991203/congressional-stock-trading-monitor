@@ -93,7 +93,7 @@ def row_lst_to_pandas_dataframe(data: list[sqlite3.Row], column_names: list[str]
     return result
 
 
-def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame) -> go._figure.Figure:
+def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):
     """
     using data in dataframe, construct a purchase/sale value vs time graph using plotly and encode the graph into jason
     then return the json string.
