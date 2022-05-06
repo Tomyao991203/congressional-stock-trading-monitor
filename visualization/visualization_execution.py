@@ -1,6 +1,8 @@
 from visualization.helper_functions import purchase_sale_sum_on_time, row_lst_to_pandas_dataframe, \
-    purchase_sale_vs_time_visual_graph_json
+    purchase_sale_vs_time_visual_graph
+import json
 from flask import Request
+from plotly.utils import PlotlyJSONEncoder
 from datetime import date, datetime, timedelta
 from cstm.database_helpers import get_db_connection
 
@@ -35,4 +37,4 @@ def purchase_sale_vs_time(request: Request) -> str:
     data = data.fetchall()
     data_frame = row_lst_to_pandas_dataframe(data, column_names)
 
-    return purchase_sale_vs_time_visual_graph_json(data_frame=data_frame)
+    return json.dumps(purchase_sale_vs_time_visual_graph(data_frame=data_frame), cls=PlotlyJSONEncoder)
