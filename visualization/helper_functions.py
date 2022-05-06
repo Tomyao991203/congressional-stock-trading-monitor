@@ -23,8 +23,8 @@ def purchase_sale_conversion_query():
     keys = ['company', 'ticker', 'id', 'member_name', 'transaction_date',
             "CASE transaction_type WHEN 'P' THEN value_lb ELSE 0 END AS purchase_lb",
             "CASE transaction_type WHEN 'P' THEN value_ub ELSE 0 END AS purchase_ub",
-            "CASE transaction_type WHEN 'S' THEN value_lb ELSE 0 END AS sale_lb",
-            "CASE transaction_type WHEN 'S' THEN value_ub ELSE 0 END AS sale_ub"]
+            "CASE transaction_type WHEN 'S' THEN -1*value_lb ELSE 0 END AS sale_lb",
+            "CASE transaction_type WHEN 'S' THEN -1*value_ub ELSE 0 END AS sale_ub"]
     return generate_select_query(selected_key=keys, the_table_name=table_name)
 
 
