@@ -56,6 +56,7 @@ def purchase_sale_sum_on_time(date_lower: date, date_upper: date, ticker: str, c
 
     time_range = value_between(expression='transaction_date', lower_bound=date_lower.strftime('%d-%m-%Y'),
                                upper_bound=date_upper.strftime('%d-%m-%Y'), bound_is_str=True)
+    time_range = f"({time_range})"
 
     ticker_equal = equal_condition(expression='ticker', exact_value=ticker, value_is_string=True)
     company_equal = equal_condition(expression='company', exact_value=company, value_is_string=True)
