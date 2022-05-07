@@ -6,7 +6,8 @@
         <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Total number of trades made by this representative in the selected time period" href="#" style="text-decoration: none;">Trade Count</a></th>
         <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Total number of purchases made by this representative in the selected time period" href="#" style="text-decoration: none;">Purchase Count</a></th>
         <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Total number of sales made by this representative in the selected time period" href="#" style="text-decoration: none;">Sale Count</a></th>
-        <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Average  value for each transaction this representative made in the selected time period" href="#" style="text-decoration: none;">Average Transaction Value</a></th>
+        <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Average value for each purchase transaction this representative made in the selected time period" href="#" style="text-decoration: none;">Average Purchase Transaction Value</a></th>
+        <th rowspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Average  value for each sale transaction this representative made in the selected time period" href="#" style="text-decoration: none;">Average Sale Transaction Value</a></th>
         <th colspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Total range of the values of all purchases this representative made in the selected time period" href="#" style="text-decoration: none;">Total Purchase Range</a></th>
         <th colspan="2"><a class="nav-link" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="Total range of the values of all sales this representative made in the selected time period" href="#" style="text-decoration: none;">Total Sale Range</a></th>
       </tr>
@@ -23,13 +24,13 @@
           <td>{{ rep.name }}</td>
           <td>{{ rep.trade_count }}</td>
           <td>{{ rep.purchase_count }}</td>
-          <td>{{ rep.sale_count  }}</td>
-          <td>{{ "${:,.2f}".format(rep.avg_transaction_value) }}</td>
-          <td>{{ "${:,.2f}".format(rep.total_purchase_range[0]) }}</td>
-          <td>{{ "${:,.2f}".format(rep.total_purchase_range[1]) }}</td>
-          <td>{{ "${:,.2f}".format(rep.total_sale_range[0]) }}</td>
-          <td>{{ "${:,.2f}".format(rep.total_sale_range[1]) }}</td>
-
+          <td>{{ rep.sale_count }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.avg_purchase_trans_value else "${:,.2f}".format(rep.avg_purchase_trans_value) }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.avg_sale_trans_value else "${:,.2f}".format(rep.avg_sale_trans_value) }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.purchase_lb else "${:,.2f}".format(rep.purchase_lb) }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.purchase_ub else "${:,.2f}".format(rep.purchase_ub) }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.sale_lb else "${:,.2f}".format(rep.sale_lb) }}</td>
+          <td>{{ "${:,.2f}".format(0) if None == rep.sale_ub else "${:,.2f}".format(rep.sale_ub) }}</td>
         </tr>
       {% endfor %}
     </tbody>

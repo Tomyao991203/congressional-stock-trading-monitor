@@ -331,3 +331,131 @@ def check_companies_advanced_search(request: Request) -> bool:
         return True
 
     return False
+
+
+def get_representatives_btwn_years(method: str, request: Request, date_lower: date, date_upper: date) -> list:
+    """
+    This method makes a database query to list all representatives with their corresponding trade count,
+    purchase count, sale count, their average transaction value,
+    and the lower and upper bounds of stock purchases/sales.
+    The query will return data that is between the date_lower and date_upper.
+
+    :param method: string representing method calling this function (ex. "POST", "GET"...)
+    :param request: Flask Request containing the HTML Form Results from representatives_table.html
+    :param date_lower: The lower range of the transaction query
+    :param date_upper: The upper range of the transaction query
+    :return: A list of all representatives along with aggregated columns from the database within the given date range
+    """
+
+    connection = get_db_connection(db_file_path)
+    cur = connection.cursor()
+
+    temp_query = f"WITH temp AS (SELECT member_name, id, " \
+                 f"CASE transaction_type WHEN 'P' THEN 1 ELSE 0 END AS purchase_count," \
+                 f"CASE transaction_type WHEN 'S' THEN 1 ELSE 0 END AS sale_count," \
+                 f"CASE transaction_type WHEN 'P' THEN value_lb ELSE 0 END AS purchase_lb, " \
+                 f"CASE transaction_type WHEN 'P' THEN value_ub ELSE 0 END AS purchase_ub, " \
+                 f"CASE transaction_type WHEN 'S' THEN value_lb ELSE 0 END AS sale_lb, " \
+                 f"CASE transaction_type WHEN 'S' THEN value_ub ELSE 0 END AS sale_ub " \
+                 f"FROM {table_name} " \
+                 f"WHERE transaction_date BETWEEN '{date_lower.isoformat()}' AND '{date_upper.isoformat()}')"
+
+    full_query = f" {temp_query} " \
+                 f"SELECT member_name AS name, COUNT(id) AS trade_count, " \
+                 f"SUM(purchase_count) AS purchase_count, " \
+                 f"SUM(sale_count) AS sale_count, " \
+                 f"(AVG(NULLIF(purchase_lb, 0)) + AVG(NULLIF(purchase_ub, 0)))/2 AS avg_purchase_trans_value, " \
+                 f"(AVG(NULLIF(sale_lb, 0)) + AVG(NULLIF(sale_ub, 0)))/2 AS avg_sale_trans_value, " \
+                 f"SUM(purchase_lb) AS purchase_lb, " \
+                 f"SUM(purchase_ub) AS purchase_ub, " \
+                 f"SUM(sale_lb) AS sale_lb, " \
+                 f"SUM(sale_ub) AS sale_ub " \
+                 f"FROM temp "
+
+    if method == "POST" and check_representatives_advanced_search(request): 
+        # Adds the where clause to the sql query
+        full_query += get_representatives_advanced_search(request)
+    else:
+        full_query += " GROUP BY name"
+
+    cur.execute(full_query)
+    connection.commit()
+    data = cur.fetchall()
+
+    return data
+
+
+def get_representatives_advanced_search(request: Request) -> list:
+    """
+    This method creates the string for a database query for all representatives
+    that match the details in the given request.
+
+    :param request: Flask Request containing the HTML Form Results from representatives_table.html
+    :return: A list of all representatives from the database matching the given search parameters
+    """
+
+    query_representative, query_trade_count, query_purchase_count, query_sale_count, query_avg_purchase_trans_count, \
+        query_avg_sale_trans_count, query_purchaselb, query_purchaseub, query_salelb, query_saleub \
+        = get_representatives_advanced_search_helper(request)
+
+    where_conditions = [query_representative, query_purchaselb, query_purchaseub, query_salelb, query_saleub]
+    having_conditions = [query_trade_count, query_purchase_count, query_sale_count, query_avg_purchase_trans_count,
+                         query_avg_sale_trans_count]
+
+    where_string = " WHERE " + aggregating_conditions(where_conditions) if len(where_conditions) != 0 else ""
+    having_string = " HAVING " + aggregating_conditions(having_conditions) if len(having_conditions) != 0 else ""
+
+    return where_string + " GROUP BY name" + having_string
+
+
+def get_representatives_advanced_search_helper(request: Request) -> tuple:
+    """
+    This is a helper method for get_representatives_advanced_search() that gets values from the HTML form
+    in representatives_table.html. This helper function also breaks down the queries into strings
+    for get_representatives_advanced_search() method.
+
+    :param request: Flask Request containing the HTML Form Results from representativevs_table.html
+    :return: A tuple of strings used for querying the database.
+    """
+
+    query_representative = equal_condition('name', request.form['member_name'])
+    query_trade_count = equal_condition("trade_count", request.form['tradeCount'], False)
+    query_purchase_count = equal_condition('purchase_count', request.form['purchaseCount'], False)
+    query_sale_count = equal_condition('sale_count', request.form['saleCount'], False)
+    query_purchaselb = value_greater_equal('purchase_lb', request.form['purchaseLowerBound'])
+    query_purchaseub = value_less_equal('purchase_ub', request.form['purchaseUpperBound'])
+    query_salelb = value_greater_equal('sale_lb', request.form['saleLowerBound'])
+    query_saleub = value_less_equal('sale_ub', request.form['saleUpperBound'])
+
+    if request.form['avgPurchaseTransVal'] != "" and float(request.form['avgPurchaseTransVal']) == 0.0:
+        query_avg_purchase_trans_count = "avg_purchase_trans_value IS NULL"
+    else:
+        query_avg_purchase_trans_count = equal_condition('avg_purchase_trans_value',
+                                                         request.form['avgPurchaseTransVal'], False)
+
+    if request.form['avgSaleTransVal'] != "" and float(request.form['avgSaleTransVal']) == 0.0:
+        query_avg_sale_trans_count = "avg_sale_trans_value IS NULL"
+    else:
+        query_avg_sale_trans_count = equal_condition('avg_sale_trans_value', request.form['avgSaleTransVal'], False)
+
+    return query_representative, query_trade_count, query_purchase_count, query_sale_count, \
+        query_avg_purchase_trans_count, query_avg_sale_trans_count, query_purchaselb, query_purchaseub, \
+        query_salelb, query_saleub
+
+
+def check_representatives_advanced_search(request: Request) -> bool:
+    """
+    This method checks whether or not an advanced search was requested
+
+    :param request: Flask Request containing the HTML Form Results from representatives_table.html
+    :return: True if an advanced search was requested or False if an advanced search was not requested.
+    """
+
+    if request.form['member_name'] != "" or request.form['tradeCount'] != "" or request.form['purchaseCount'] != "" \
+            or request.form['saleCount'] != "" or request.form['avgPurchaseTransVal'] != "" \
+            or request.form['avgSaleTransVal'] != "" or request.form['purchaseLowerBound'] != "" \
+            or request.form['purchaseUpperBound'] != "" or request.form['saleLowerBound'] != "" \
+            or request.form['saleUpperBound'] != "":
+        return True
+
+    return False
