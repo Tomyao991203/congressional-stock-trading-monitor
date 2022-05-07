@@ -130,11 +130,11 @@ function getAdvancedSearchTransaction() {
 
 function getAdvancedSearchRepresentative() {
   return encodeURI(document.representative_search_form.member_name.value) + ","
-    + encodeURI(document.representative_search_form.ticker.value) + ","
     + encodeURI(document.representative_search_form.tradeCount.value) + ","
     + encodeURI(document.representative_search_form.purchaseCount.value) + ","
     + encodeURI(document.representative_search_form.saleCount.value) + ","
-    + encodeURI(document.representative_search_form.avgTransactionVal.value) + ","
+    + encodeURI(document.representative_search_form.avgPurchaseTransVal.value) + ","
+    + encodeURI(document.representative_search_form.avgSaleTransVal.value) + ","
     + encodeURI(document.representative_search_form.purchaseLowerBound.value) + ","
     + encodeURI(document.representative_search_form.purchaseUpperBound.value) + ","
     + encodeURI(document.representative_search_form.saleLowerBound.value) + ","

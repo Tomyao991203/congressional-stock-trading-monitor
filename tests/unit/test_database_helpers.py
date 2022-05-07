@@ -7,7 +7,9 @@ from cstm.database_helpers import check_companies_advanced_search, get_db_connec
     get_companies_btwn_years, get_companies_advanced_search, check_transactions_advanced_search, \
     get_transactions_advanced_search, table_name, \
     convert_db_transactions_to_dataclass, get_companies_advanced_search_helper, generate_string_like_condition, \
-    equal_condition, generate_select_query, generate_year_equal_condition, get_transactions_btwn_years
+    equal_condition, generate_select_query, generate_year_equal_condition, get_transactions_btwn_years, \
+    get_representatives_advanced_search, get_representatives_advanced_search_helper, get_representatives_btwn_years, \
+    check_representatives_advanced_search
 
 
 class DBConnectTestCase(unittest.TestCase):
@@ -516,3 +518,153 @@ class CheckTransactionsAdvancedSearchTestCase(unittest.TestCase):
         This test makes sure that a nonempty request results in the function returning true.
         """
         self.assertEqual(check_transactions_advanced_search(transaction2_request()), True)
+
+
+def representative_empty_request():
+    request = Request({})
+    request.form = {'member_name': "", 'tradeCount': "", 'purchaseCount': "", 'saleCount': "",
+                    'avgPurchaseTransVal': "", 'avgSaleTransVal': "", 'purchaseLowerBound': "",
+                    'purchaseUpperBound': "", 'saleLowerBound': "", 'saleUpperBound': ""}
+
+    return request
+
+
+def representative_request():
+    request = Request({})
+    request.form = {'member_name': "Nancy Pelosi", 'tradeCount': "1", 'purchaseCount': "1", 'saleCount': "0",
+                    'avgPurchaseTransVal': "3000000.50", 'avgSaleTransVal': "0", 'purchaseLowerBound': "1000001",
+                    'purchaseUpperBound': "5000000", 'saleLowerBound': "0", 'saleUpperBound': "0"}
+
+    return request
+
+
+class GetRepresentativesAdvancedSearchTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_representatives_advanced_search method in the Database Helpers file.
+    """
+
+    def test_empty_advanced_search_correct_return_string(self):
+        """
+        This test makes sure that an empty request results in the correct string being returned.
+        """
+        output_string = " WHERE (TRUE AND TRUE AND TRUE AND TRUE AND TRUE) " \
+                        "GROUP BY name HAVING (TRUE AND TRUE AND TRUE AND TRUE AND TRUE)"
+
+        self.assertEqual(get_representatives_advanced_search(representative_empty_request()), output_string)
+    
+    def test_nonempty_advanced_search_correct_return_string(self):
+        """
+        This test makes sure that a nonempty request results in the correct string being returned.
+        """
+        output_string = " WHERE (name = \'Nancy Pelosi\' AND purchase_lb >= 1000001 AND purchase_ub <= 5000000 " \
+                        "AND sale_lb >= 0 AND sale_ub <= 0) GROUP BY name HAVING (trade_count = 1 " \
+                        "AND purchase_count = 1 AND sale_count = 0 AND avg_purchase_trans_value = 3000000.50 " \
+                        "AND avg_sale_trans_value IS NULL)"
+
+        self.assertEqual(get_representatives_advanced_search(representative_request()), output_string)
+
+
+class GetRepresentativesAdvancedSearchHelperTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_representatives_advanced_search_helper method in the Database Helpers file.
+    """
+
+    def test_empty_request_returns_correct_tuple(self):
+        """
+        This test makes sure that an empty request results in the correct tuple being returned.
+        """
+        query_representative, query_trade_count, query_purchase_count, query_sale_count, \
+            query_avg_purchase_trans_count, query_avg_sale_trans_count, query_purchaselb, query_purchaseub, \
+            query_salelb, query_saleub = get_representatives_advanced_search_helper(representative_empty_request())
+
+        self.assertEqual(query_representative, "TRUE")
+        self.assertEqual(query_trade_count, "TRUE")
+        self.assertEqual(query_purchase_count, "TRUE")
+        self.assertEqual(query_sale_count, "TRUE")
+        self.assertEqual(query_avg_purchase_trans_count, "TRUE")
+        self.assertEqual(query_avg_sale_trans_count, "TRUE")
+        self.assertEqual(query_purchaselb, "TRUE")
+        self.assertEqual(query_purchaseub, "TRUE")
+        self.assertEqual(query_salelb, "TRUE")
+        self.assertEqual(query_saleub, "TRUE")
+
+    def test_nonempty_request_returns_correct_tuple(self):
+        """
+        This test makes sure that a nonempty request results in the correct tuple being returned.
+        """
+        query_representative, query_trade_count, query_purchase_count, query_sale_count, \
+            query_avg_purchase_trans_count, query_avg_sale_trans_count, query_purchaselb, query_purchaseub, \
+            query_salelb, query_saleub = get_representatives_advanced_search_helper(representative_request())
+
+        self.assertEqual(query_representative, "name = \'Nancy Pelosi\'")
+        self.assertEqual(query_trade_count, "trade_count = 1")
+        self.assertEqual(query_purchase_count, "purchase_count = 1")
+        self.assertEqual(query_sale_count, "sale_count = 0")
+        self.assertEqual(query_avg_purchase_trans_count, "avg_purchase_trans_value = 3000000.50")
+        self.assertEqual(query_avg_sale_trans_count, "avg_sale_trans_value IS NULL")
+        self.assertEqual(query_purchaselb, "purchase_lb >= 1000001")
+        self.assertEqual(query_purchaseub, "purchase_ub <= 5000000")
+        self.assertEqual(query_salelb, "sale_lb >= 0")
+        self.assertEqual(query_saleub, "sale_ub <= 0")
+
+
+class GetRepresentativesBtwnYearsTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the get_representatives_btwn_years method in the Database Helpers file.
+    """
+    def test_get_request_returns_correct_num_companies(self):
+        """
+        This test makes sure that a request results in the every transaction being returned. Note a request will
+        include a start and end date.
+        """
+        start_date = date(2015, 3, 10)
+        end_date = date(2018, 2, 6)
+
+        # Determine how many entries are in the database:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(f"SELECT * FROM all_transaction "
+                    f"WHERE transaction_date BETWEEN '{start_date.isoformat()}' AND '{end_date.isoformat()}' "
+                    f"GROUP BY member_name;")
+        conn.commit()
+        transaction_count = len(cur.fetchall())
+
+        self.assertEqual(transaction_count,
+                         len(get_representatives_btwn_years("GET", representative_empty_request(),
+                                                            start_date, end_date)))
+
+    def test_put_request_returns_correct_count_transactions(self):
+        """
+        Tests if the put request returns the correct number of transactions.
+        Currently the database is only populated with a representative data subset. This test should be updated
+        when the database is updated.
+        """
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM all_transaction WHERE member_name = \'Nancy Pelosi\' GROUP BY member_name "
+                    "HAVING count(id) = 1 AND count(DISTINCT member_name) = 1")
+    
+        conn.commit()
+
+        transaction_count = len(cur.fetchall())
+
+        self.assertEqual(transaction_count, len(get_representatives_btwn_years("PUT", representative_request(),
+                                                                               date(2022, 1, 1), date(2022, 4, 21))))
+
+
+class CheckRepresentativesAdvancedSearchTestCase(unittest.TestCase):
+    """
+    This test case is meant to test the check_representatives_advanced_search method in the Database Helpers file.
+    """
+    def test_empty_request_returns_false(self):
+        """
+        This test makes sure that an empty request results in the function returning false.
+        """
+        self.assertEqual(check_representatives_advanced_search(representative_empty_request()), False)
+
+    def test_nonempty_request_returns_true(self):
+        """
+        This test makes sure that a nonempty request results in the function returning true.
+        """
+        self.assertEqual(check_representatives_advanced_search(representative_request()), True)

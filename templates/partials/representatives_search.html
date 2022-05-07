@@ -18,18 +18,18 @@
 
     <div class="w-100 collapse" id="collapseDiv" stype="width:100%;">
         <label>Representative: <input name="member_name" type="text" class="form-control"></label>
-        <label>Ticker: <input name="ticker"  type="text" class="form-control"></label>
         <label>Trade Count: <input name="tradeCount" type="number" min="0" class="form-control"></label>
         <label>Purchase Count: <input name="purchaseCount" type="number" min="0" class="form-control"></label>
         <label>Sale Count: <input name="saleCount" type="number" min="0" class="form-control"></label>
-        <label>Average Transaction Value: <input name="avgTransactionVal" type="number" min="0" class="form-control"></label>
+        <label>Average Purchase Transaction: <input name="avgPurchaseTransVal" type="number" min="0" class="form-control" step="any"></label>
+        <label>Average Sale Transaction: <input name="avgSaleTransVal" type="number" min="0" class="form-control" step="any"></label>
         <label>Total Purchase Range: 
-            <input name="purchaseLowerBound" type="number" min="0" placeholder="min value" class="form-control">
-            <input name="purchaseUpperBound" type="number" min="0" placeholder="max value" class="form-control">
+            <input name="purchaseLowerBound" type="number" min="0" placeholder="min value" class="form-control" step="any">
+            <input name="purchaseUpperBound" type="number" min="0" placeholder="max value" class="form-control" step="any">
         </label>
         <label>Total Sale Range: 
-            <input name="saleLowerBound" type="number" min="0" placeholder="min value" class="form-control">
-            <input name="saleUpperBound" type="number" min="0" placeholder="max value" class="form-control">
+            <input name="saleLowerBound" type="number" min="0" placeholder="min value" class="form-control" step="any">
+            <input name="saleUpperBound" type="number" min="0" placeholder="max value" class="form-control" step="any">
         </label>
     </div>
 

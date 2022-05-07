@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 from datetime import date
 from json import loads
 
-from cstm.database_helpers import get_transactions_btwn_years, get_companies_btwn_years, get_earliest_year
+from cstm.database_helpers import get_transactions_btwn_years, get_companies_btwn_years, get_earliest_year, get_representatives_btwn_years
 from cstm.representative_helpers import representative_list
 
 application = app = Flask(__name__)
@@ -48,9 +48,9 @@ def representatives():
     if request.method == 'POST':
         range_start = date.fromisoformat(request.form["range_start"])
         range_end = date.fromisoformat(request.form["range_end"])
-        rep_list = representative_list(range_start, range_end)
+        rep_list = get_representatives_btwn_years("POST", request, range_start, range_end)
     else:
-        rep_list = representative_list(year_start, today)
+        rep_list = get_representatives_btwn_years("GET", request, year_start, today)
     return render_template("representatives.html", representatives=rep_list, start=get_earliest_year(),
                            today=today, year_start=year_start, dark_mode=is_dark_mode())
 
