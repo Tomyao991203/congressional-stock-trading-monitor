@@ -4,6 +4,7 @@ from json import loads
 
 from cstm.database_helpers import get_transactions_btwn_years, get_companies_btwn_years, get_earliest_year, get_representatives_btwn_years
 from cstm.representative_helpers import representative_list
+from visualization.visualization_execution import purchase_sale_vs_time
 
 application = app = Flask(__name__)
 
@@ -71,6 +72,16 @@ def set_light_mode():
 
 def is_dark_mode():
     return "False" if "dark_mode" not in request.cookies else request.cookies["dark_mode"]
+
+
+@app.route('/visual', methods=['GET', 'POST'])
+def visualization():
+    if request.method == 'POST':
+        graphJSON: str = purchase_sale_vs_time(request)
+    else:
+        graphJSON: str = purchase_sale_vs_time(request)
+
+    return render_template("visualization_draft.html", graphJSON=graphJSON)
 
 
 if __name__ == '__main__':
