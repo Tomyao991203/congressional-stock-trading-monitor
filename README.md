@@ -107,6 +107,8 @@ The ```templates``` directory contains html files.
     * ```navigation_bar.html```: html file defining the responsive navigation
     * ```transaction_table.html```: html file defining the transaction table
     * ```companies_table.html```: html file defining the companies table
+    *```category_dropdown.html```: html file for the categories button
+    *```category_listing.html```: html file for the categories dropdown menu
 * ```base.html```: html file defining the basic webpage format to extend into other pages
 * ```transactions.html```: html file defining the transaction driven view
 * ```companies.html```: html file defining the companies driven view
