@@ -6,7 +6,7 @@
  * @param cookie_value - the value of the cookie 
  * @param exdays - the number of days before the cookie is set to expire
  **/
-function setCookie(cookie_name, cookie_value, exdays) {
+ function setCookie(cookie_name, cookie_value, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   let expires = "expires=" + d.toUTCString();
@@ -48,6 +48,32 @@ function updateCategoryButton(toggle_value, button_element) {
   }
 }
 
+function assignTransactionEntryToCategory(category_name, transaction_id, member_name, member_district, company, ticker, transaction_type,
+  transaction_date, value_lb, value_ub, description, link) {
+  if (category_name === "") {
+    return;
+  }
+  categories_dict_string = localStorage.getItem("categories_entire_entry");
+  var categories_dict = {};
+  transaction_entry_string = "" + transaction_id + "*" + member_name + "*" + member_district + "*" +
+    company + "*" + ticker + "*" + transaction_type + "*" + transaction_date + "*" + value_lb + "*" + value_ub + "*" + description + "*" + link + "*" + category_name;
+  if (categories_dict_string != null) {
+    categories_dict = JSON.parse(categories_dict_string);
+    if (category_name in categories_dict) {
+      if (!categories_dict[category_name].hasOwnProperty(transaction_id)) {
+        categories_dict[category_name][transaction_id] = transaction_entry_string;
+      }
+    } else {
+      categories_dict[category_name] = {};
+      categories_dict[category_name][transaction_id] = transaction_entry_string;
+    }
+  } else {
+    categories_dict[category_name] = {};
+    categories_dict[category_name][transaction_id] = transaction_entry_string;
+  }
+  localStorage.setItem("categories_entire_entry", JSON.stringify(categories_dict));
+}
+
 /**
  * Adds the transaction to its category if the toggle_value is not checked, else it deletes the
  * transaction from its category.
@@ -55,17 +81,20 @@ function updateCategoryButton(toggle_value, button_element) {
  * @param category_name - the name of the category
  * @param toggle_element - the ID of the toggleable button element
  */
-function callCorrectCookieFunction(transaction_id, category_name, toggle_element) {
+function callCorrectCookieFunction(transaction_id, category_name, toggle_element, member_name, member_district, company, ticker, transaction_type,
+  transaction_date, value_lb, value_ub, description, link) {
   if (category_name === "") {
     return;
   }
   // If the class 'active' is included in the element, the user clicked the toggle and wants to add to a category
   if (document.getElementById(toggle_element).className.split(' ').includes('active')) {
-    assignTransactionIDToCategory(transaction_id, category_name);
+    assignTransactionIDToCategory(transaction_id, category_name, member_name, member_district, company, ticker, transaction_type,
+      transaction_date, value_lb, value_ub, description, link);
   } else {
     removeTransactionIDFromCategory(transaction_id, category_name);
   }
 }
+
 
 /** 
  * Adds the transaction_id to a dictionary where the key is category_name and value is a list of all transaction_ids
@@ -73,10 +102,13 @@ function callCorrectCookieFunction(transaction_id, category_name, toggle_element
  * @param transaction_id - the unique id of the transaction that would be associated with category_name
  * @param category_name - the name of the category
  **/
-function assignTransactionIDToCategory(transaction_id, category_name) {
+function assignTransactionIDToCategory(transaction_id, category_name, member_name, member_district, company, ticker, transaction_type,
+  transaction_date, value_lb, value_ub, description, link) {
   if (category_name === "") {
     return;
   }
+  assignTransactionEntryToCategory(category_name, transaction_id, member_name, member_district, company, ticker, transaction_type,
+    transaction_date, value_lb, value_ub, description, link);
 
   categories_dict_string = getCookie("categories");
   var categories_dict = {};
@@ -184,4 +216,79 @@ function setAdvancedSearchRepresentativeCookie() {
 
 function setAdvancedSearchCompanyCookie() {
   setAdvancedSearchCookie("advanced_search_company");
+}
+
+function showTransactionIDs(category_name) {
+  categories_dict_string = getCookie("categories");
+  var categories_dict;
+
+  if (categories_dict_string != "") {
+    categories_dict = JSON.parse(categories_dict_string);
+    if (category_name in categories_dict) {
+      transaction_ids_list = categories_dict[category_name];
+
+
+      alert("Transaction IDs " + transaction_ids_list + " from category " + category_name);
+
+    }
+  }
+}
+
+function createCategoryTable(category_name) {
+  if (category_name === "") {
+    return;
+  }
+  categories_entire_entry_string = localStorage.getItem("categories_entire_entry");
+  if (categories_entire_entry_string != null) {
+    categories_dict_dict = JSON.parse(categories_entire_entry_string);
+    if (category_name in categories_dict_dict) {
+      entries_array = [];
+      category_dict = categories_dict_dict[category_name];
+
+      Object.keys(category_dict).forEach(function (key) {
+        entries_array.push(category_dict[key].split("*"));
+      });
+
+
+      data = document.getElementById('data');
+      head = document.getElementsByTagName('thead')[0];
+      console.log(head);
+      s = head.innerHTML + "<tbody>";
+
+      for (let i = 0; i < entries_array.length; i++) {
+        s += "<tr class='odd'>";
+        for (let j = 1; j < entries_array[i].length; j++) {
+          if (j == 5) {
+            if (entries_array[i][j] == "S") {
+              s += `<td>Sale</td>`;
+            } else {
+              s += `<td>Purchase</td>`;
+            }
+          }
+          else if (j == 7 || j == 8) {
+            formatter = new Intl.NumberFormat('en-US', {
+              style: "currency",
+              currency: "USD"
+            });
+            s += `<td>${formatter.format(entries_array[i][j])}</td>`;
+
+          }
+          else if (j == 9) {
+            if (entries_array[i][j] != "None") {
+              s += `<td><a href=${entries_array[i][j]}>Description</a></td>`;
+            } else {
+              s += `<td>${entries_array[i][j]}</td>`;
+            }
+          } else if (j == 10) {
+            s += `<td><a href=${entries_array[i][j]}>Source</a></td>`;
+          } else {
+            s += `<td>${entries_array[i][j]}</td>`;
+          }
+        }
+        s += "</tr>";
+      }
+      s += "</tbody>";
+      data.innerHTML = s;
+    }
+  }
 }
