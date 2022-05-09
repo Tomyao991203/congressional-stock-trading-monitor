@@ -164,7 +164,6 @@ function assignTransactionIDToCategory(transaction_id, category_name, member_nam
   } else {
     categories_dict[category_name] = [transaction_id];
   }
-  alert("Added transaction " + transaction_id + " to category " + category_name);
   setCookie("categories", JSON.stringify(categories_dict), 365);
 }
 
@@ -188,7 +187,6 @@ function removeTransactionIDFromCategory(transaction_id, category_name) {
       transaction_ids_list = categories_dict[category_name];
       categories_dict[category_name] = transaction_ids_list.filter(function (e) { return e !== transaction_id });
 
-      alert("Deleted transaction " + transaction_id + " from category " + category_name);
       setCookie("categories", JSON.stringify(categories_dict), 365);
     }
   }
@@ -292,7 +290,7 @@ function createCategoryTable(category_name) {
       data = document.getElementById('data');
       head = document.getElementsByTagName('thead')[0];
       console.log(head);
-      s = head.innerHTML + "<tbody>";
+      s = "<tbody>";
 
       for (let i = 0; i < entries_array.length; i++) {
         s += "<tr class='odd'>";
@@ -330,5 +328,16 @@ function createCategoryTable(category_name) {
       data.innerHTML = s;
     }
   }
+  var table = $('#data').DataTable();
+  table.destroy();
+  
+  table = $('#data').DataTable( {
+    buttons: [
+      { extend: 'csv', className: 'btn btn-primary', exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] } },
+      { extend: 'pdf', className: 'btn btn-primary', exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] } }
+    ],
+    retrieve: true
+  });
+  table.buttons().container().appendTo('#data_wrapper .col-md-6:eq(0)');
 }
 
