@@ -74,6 +74,23 @@ function assignTransactionEntryToCategory(category_name, transaction_id, member_
   localStorage.setItem("categories_entire_entry", JSON.stringify(categories_dict));
 }
 
+function removeTransactionEntryFromCategory(category_name, transaction_id) {
+  if (category_name === "") {
+    return;
+  }
+  categories_dict_string = localStorage.getItem("categories_entire_entry");
+  var categories_dict = {};
+  if (categories_dict_string != null) {
+    categories_dict = JSON.parse(categories_dict_string);
+    if (category_name in categories_dict) {
+      if (categories_dict[category_name].hasOwnProperty(transaction_id)) {
+        delete categories_dict[category_name][transaction_id];
+      }
+    }
+  }
+  localStorage.setItem("categories_entire_entry", JSON.stringify(categories_dict));
+}
+
 /**
  * Adds the transaction to its category if the toggle_value is not checked, else it deletes the
  * transaction from its category.
@@ -134,6 +151,10 @@ function assignTransactionIDToCategory(transaction_id, category_name, member_nam
  * @param category_name - the name of the category
  **/
 function removeTransactionIDFromCategory(transaction_id, category_name) {
+  if (category_name === "") {
+    return;
+  }
+  removeTransactionEntryFromCategory(category_name, transaction_id);
   categories_dict_string = getCookie("categories");
   var categories_dict;
 
@@ -292,3 +313,4 @@ function createCategoryTable(category_name) {
     }
   }
 }
+
