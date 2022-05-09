@@ -6,7 +6,7 @@
  * @param cookie_value - the value of the cookie 
  * @param exdays - the number of days before the cookie is set to expire
  **/
- function setCookie(cookie_name, cookie_value, exdays) {
+function setCookie(cookie_name, cookie_value, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   let expires = "expires=" + d.toUTCString();
@@ -47,7 +47,25 @@ function updateCategoryButton(toggle_value, button_element) {
     button_element.innerHTML = "Delete";
   }
 }
-
+/**
+ * Saves a transaction entry(a row in the transactions table) to local storage and associates it with a category. The 
+ * local storage object(key: categories_entire_string) represents a dictionary of dictionaries, where the outer dictionary's key
+ * is the category_name, and the inner dictionary maps transaction_ids(keys) to entire transaction entries(where the transaction
+ * entries is an asterisk(*) deliminated string consisting of the transaction_id, member_name, member_district, etc).
+ * @param {*} category_name - the name of the category that this transaction entry was assigned to, used a key in categories_dict
+ * @param {*} transaction_id - the id of the transaction entry
+ * @param {*} member_name - the member name of the transaction entry
+ * @param {*} member_district - the member district of the transaction entry
+ * @param {*} company - the company of the transaction entry
+ * @param {*} ticker - the ticker of the transaction entry
+ * @param {*} transaction_type - S or P
+ * @param {*} transaction_date - the date of the transaction entry
+ * @param {*} value_lb - the lower bound of the transaction entry
+ * @param {*} value_ub - the upper bound of the transaction entry
+ * @param {*} description - the description of the transaction try
+ * @param {*} link - the link of the transaction entry
+ * @returns 
+ */
 function assignTransactionEntryToCategory(category_name, transaction_id, member_name, member_district, company, ticker, transaction_type,
   transaction_date, value_lb, value_ub, description, link) {
   if (category_name === "") {
@@ -73,6 +91,12 @@ function assignTransactionEntryToCategory(category_name, transaction_id, member_
   }
   localStorage.setItem("categories_entire_entry", JSON.stringify(categories_dict));
 }
+/**
+ * Deletes the key value pair(category_name, transaction_entry) from the categories_entire_entry local storage object
+ * @param {*} category_name - name of the category that this entry should be deleted from
+ * @param {*} transaction_id - transaction_id of the entry
+ * @returns 
+ */
 
 function removeTransactionEntryFromCategory(category_name, transaction_id) {
   if (category_name === "") {
@@ -205,6 +229,11 @@ function getAdvancedSearchCompany() {
     + encodeURI(document.company_search_form.saleub.value);
 }
 
+/**
+ * Saves advanced searches that were executed to cookies
+ * @param {*} cookie_name - name of the cookie(it can be for transactions, representative, or company)
+ */
+
 function setAdvancedSearchCookie(cookie_name) {
   var search_cookie_str = getCookie(cookie_name);
   var search_cookie_list = [];
@@ -239,22 +268,11 @@ function setAdvancedSearchCompanyCookie() {
   setAdvancedSearchCookie("advanced_search_company");
 }
 
-function showTransactionIDs(category_name) {
-  categories_dict_string = getCookie("categories");
-  var categories_dict;
-
-  if (categories_dict_string != "") {
-    categories_dict = JSON.parse(categories_dict_string);
-    if (category_name in categories_dict) {
-      transaction_ids_list = categories_dict[category_name];
-
-
-      alert("Transaction IDs " + transaction_ids_list + " from category " + category_name);
-
-    }
-  }
-}
-
+/**
+ * Generates the table to be showed to the user when a category button is clicked
+ * @param {*} category_name - name of the category button that was clicked
+ * @returns 
+ */
 function createCategoryTable(category_name) {
   if (category_name === "") {
     return;
@@ -279,14 +297,14 @@ function createCategoryTable(category_name) {
       for (let i = 0; i < entries_array.length; i++) {
         s += "<tr class='odd'>";
         for (let j = 1; j < entries_array[i].length; j++) {
-          if (j == 5) {
+          if (j == 5) { // Type column
             if (entries_array[i][j] == "S") {
               s += `<td>Sale</td>`;
             } else {
               s += `<td>Purchase</td>`;
             }
           }
-          else if (j == 7 || j == 8) {
+          else if (j == 7 || j == 8) { // Value Lower Bound and Value Upper Bound col
             formatter = new Intl.NumberFormat('en-US', {
               style: "currency",
               currency: "USD"
@@ -294,13 +312,13 @@ function createCategoryTable(category_name) {
             s += `<td>${formatter.format(entries_array[i][j])}</td>`;
 
           }
-          else if (j == 9) {
+          else if (j == 9) { // Description col
             if (entries_array[i][j] != "None") {
               s += `<td><a href=${entries_array[i][j]}>Description</a></td>`;
             } else {
               s += `<td>${entries_array[i][j]}</td>`;
             }
-          } else if (j == 10) {
+          } else if (j == 10) { // Link col 
             s += `<td><a href=${entries_array[i][j]}>Source</a></td>`;
           } else {
             s += `<td>${entries_array[i][j]}</td>`;
