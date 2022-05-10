@@ -15,3 +15,4 @@ class ProcessPandasDataframeFindStart(unittest.TestCase):
         df = pdf_discriminator("database/2015_house_pdfs/Pelosi_Nancy_10010857.pdf")
         find_start_result = find_start(df)
         self.assertTrue(find_start_result is not None)
+        
