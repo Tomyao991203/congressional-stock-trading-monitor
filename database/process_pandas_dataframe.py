@@ -120,7 +120,7 @@ def generate_entry(df, df_index, row, regex_result, new_db_page):
     # print(df_index, row)
 
     # print(df_index, row, column_time)
-    owner_date = pd.to_datetime(time_regex_result[1])
+    owner_date = pd.to_datetime(time_regex_result[1]).strftime('%Y-%m-%d')
 
     if new_db_page:
         transaction_bounds = get_column_for_regex(df, df_index, transaction_type_regex)
@@ -136,22 +136,22 @@ def generate_entry(df, df_index, row, regex_result, new_db_page):
     bounds_regex_result = re.match(bounds_regex, df[df_index].iloc[row, column_bounds])
 
     # print(df[df_index].iloc[row, column_bounds])
-    lower_bound = bounds_regex_result[1]
+    lower_bound = int(bounds_regex_result[1].replace(",", ""))
     upper_bound = ''
 
     if bounds_regex_result[2] == '':
         if row == len(df[df_index]) - 1:
-            upper_bound = lower_bound
+            upper_bound = int(lower_bound)
         else:
             regex_result = re.match(bounds_regex, str(df[df_index].iloc[row + 1, column_bounds]))
             # print(df_index, row, column_bounds)
             if regex_result is None:
-                upper_bound = lower_bound
+                upper_bound = int(lower_bound)
             else:
-                upper_bound = regex_result[1]
+                upper_bound = int(regex_result[1].replace(",", ""))
 
     else:
-        upper_bound = bounds_regex_result[2]
+        upper_bound = int(bounds_regex_result[2].replace(",", ""))
 
     row = prev_row
     df_index = prev_df_index
