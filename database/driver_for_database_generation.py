@@ -1,6 +1,7 @@
 from pdf_scraping import *
 from process_pandas_dataframe import *
 from process_congress_records import *
+from pathlib import Path
 
 
 def __scrap_and_process(pdf_paths_list):
@@ -32,6 +33,24 @@ def __scrap_and_process(pdf_paths_list):
     return final_db
 
 
-def process_get_pdf(year, last="", first="", doc_id=0):
-    get_pdf(year, last, first, doc_id)
+def process_get_pdf(file_name, year, last="", first="", doc_id=0, save_as_csv=1):
+    pdf_path_list = get_pdf(year, last, first, doc_id)
+    final_db = __scrap_and_process(pdf_path_list)
+
+    filepath = Path(f'csvs/{file_name}.csv')
+
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+    final_db.to_csv(filepath, index=False)
+
+
+def process_year_pdf(file_name, year):
+    pdf_path_list = get_pdf(year)
+    final_db = __scrap_and_process(pdf_path_list)
+
+    filepath = Path(f'csvs/{file_name}.csv')
+
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+    final_db.to_csv(filepath, index=False)
 

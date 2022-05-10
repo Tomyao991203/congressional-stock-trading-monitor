@@ -19,13 +19,15 @@ def get_year(year):
     takes in a year (2013-2022) and downloads all the financial disclosure pdfs into year_house_pdfs/ in the current
     directory
     :year: int or string, between 2013-2022.
-    :return: void, writes pdfs to year_house_pdf/
+    :return: list of pdf paths, writes pdfs to year_house_pdf/
     """
     dataframe = pd.read_table(f"Financial_Disclosure_txt_files/{year}FD.txt")
 
     doc_id = dataframe.get("DocID")
     last_names = dataframe.get("Last")
     first_names = dataframe.get("First")
+
+    pdf_path_list = []
 
     print(dataframe.columns)
     for i in range(len(doc_id)):
@@ -34,6 +36,10 @@ def get_year(year):
         response = requests.get(url)
         with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
+
+        pdf_path_list.append(f"database/pdfs/{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf")
+
+    return pdf_path_list
 
 
 def get_pdf(year, last="", first="", doc_id=0):
@@ -51,17 +57,17 @@ def get_pdf(year, last="", first="", doc_id=0):
     :last: last name of the house member, should be a string.
     :first: first name of the house member, should be a string.
     :doc_id: int or string of the document id.
-    :return: void, writes the pdfs into year_house_pdfs/
+    :return: list of pdf paths, writes the pdfs into year_house_pdfs/
     """
     if doc_id != 0:
-        __get_pdf_doc_id(year, doc_id)
+        return __get_pdf_doc_id(year, doc_id)
 
     else:
         if last == "" or first == "":
             print("Please provide either a last and first name, or a document id.")
             exit()
 
-        __get_pdf_last_first_names(year, last=last, first=first)
+        return __get_pdf_last_first_names(year, last=last, first=first)
 
 
 def __get_pdf_doc_id(year, doc_id):
@@ -72,7 +78,7 @@ def __get_pdf_doc_id(year, doc_id):
 
     :year: int or string of the year desired (2013-2022)
     :doc_id: int or string of the document id.
-    :return: void, writes the pdfs into year_house_pdfs/
+    :return: list of pdf paths, writes the pdfs into year_house_pdfs/
     """
     dataframe = pd.read_table(f"database/Financial_Disclosure_txt_files/{year}FD.txt")
 
@@ -86,6 +92,8 @@ def __get_pdf_doc_id(year, doc_id):
     with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf") as f:
         f.write(response.content)
 
+    return [f"database/pdfs/{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf"]
+
 
 def __get_pdf_last_first_names(year, last, first):
     """
@@ -96,7 +104,7 @@ def __get_pdf_last_first_names(year, last, first):
     :year: int or string of the year desired (2013-2022)
     :last: last name of the house member, should be a string.
     :first: first name of the house member, hsould be a string.
-    :return: void, writes the pdfs into year_house_pdfs/
+    :return: list of pdf_paths, writes the pdfs into year_house_pdfs/
 
     """
     dataframe = pd.read_table(f"database/Financial_Disclosure_txt_files/{year}FD.txt")
@@ -107,9 +115,13 @@ def __get_pdf_last_first_names(year, last, first):
 
     doc_id = last_first_df.get("DocID").values
 
+    pdf_path_list = []
+
     for i in range(len(doc_id)):
         url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
         # print(url)
         response = requests.get(url)
         with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
+
+        pdf_path_list.append(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf")
