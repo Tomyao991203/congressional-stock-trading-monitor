@@ -1,42 +1,46 @@
 {% block rep_range %}
-<div class="mx-auto" style="width: 35vw; min-width:50ch" >
-    <form action="" name="transaction_search_form" method="POST">
-    <div class="input-group input-daterange">
+<form action="" name="transaction_search_form" method="POST">
+    <div class="mx-auto" style="width: 50vw; min-width:65ch" >
+        <div class="input-group input-daterange">
+            <div class="input-group-addon">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv" aria-expanded="false" aria-controls="collapseDiv">
+                    <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="Advanced Search"><i class="fa fa-search"></i></span>
+                </button>&nbsp;&nbsp;
+            </div>
 
-        <div class="input-group-addon">Date Range:&nbsp;&nbsp; </div>
+            <div class="input-group-addon">Date Range:&nbsp;&nbsp; </div>
 
-        <input name="range_start" type="text" class="form-control" data-date-format="yyyy-mm-dd" 
-            data-date-start-date ="{{start}}-01-01" value="{{year_start.isoformat()}}">
-        <div class="input-group-addon">&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;</div>
-        <input name="range_end" type="text" class="form-control" data-date-format="yyyy-mm-dd"
-             data-date-start-date ="{{start}}-01-01" value="{{today.isoformat()}}">
-        <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" onclick="setAdvancedSearchTransactionCookie()"type="submit">Submit</button></div>
+            <input name="range_start" type="text" class="form-control" data-date-format="yyyy-mm-dd" 
+                data-date-start-date ="{{start}}-01-01" value="{{year_start.isoformat()}}">
+            <div class="input-group-addon">&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;</div>
+            <input name="range_end" type="text" class="form-control" data-date-format="yyyy-mm-dd"
+                data-date-start-date ="{{start}}-01-01" value="{{today.isoformat()}}">
+            <div class="input-group-addon">&nbsp;&nbsp;<button class="btn btn-primary" onclick="setAdvancedSearchTransactionCookie()"type="submit">Submit</button></div>
 
+        </div>
     </div>
 
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDiv" aria-expanded="false" aria-controls="collapseDiv">
-        <i class="fa fa-search"></i>
-    </button>
-
-    <div class="collapse" id="collapseDiv">
-        <label>Member Name: <input name="member_name" type="text" class="form-control"></label>
-        <label>Member District: <input name="distrNum" type="text" class="form-control"></label>
-        <label>Company: <input name="company" type="text" class="form-control"></label>
-        <label>Ticker: <input name="ticker" type="text" class="form-control"></label>
-        <label>Value Lower Bound: <input name="lowerBound" type="number" min="0" class="form-control" step="any"></label>
-        <label>Value Upper Bound: <input name="upperBound" type="number" min="0" class="form-control" step="any"></label>
-        <label> Transaction Type:
-            <select name="transType" class="form-select">
-                <option value=""></option>
-                <option value="P">Purchase</option>
-                <option value="S">Sale</option>
-            </select>
-        </label>
-    </div>
-
-    </form>
-    
-</div>
+    <div class="mx-auto" style="width: 50vw; min-width:65ch" >
+        <div class="collapse" id="collapseDiv">
+            <br>
+            <label>Member Name: <input name="member_name" type="text" class="form-control"></label>
+            <label>Member District: <input name="distrNum" type="text" class="form-control"></label>
+            <label>Company: <input name="company" type="text" class="form-control"></label>
+            <label>Ticker: <input name="ticker" type="text" class="form-control"></label>
+            <label>Value Lower Bound: <input name="lowerBound" type="number" min="0" class="form-control" step="any"></label>
+            <label>Value Upper Bound: <input name="upperBound" type="number" min="0" class="form-control" step="any"></label>
+            <label> Transaction Type:
+                <select name="transType" class="form-select">
+                    <option value=""></option>
+                    <option value="P">Purchase</option>
+                    <option value="S">Sale</option>
+                </select>
+            </label>
+            <br>
+            <br>
+        </div>
+    </div>  
+</form>
 {% endblock %}
 
 {% block styles %}
