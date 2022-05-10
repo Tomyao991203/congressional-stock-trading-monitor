@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Visualizations{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+<div class="mx-auto" style="width: 40vw;">
+  <form action="" method="POST">
+    <legend align="center" class="title">Search Query</legend>
+  
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput1">Name</label>
+        <input type="text" class="form-control mb-2" id="inlineFormInput1" placeholder="Jane Doe">
+      </div>
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput2">Company</label>
+        <input type="text" class="form-control mb-2" id="inlineFormInput2" placeholder="Tesla, Inc." name="company">
+      </div>
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput3">Ticker</label>
+        <input type="text" class="form-control mb-2" id="inlineFormInput3" placeholder="TSLA" name="ticker">
+      </div>
+      
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      </div>
+    </div>  
+  </form>
+</div>
+
+<div class="chart" id="plotly-chart"></div>
+
+{% endblock %}
+{% block scripts %}
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  {% set template = "plotly" if not dark_mode == "True" else "plotly" %} 
+  {# Ideally this would have different themes for light and dark mode, but the themes the plot was drawn with and the current one
+    did not stay in sync, making it not worth using seperate themes. #}
+  <script>
+    var graphs = {{ graphJSON | safe }};
+    var layout = {title: "Transaction Value vs. Time", template: "{{ template }}"};
+    var config = {responsize: true};
+    Plotly.newPlot('plotly-chart', graphs, layout, config);
+</script>
+{% endblock %}
+{% block styles %}
+{% endblock %}

@@ -56,6 +56,12 @@ def representatives():
                            today=today, year_start=year_start, dark_mode=is_dark_mode())
 
 
+@app.route('/visualizations', methods=['GET', 'POST'])
+def visualizations():
+    return render_template("visualizations.html", graphJSON=purchase_sale_vs_time(request),
+                            dark_mode=is_dark_mode())
+
+
 @app.route('/dark_mode')
 def set_dark_mode():
     res = redirect("/")
@@ -72,16 +78,6 @@ def set_light_mode():
 
 def is_dark_mode():
     return "False" if "dark_mode" not in request.cookies else request.cookies["dark_mode"]
-
-
-@app.route('/visual', methods=['GET', 'POST'])
-def visualization():
-    if request.method == 'POST':
-        graphJSON: str = purchase_sale_vs_time(request)
-    else:
-        graphJSON: str = purchase_sale_vs_time(request)
-
-    return render_template("visualization_draft.html", graphJSON=graphJSON)
 
 
 if __name__ == '__main__':

@@ -107,4 +107,9 @@ def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):
                        x='transaction_date', y=data_frame.columns,
                        barmode=barmode)
     fig.update_xaxes(rangeslider_visible=True)
+    fig.update_layout(
+        title_text = "Transaction Value vs. Time",
+        xaxis_title_text = "Time",
+        yaxis_title_text = "Sum of Transaction Values"
+    )
     return fig
