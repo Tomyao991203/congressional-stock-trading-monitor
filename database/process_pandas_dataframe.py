@@ -3,6 +3,24 @@ import re
 import numpy as np
 
 
+def capitalize_each_word(original_str):
+    result = ""
+    # Split the string and get all words in a list
+    list_of_words = original_str.split()
+    # Iterate over all elements in list
+    for elem in list_of_words:
+        # capitalize first letter of each word and add to a string
+        if len(result) > 0:
+            result = result + " " + elem.strip().capitalize()
+        else:
+            result = elem.capitalize()
+    # If result is still empty then return original string else returned capitalized.
+    if not result:
+        return original_str
+    else:
+        return result
+
+
 def find_start(df):
     """
     given an unprocessed dataframe, find the start of the trades, which
@@ -82,7 +100,7 @@ def generate_entry(df, df_index, row, regex_result, new_db_page):
     prev_row = row
     prev_df_index = df_index
 
-    company_name = regex_result[1].strip()
+    company_name = capitalize_each_word(regex_result[1].strip())
     ticker = regex_result[2].upper()
     if new_db_page:
         column_time = get_column_for_regex(df, df_index, time_regex)
@@ -198,9 +216,9 @@ def process_dataframe(df, pdf_path):
     new_db_page = False
 
     name_regex_result = re.match(honorifics_regex, df[0].iloc[0, 1].lower())
-    name = name_regex_result[2].strip()
+    name = capitalize_each_word(name_regex_result[2].strip())
     link_regex_result = re.match(link_regex, pdf_path.lower().strip())
-    print(pdf_path.lower().strip())
+    # print(pdf_path.lower().strip())
     link = root_link + "/" + link_regex_result[1] + "/" + link_regex_result[2]
 
     district = df[0].iloc[2, 1]
@@ -225,7 +243,6 @@ def process_dataframe(df, pdf_path):
         if len(df[df_index].index) - 1 == row:
             row = 0
             df_index += 1
-            print("HELLO")
             new_db_page = True
         else:
             row += 1
