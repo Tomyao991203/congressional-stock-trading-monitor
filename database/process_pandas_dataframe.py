@@ -17,6 +17,8 @@ def find_start(df):
         if index:
             return i, index[0]
 
+    return None
+
 
 def get_column_for_regex(df, df_index, regex, start_row=0):
     """
@@ -190,7 +192,7 @@ def process_dataframe(df, pdf_path):
     stock_regex = r"^\s*(?!description:|location:)\s*(.*)\s*\((?!one|two)([\w | .]{1,5})\).*$"
     # bounds_regex = r"^[a-zA-Z]*\s*\$?([\d,]+)\s*-?\s*\$?([\d,]*).*$"
     honorifics_regex = r"^(hon.?|mr.?|miss|mrs.?|ms.?|dr.?|professor.?|gen.?|)\s*(.+)$"
-    link_regex = r"^(\d{4})[\w_/\s\.]*_(\d+\.pdf)$"
+    link_regex = r"^[\w_/\s\.]*(\d{4})[\w_/\s\.]*_(\d+\.pdf)$"
     root_link = "https://disclosures-clerk.house.gov/public_disc/financial-pdfs"
 
     new_db_page = False
@@ -198,6 +200,7 @@ def process_dataframe(df, pdf_path):
     name_regex_result = re.match(honorifics_regex, df[0].iloc[0, 1].lower())
     name = name_regex_result[2].strip()
     link_regex_result = re.match(link_regex, pdf_path.lower().strip())
+    print(pdf_path.lower().strip())
     link = root_link + "/" + link_regex_result[1] + "/" + link_regex_result[2]
 
     district = df[0].iloc[2, 1]
