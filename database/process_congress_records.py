@@ -29,6 +29,8 @@ def get_year(year):
     last_names = dataframe.get("Last")
     first_names = dataframe.get("First")
 
+    pdf_path_list = []
+
     print(dataframe.columns)
     for i in range(len(doc_id)):
         url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
@@ -36,6 +38,10 @@ def get_year(year):
         response = requests.get(url)
         with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
+
+        pdf_path_list.append(f"database/pdfs/{year}_house_pdfs/{last_names[i]}_{first_names[i]}_{doc_id[i]}.pdf")
+
+    return pdf_path_list
 
 
 def get_pdf(year, last="", first="", doc_id=0):
@@ -56,14 +62,14 @@ def get_pdf(year, last="", first="", doc_id=0):
     :return: void, writes the pdfs into year_house_pdfs/
     """
     if doc_id != 0:
-        __get_pdf_doc_id(year, doc_id)
+        return __get_pdf_doc_id(year, doc_id)
 
     else:
         if last == "" or first == "":
             print("Please provide either a last and first name, or a document id.")
             exit()
 
-        __get_pdf_last_first_names(year, last=last, first=first)
+        return __get_pdf_last_first_names(year, last=last, first=first)
 
 
 def __get_pdf_doc_id(year, doc_id):
@@ -88,6 +94,8 @@ def __get_pdf_doc_id(year, doc_id):
     with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf") as f:
         f.write(response.content)
 
+    return [f"database/pdfs/{year}_house_pdfs/{last_name}_{first_name}_{doc_id}.pdf"]
+
 
 def __get_pdf_last_first_names(year, last, first):
     """
@@ -109,9 +117,13 @@ def __get_pdf_last_first_names(year, last, first):
 
     doc_id = last_first_df.get("DocID").values
 
+    pdf_path_list = []
+
     for i in range(len(doc_id)):
         url = f"https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}/{doc_id[i]}.pdf"
         # print(url)
         response = requests.get(url)
         with safe_open_w(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf") as f:
             f.write(response.content)
+
+        pdf_path_list.append(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf")

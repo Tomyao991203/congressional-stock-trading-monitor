@@ -11,5 +11,6 @@ pandas==1.4.2
 requests==2.27.0
 tabula-py==2.3.0
 PyPDF2==1.27.7
+numpy==1.22.3
 plotly==5.7.0
 sphinx-rtd-theme==1.0.0
