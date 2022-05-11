@@ -22,7 +22,7 @@ copyright = '2022, Lily Qiu, Brian Spates, Jake Wilson, Jiaming Yao, Michelle Zh
 author = 'Lily Qiu, Brian Spates, Jake Wilson, Jiaming Yao, Michelle Zheng'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.3'
+release = 'v0.3.1'
 
 
 # -- General configuration ---------------------------------------------------
