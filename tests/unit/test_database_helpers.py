@@ -302,74 +302,6 @@ class GetCompaniesBtwnYearsTestCase(unittest.TestCase):
         self.assertEqual(transaction_count, len(get_companies_btwn_years("GET", company_empty_request(),
                                                                          start_date, end_date)))
 
-    def test_get_request_returns_correct_lowerbound_purchases(self):
-        """
-        Tests if the lowerbound of purchases for a company is correct.
-        Currently the database is only populated with a representative data subset. This test should be updated
-        when the database is updated.
-        """
-
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT SUM(value_lb) FROM all_transaction "
-                    "WHERE transaction_type = \"P\" AND company = \"Apple Inc.\" GROUP BY company;")
-        conn.commit()
-
-        self.assertEqual(cur.fetchall()[0][0],
-                         get_companies_btwn_years("GET", company_empty_request(),
-                                                  date(2013, 7, 11), date(2022, 4, 21))[2][4])
-
-    def test_get_request_returns_correct_upperbound_purchases(self):
-        """
-        Tests if the upperbound of purchases for a company is correct.
-        Currently the database is only populated with a representative data subset. This test should be updated
-        when the database is updated.
-        """
-
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT SUM(value_ub) FROM all_transaction "
-                    "WHERE transaction_type = \"P\" AND company = \"Apple Inc.\" GROUP BY company;")
-        conn.commit()
-
-        self.assertEqual(cur.fetchall()[0][0],
-                         get_companies_btwn_years("GET", company_empty_request(),
-                                                  date(2013, 7, 11), date(2022, 4, 21))[2][5])
-
-    def test_get_request_returns_correct_lowerbound_sales(self):
-        """
-        Tests if the lowerbound of sales for a company is correct.
-        Currently the database is only populated with a representative data subset. This test should be updated
-        when the database is updated.
-        """
-
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT SUM(value_lb) FROM all_transaction "
-                    "WHERE transaction_type = \"S\" AND company = \"Apple Inc.\" GROUP BY company;")
-        conn.commit()
-
-        self.assertEqual(cur.fetchall()[0][0],
-                         get_companies_btwn_years("GET", company_empty_request(),
-                                                  date(2013, 7, 11), date(2022, 4, 21))[2][6])
-
-    def test_get_request_returns_correct_upperbound_sales(self):
-        """
-        Tests if the upperbound of sales for a company is correct.
-        Currently the database is only populated with a representative data subset. This test should be updated
-        when the database is updated.
-        """
-
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT SUM(value_ub) FROM all_transaction "
-                    "WHERE transaction_type = \"S\" AND company = \"Apple Inc.\" GROUP BY company;")
-        conn.commit()
-
-        self.assertEqual(cur.fetchall()[0][0],
-                         get_companies_btwn_years("GET", company_empty_request(),
-                                                  date(2013, 7, 11), date(2022, 4, 21))[2][7])
-
     def test_put_request_returns_correct_count_transactions(self):
         """
         Tests if the put request returns the correct number of transactions.
@@ -643,7 +575,7 @@ class GetRepresentativesBtwnYearsTestCase(unittest.TestCase):
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute("SELECT * FROM all_transaction WHERE member_name = \'Nancy Pelosi\' GROUP BY member_name "
-                    "HAVING count(id) = 1 AND count(DISTINCT member_name) = 1")
+                    "HAVING count(DISTINCT member_name) = 1")
     
         conn.commit()
 
