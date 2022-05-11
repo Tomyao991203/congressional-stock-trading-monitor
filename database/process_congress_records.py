@@ -2,7 +2,9 @@ import pandas as pd
 import time
 import requests
 import os, os.path
-
+from sqlite3 import Error
+import sqlite3
+from pathlib import Path
 
 def safe_open_w(path):
     """
@@ -127,3 +129,32 @@ def __get_pdf_last_first_names(year, last, first):
             f.write(response.content)
 
         pdf_path_list.append(f"database/pdfs/{year}_house_pdfs/{last}_{first}_{doc_id[i]}.pdf")
+
+def populate_database_from_csv(csv_path: str, db_path: str = r"database/database.db", table_name: str = r"all_transaction"):
+    """
+    Adds all of the transaction entries stored in the given path (without file extension) to the database
+    with the given path.
+
+    This does not provide any input validation!! Please do not use this with outside csvs
+
+    :param csv_path: The path to the csv file to read. This should be without the file extension.
+    :param db_path: The path to the Database to add the entires to
+    :param table_name: The name of the database table
+    """
+    filepath = Path(f"database/csvs/{csv_path}.csv")
+    dataframe = pd.read_csv(filepath)
+    connection = None
+    try:
+        connection = sqlite3.connect(db_path)
+        cur = connection.cursor()
+        data = list(dataframe.itertuples(index=False, name=None))
+        columns = "(member_name, state_district_number, company, ticker, transaction_type, transaction_date, value_lb, value_ub, description, link)"
+        value_str = "(" + " ?," * 9 + " ?)"
+        query = f"INSERT INTO {table_name} {columns} VALUES {value_str}"
+        cur.executemany(query, data)
+    except Error as e:
+        print(e)
+    finally:
+        if connection:
+            connection.commit() 
+            connection.close()
