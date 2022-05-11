@@ -189,3 +189,9 @@ The ```tests``` directory contains all test files.
 * (12%) Michelle Zheng - Worked on saving transaction searches(not merged/decided this feature would not be needed). Worked javascript functions to save cookies.
 
 ## Sprint 3 - Level of Effort by Each Member
+* (20%) Brian Spates - Worked on the visualizations frontend, populating the database from a csv, pdf/csv exports of data, and gitlab badges
+* (20%) Jake Wilson - Worked on pdf parsing
+* (20%) Xue Qiu - Worked on the advanced search and user documentation
+* (20%) Jiaming Yao - Worked on visualizations
+* (20%) Michelle Zheng - Worked on Sphinx Documentation and the category dropdown.
+
