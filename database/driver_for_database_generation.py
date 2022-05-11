@@ -10,7 +10,7 @@ def __scrap_and_process(pdf_paths_list):
     Takes in a list of pdf paths (stored locally) to a financial disclosure pdf. It checks if they pdfs are valid,
     then scrapes the data and processes it. It will return the data as a pandas dataframe.
 
-    :pdf_paths_list): list of str, paths to financial disclosure forms
+    :param pdf_paths_list): list of str, paths to financial disclosure forms
     :return: a pandas dataframe with the processed dada from the given pdfs.
     """
     index = 0
@@ -39,12 +39,12 @@ def process_get_pdf(file_name, year, last="", first="", doc_id=0, save_as_csv=1)
     processes the data. It then generates the pandas dataframe which
     is then written to the csvs/file_name given the file_name.
 
-    :file_name: str, name of the file that is being written to
-    :year: int or string of the year desired (2013-2022)
-    :last: last name of the house member, should be a string.
-    :first: first name of the house member, should be a string.
-    :doc_id: int or string of the document id.
-    :save_as_csv: int, to save the pandas dataframe as a csv
+    :param file_name: str, name of the file that is being written to
+    :param year: int or string of the year desired (2013-2022)
+    :param last: last name of the house member, should be a string.
+    :param first: first name of the house member, should be a string.
+    :param doc_id: int or string of the document id.
+    :param save_as_csv: int, to save the pandas dataframe as a csv
     :return: the saved csv with the given file name in csvs/file_name.csv
     """
 
@@ -67,8 +67,8 @@ def process_year_pdf(file_name, year):
     processes the data. It then generates the pandas dataframe which
     is then written to the csvs/file_name given the file_name.
 
-    :file_name: str, name of the file that is being written to
-    :year: the year that wants to be processed
+    :param file_name: str, name of the file that is being written to
+    :param year: the year that wants to be processed
     :return: void, the csv file that is written
     """
     pdf_path_list = get_pdf(year)

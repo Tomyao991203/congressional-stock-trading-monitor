@@ -33,3 +33,15 @@ transaction records for U.S. House of Representatives members and stores them in
 
 .. automodule:: database.process_congress_records
     :members:
+
+Driver for Database Generation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: database.driver_for_database_generation
+    :members:
+
+Process Pandas Dataframe
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: database.process_pandas_dataframe
+    :members:

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tests &mdash; Congressional Stock Trading Monitor v0.3 documentation</title>
+  <title>Tests &mdash; Congressional Stock Trading Monitor v0.3.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,6 +19,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Visualization" href="visualization.html" />
     <link rel="prev" title="Static" href="static.html" /> 
 </head>
 
@@ -52,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#test-representative-helpers">Test Representative Helpers</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">Visualization</a></li>
 </ul>
 </li>
 </ul>
@@ -81,7 +84,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="tests">
+  <section id="tests">
 <h1>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h1>
 <p>The <cite>tests</cite> directory contains all test files.</p>
 <ul class="simple">
@@ -98,37 +101,325 @@
 </dl>
 </li>
 </ul>
-<div class="section" id="test-process-congress-records-test">
+<section id="test-process-congress-records-test">
 <h2>Test Process Congress Records Test<a class="headerlink" href="#test-process-congress-records-test" title="Permalink to this headline"></a></h2>
 <p><cite>test_process_congress_records.py</cite>: tests that process_congress_records.py webscrapes pdf files.</p>
-</div>
-<div class="section" id="test-database-helpers">
+<span class="target" id="module-tests.unit.test_process_congress_records"></span><p>This is a little test suite for process_congress_records.py</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_process_congress_records.ProcessCongressRecordsGetPdf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_process_congress_records.</span></span><span class="sig-name descname"><span class="pre">ProcessCongressRecordsGetPdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_process_congress_records.ProcessCongressRecordsGetPdf" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is supposed to test the get_pdf() function from process_congress_records.py.</p>
+</dd></dl>
+
+</section>
+<section id="test-database-helpers">
 <h2>Test Database Helpers<a class="headerlink" href="#test-database-helpers" title="Permalink to this headline"></a></h2>
 <p><cite>test_database_helpers.py</cite>: tests the database created in database_helpers.py.</p>
-</div>
-<div class="section" id="test-state-enum">
+<span class="target" id="module-tests.unit.test_database_helpers"></span><dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">CheckCompaniesAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the check_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase.test_empty_request_returns_false">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_false</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase.test_empty_request_returns_false" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the function returning false.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase.test_nonempty_request_returns_true">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_true</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckCompaniesAdvancedSearchTestCase.test_nonempty_request_returns_true" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the function returning true.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">CheckRepresentativesAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the check_representatives_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase.test_empty_request_returns_false">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_false</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase.test_empty_request_returns_false" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the function returning false.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase.test_nonempty_request_returns_true">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_true</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckRepresentativesAdvancedSearchTestCase.test_nonempty_request_returns_true" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the function returning true.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">CheckTransactionsAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the check_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase.test_empty_request_returns_false">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_false</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase.test_empty_request_returns_false" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the function returning false.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase.test_nonempty_request_returns_true">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_true</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.CheckTransactionsAdvancedSearchTestCase.test_nonempty_request_returns_true" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the function returning true.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.ConvertDBTransactionTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">ConvertDBTransactionTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.ConvertDBTransactionTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the convert_db_transactions_to_dataclass method in
+cstm.database_helpers</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.DBConnectTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">DBConnectTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.DBConnectTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_db_connection method in the Database Helpers file</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.EqualConditionGenerationTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">EqualConditionGenerationTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.EqualConditionGenerationTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetCompaniesAdvancedSearchHelperTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_companies_advanced_search_helper method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase.test_empty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase.test_empty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the correct tuple being returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase.test_nonempty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchHelperTestCase.test_nonempty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the correct tuple being returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetCompaniesAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_companies_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase.test_empty_advanced_search_correct_return_string">
+<span class="sig-name descname"><span class="pre">test_empty_advanced_search_correct_return_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase.test_empty_advanced_search_correct_return_string" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the correct string being returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase.test_nonempty_advanced_search_correct_return_string">
+<span class="sig-name descname"><span class="pre">test_nonempty_advanced_search_correct_return_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesAdvancedSearchTestCase.test_nonempty_advanced_search_correct_return_string" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the correct string being returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetCompaniesBtwnYearsTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_companies_btwn_years method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase.test_get_request_returns_correct_num_companies">
+<span class="sig-name descname"><span class="pre">test_get_request_returns_correct_num_companies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase.test_get_request_returns_correct_num_companies" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a request results in the every transaction being returned. Note a request will
+include a start and end date.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase.test_put_request_returns_correct_count_transactions">
+<span class="sig-name descname"><span class="pre">test_put_request_returns_correct_count_transactions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetCompaniesBtwnYearsTestCase.test_put_request_returns_correct_count_transactions" title="Permalink to this definition"></a></dt>
+<dd><p>Tests if the put request returns the correct number of transactions.
+Currently the database is only populated with a representative data subset. This test should be updated
+when the database is updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetRepresentativesAdvancedSearchHelperTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_representatives_advanced_search_helper method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase.test_empty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase.test_empty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the correct tuple being returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase.test_nonempty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchHelperTestCase.test_nonempty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the correct tuple being returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetRepresentativesAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_representatives_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase.test_empty_advanced_search_correct_return_string">
+<span class="sig-name descname"><span class="pre">test_empty_advanced_search_correct_return_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase.test_empty_advanced_search_correct_return_string" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the correct string being returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase.test_nonempty_advanced_search_correct_return_string">
+<span class="sig-name descname"><span class="pre">test_nonempty_advanced_search_correct_return_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesAdvancedSearchTestCase.test_nonempty_advanced_search_correct_return_string" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the correct string being returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetRepresentativesBtwnYearsTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_representatives_btwn_years method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase.test_get_request_returns_correct_num_companies">
+<span class="sig-name descname"><span class="pre">test_get_request_returns_correct_num_companies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase.test_get_request_returns_correct_num_companies" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a request results in the every transaction being returned. Note a request will
+include a start and end date.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase.test_put_request_returns_correct_count_transactions">
+<span class="sig-name descname"><span class="pre">test_put_request_returns_correct_count_transactions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetRepresentativesBtwnYearsTestCase.test_put_request_returns_correct_count_transactions" title="Permalink to this definition"></a></dt>
+<dd><p>Tests if the put request returns the correct number of transactions.
+Currently the database is only populated with a representative data subset. This test should be updated
+when the database is updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetTransactionsAdvancedSearchTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_transactions_advanced_search method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase.test_empty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_empty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase.test_empty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that an empty request results in the correct array being returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase.test_nonempty_request_returns_correct_tuple">
+<span class="sig-name descname"><span class="pre">test_nonempty_request_returns_correct_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsAdvancedSearchTestCase.test_nonempty_request_returns_correct_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a nonempty request results in the correct array being returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">GetTransactionsBtwnYearsTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_transactions_btwn_years method in the Database Helpers file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase.test_get_request_returns_correct_num_transactions">
+<span class="sig-name descname"><span class="pre">test_get_request_returns_correct_num_transactions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase.test_get_request_returns_correct_num_transactions" title="Permalink to this definition"></a></dt>
+<dd><p>This test makes sure that a request results in the every transaction being returned. Note a request will
+include a start and end date.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase.test_put_request_returns_correct_count_transactions">
+<span class="sig-name descname"><span class="pre">test_put_request_returns_correct_count_transactions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.GetTransactionsBtwnYearsTestCase.test_put_request_returns_correct_count_transactions" title="Permalink to this definition"></a></dt>
+<dd><p>Tests if the put request returns the correct number of transactions.
+Currently the database is only populated with a representative data subset. This test should be updated
+when the database is updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.LikeConditionGenerationTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">LikeConditionGenerationTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.LikeConditionGenerationTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.SelectQueryGenerationTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">SelectQueryGenerationTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.SelectQueryGenerationTestCase" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.SelectQueryGenerationTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tests.unit.test_database_helpers.SelectQueryGenerationTestCase.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.TransactionsBetweenTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">TransactionsBetweenTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.TransactionsBetweenTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is meant to test the get_transactions_between method in cstm.database_helpers</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_database_helpers.YearEqualConditionGenerationTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_database_helpers.</span></span><span class="sig-name descname"><span class="pre">YearEqualConditionGenerationTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_database_helpers.YearEqualConditionGenerationTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="test-state-enum">
 <h2>Test State Enum<a class="headerlink" href="#test-state-enum" title="Permalink to this headline"></a></h2>
 <p><cite>test_state_enum.py</cite>: tests the State enumerated type</p>
-</div>
-<div class="section" id="test-transaction-dataclass">
+<span class="target" id="module-tests.unit.test_state_enum"></span><dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_state_enum.StateToStringTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_state_enum.</span></span><span class="sig-name descname"><span class="pre">StateToStringTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_state_enum.StateToStringTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="test-transaction-dataclass">
 <h2>Test Transaction Dataclass<a class="headerlink" href="#test-transaction-dataclass" title="Permalink to this headline"></a></h2>
 <p><cite>test_transaction_dataclass.py</cite>: tests the Transaction dataclass</p>
-</div>
-<div class="section" id="test-district-dataclass">
+<span class="target" id="module-tests.unit.test_transaction_dataclass"></span><dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_transaction_dataclass.TransactionAverageValueTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_transaction_dataclass.</span></span><span class="sig-name descname"><span class="pre">TransactionAverageValueTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_transaction_dataclass.TransactionAverageValueTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="test-district-dataclass">
 <h2>Test District Dataclass<a class="headerlink" href="#test-district-dataclass" title="Permalink to this headline"></a></h2>
 <p><cite>test_district_dataclass.py</cite>: tests the District dataclass</p>
-</div>
-<div class="section" id="test-representative-helpers">
+<span class="target" id="module-tests.unit.test_district_dataclass"></span><dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_district_dataclass.DistrictFromStringTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_district_dataclass.</span></span><span class="sig-name descname"><span class="pre">DistrictFromStringTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_district_dataclass.DistrictFromStringTestCase" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="test-representative-helpers">
 <h2>Test Representative Helpers<a class="headerlink" href="#test-representative-helpers" title="Permalink to this headline"></a></h2>
 <p><cite>test_representative_helpers.py</cite>: tests the representative helper functions</p>
-</div>
-</div>
+<span class="target" id="module-tests.unit.test_representative_helpers"></span><dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_representative_helpers.RepresentativeListTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_representative_helpers.</span></span><span class="sig-name descname"><span class="pre">RepresentativeListTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_representative_helpers.RepresentativeListTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is responsible for testing the representative_list method in cstm.representative_helpers</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit.test_representative_helpers.RepresentativesFromTransactionsTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit.test_representative_helpers.</span></span><span class="sig-name descname"><span class="pre">RepresentativesFromTransactionsTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit.test_representative_helpers.RepresentativesFromTransactionsTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>This test case is responsible for testing the representatives_from_transactions method in
+cstm.representative_helpers</p>
+</dd></dl>
+
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="static.html" class="btn btn-neutral float-left" title="Static" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="visualization.html" class="btn btn-neutral float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
