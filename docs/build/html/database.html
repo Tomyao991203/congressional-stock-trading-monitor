@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Database &mdash; Congressional Stock Trading Monitor v0.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -44,6 +45,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Database</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pdf-scraping">PDF Scraping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#process-congress-records">Process Congress Records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-database.driver_for_database_generation">Driver for Database Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-database.process_pandas_dataframe">Process Pandas Dataframe</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="templates.html">Templates</a></li>
@@ -78,7 +81,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="database">
+  <section id="database">
 <h1>Database<a class="headerlink" href="#database" title="Permalink to this headline"></a></h1>
 <p>The <cite>database</cite> directory contains database files, python files for webscraping, and resulting pdf and text files from webscraping.</p>
 <ul class="simple">
@@ -96,15 +99,258 @@ transaction records for U.S. House of Representatives members and stores them in
 functions.</p></li>
 <li><p><cite>json</cite> files all the json files are used for tabula templates, which help with parsing the pdfs.</p></li>
 </ul>
-<div class="section" id="pdf-scraping">
+<section id="pdf-scraping">
 <h2>PDF Scraping<a class="headerlink" href="#pdf-scraping" title="Permalink to this headline"></a></h2>
 <p><cite>pdf_scraping.py</cite>: python file that contains all the functions for pdf scraping.</p>
-</div>
-<div class="section" id="process-congress-records">
+<span class="target" id="module-database.pdf_scraping"></span><dl class="py function">
+<dt class="sig sig-object py" id="database.pdf_scraping.check_if_pdf_is_malformed">
+<span class="sig-prename descclassname"><span class="pre">database.pdf_scraping.</span></span><span class="sig-name descname"><span class="pre">check_if_pdf_is_malformed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.pdf_scraping.check_if_pdf_is_malformed" title="Permalink to this definition"></a></dt>
+<dd><p>takes in a path to a financial disclosure pdf. It then checks the size, as malformed pdfs are less than 2 kilobytes,
+and correctly formatted pdfs are much larger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – str, path to pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean, whether pdf is malformed, which is when a pdf is “empty”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.pdf_scraping.create_correct_template">
+<span class="sig-prename descclassname"><span class="pre">database.pdf_scraping.</span></span><span class="sig-name descname"><span class="pre">create_correct_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.pdf_scraping.create_correct_template" title="Permalink to this definition"></a></dt>
+<dd><p>Because of the varied length and size of financial disclosure forms, we need to adjust the size of the template
+that scrapes the pdf for data. What this does is modifies the template for the individual financial disclosure form
+to make sure that we get all the correct information. It writes the temporary template to
+pdf_tmp_template.tabula-template.json. To learn more about what this template does, check out the tabula
+documentation for read_pdf_with_template().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – str, path to the financial disclosure pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>none, creates a temporary template called pdf_tmp_template.tabula-template.json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.pdf_scraping.pdf_discriminator">
+<span class="sig-prename descclassname"><span class="pre">database.pdf_scraping.</span></span><span class="sig-name descname"><span class="pre">pdf_discriminator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.pdf_scraping.pdf_discriminator" title="Permalink to this definition"></a></dt>
+<dd><p>takes in string to a financial disclosure pdf. Because there are multiple forms that are returned by the U.S.
+government as financial disclosures, we need to make sure that we are only using the correct form. If the pdf
+is the correct form type, it scrapes the data and returns a list of unprocessed pandas dataframes. If it is not,
+it prints the reason why the pdf file provided is incorrect, and returns none.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – str, path to financial disclosure form</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>if the pdf is the correct, returns the list of unprocessed pandas dataframes, if not returns None type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="process-congress-records">
 <h2>Process Congress Records<a class="headerlink" href="#process-congress-records" title="Permalink to this headline"></a></h2>
 <p><cite>process_congress_records.py</cite>: python file that scrapes the U.S. House of Representatives member names and stores them as text files in the Financial_Disclosure_txt_files directory; the python file also scrapes pdf files of stock transaction records for U.S. House of Representatives members and stores them in the pdf directory.</p>
-</div>
-</div>
+<span class="target" id="module-database.process_congress_records"></span><dl class="py function">
+<dt class="sig sig-object py" id="database.process_congress_records.get_pdf">
+<span class="sig-prename descclassname"><span class="pre">database.process_congress_records.</span></span><span class="sig-name descname"><span class="pre">get_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_congress_records.get_pdf" title="Permalink to this definition"></a></dt>
+<dd><p>get_pdf(year, last=””, first=””, doc_id=0) takes in one mandatory argument (year), and three optional arguments,
+(last, first, doc_id). However, either last and first or doc_id must be provided.</p>
+<p>In the case of doc_id being provided, get_pdf() will download the corresponding financial disclosure form that
+corresponds to that document id. This will be saved in year_house_pdfs/ in the current directory.</p>
+<p>in the case of a first and last name being provided, get_pdf() will download all the financial disclosure forms
+that correspond to that member in the given year. All of the pdfs will be saved in the year_house_pdfs/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> – int or string of the year desired (2013-2022)</p></li>
+<li><p><strong>last</strong> – last name of the house member, should be a string.</p></li>
+<li><p><strong>first</strong> – first name of the house member, should be a string.</p></li>
+<li><p><strong>doc_id</strong> – int or string of the document id.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void, writes the pdfs into year_house_pdfs/</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_congress_records.get_year">
+<span class="sig-prename descclassname"><span class="pre">database.process_congress_records.</span></span><span class="sig-name descname"><span class="pre">get_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_congress_records.get_year" title="Permalink to this definition"></a></dt>
+<dd><p>takes in a year (2013-2022) and downloads all the financial disclosure pdfs into year_house_pdfs/ in the current
+directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>year</strong> – int or string, between 2013-2022.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void, writes pdfs to year_house_pdf/</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_congress_records.populate_database_from_csv">
+<span class="sig-prename descclassname"><span class="pre">database.process_congress_records.</span></span><span class="sig-name descname"><span class="pre">populate_database_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'database/database.db'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all_transaction'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_congress_records.populate_database_from_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Adds all of the transaction entries stored in the given path (without file extension) to the database
+with the given path.</p>
+<p>This does not provide any input validation!! Please do not use this with outside csvs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_path</strong> – The path to the csv file to read. This should be without the file extension.</p></li>
+<li><p><strong>db_path</strong> – The path to the Database to add the entires to</p></li>
+<li><p><strong>table_name</strong> – The name of the database table</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_congress_records.safe_open_w">
+<span class="sig-prename descclassname"><span class="pre">database.process_congress_records.</span></span><span class="sig-name descname"><span class="pre">safe_open_w</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_congress_records.safe_open_w" title="Permalink to this definition"></a></dt>
+<dd><p>Opens path in write mode, creating any needed folders along the way</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – The filename to open</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The opened file object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-database.driver_for_database_generation">
+<span id="driver-for-database-generation"></span><h2>Driver for Database Generation<a class="headerlink" href="#module-database.driver_for_database_generation" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="database.driver_for_database_generation.process_get_pdf">
+<span class="sig-prename descclassname"><span class="pre">database.driver_for_database_generation.</span></span><span class="sig-name descname"><span class="pre">process_get_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_as_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.driver_for_database_generation.process_get_pdf" title="Permalink to this definition"></a></dt>
+<dd><p>process a specific house member of doc_id, it downloads all the data and then
+processes the data. It then generates the pandas dataframe which
+is then written to the csvs/file_name given the file_name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – str, name of the file that is being written to</p></li>
+<li><p><strong>year</strong> – int or string of the year desired (2013-2022)</p></li>
+<li><p><strong>last</strong> – last name of the house member, should be a string.</p></li>
+<li><p><strong>first</strong> – first name of the house member, should be a string.</p></li>
+<li><p><strong>doc_id</strong> – int or string of the document id.</p></li>
+<li><p><strong>save_as_csv</strong> – int, to save the pandas dataframe as a csv</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the saved csv with the given file name in csvs/file_name.csv</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.driver_for_database_generation.process_year_pdf">
+<span class="sig-prename descclassname"><span class="pre">database.driver_for_database_generation.</span></span><span class="sig-name descname"><span class="pre">process_year_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.driver_for_database_generation.process_year_pdf" title="Permalink to this definition"></a></dt>
+<dd><p>process an entire year of data, it downloads all the data and then
+processes the data. It then generates the pandas dataframe which
+is then written to the csvs/file_name given the file_name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – str, name of the file that is being written to</p></li>
+<li><p><strong>year</strong> – the year that wants to be processed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>void, the csv file that is written</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-database.process_pandas_dataframe">
+<span id="process-pandas-dataframe"></span><h2>Process Pandas Dataframe<a class="headerlink" href="#module-database.process_pandas_dataframe" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_pandas_dataframe.find_start">
+<span class="sig-prename descclassname"><span class="pre">database.process_pandas_dataframe.</span></span><span class="sig-name descname"><span class="pre">find_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_pandas_dataframe.find_start" title="Permalink to this definition"></a></dt>
+<dd><p>given an unprocessed dataframe, find the start of the trades, which
+can be located at “schedule b: transaction”. We then return the df_index,
+and the row that it starts on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – list of pandas dataframes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the number of df, know as df_index, and the row in that specific df</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_pandas_dataframe.generate_entry">
+<span class="sig-prename descclassname"><span class="pre">database.process_pandas_dataframe.</span></span><span class="sig-name descname"><span class="pre">generate_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_db_page</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_pandas_dataframe.generate_entry" title="Permalink to this definition"></a></dt>
+<dd><p>this is an extremely complicated function that basically files in all the
+data for a single trade. It mostly works of matching regex expressions and
+taking the information from there</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – list of pandas dataframes</p></li>
+<li><p><strong>df_index</strong> – int, the starting index of which panda dataframe to start</p></li>
+<li><p><strong>row</strong> – int, the row to start at</p></li>
+<li><p><strong>regex_result</strong> – regex matching result, look at process dataframe for more info</p></li>
+<li><p><strong>new_db_page</strong> – Bool, deals with the fact that the pandas dataframes look     different depending on if the transaction b: started on this page or if     it started on a different page</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns a dict with all the information in it</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_pandas_dataframe.get_column_for_regex">
+<span class="sig-prename descclassname"><span class="pre">database.process_pandas_dataframe.</span></span><span class="sig-name descname"><span class="pre">get_column_for_regex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_pandas_dataframe.get_column_for_regex" title="Permalink to this definition"></a></dt>
+<dd><p>Given a list of pandas dataframe, the index of which dataframe to start with
+a regex expression, and an optional start row, we search until we find a
+column and row value that gives a match to the given regex expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – list of pandas dataframe</p></li>
+<li><p><strong>df_index</strong> – int, the index of the df to start at</p></li>
+<li><p><strong>regex</strong> – regex string, the regex expression to match on</p></li>
+<li><p><strong>start_row</strong> – int, optional, if not indicated starts at zero.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database.process_pandas_dataframe.process_dataframe">
+<span class="sig-prename descclassname"><span class="pre">database.process_pandas_dataframe.</span></span><span class="sig-name descname"><span class="pre">process_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#database.process_pandas_dataframe.process_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>Given an unprocessed list of pandas dataframes and a path to the pdf, generates
+a new pandas dataframe with all the data about the trades filled in. This
+pandas dataframe is in the exact same shape as our final SQL database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – list of pandas dataframes</p></li>
+<li><p><strong>pdf_path</strong> – string, path to the pdf where df was created from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a pandas dataframe with all of the trade data from the given df/pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
 
 
            </div>

@@ -33,17 +33,32 @@ main pages that can be accessed through the navigation panel:
 
     .. image:: /../../images/companies_page.png
 
+4. Visualizations page: shows a transaction value vs. time graph based on the search query.
+    * The Search Query includes: Name, company, and ticker.
+
+    .. image:: /../../images/visualizations_page.png
 
 User Directions
 ---------------
-* On each page, select the date range (a calender will pop up to specify specific dates) at the top of the page,
-  and click the submit button to see transactions in the specified date range.
-    * Note: To see all possible transactions, select date range 2013-01-01 to the current date.
+* On the Transactions, Representatives, and Companies page, select the date range
+  (a calender will pop up to specify specific dates) at the top of the page, and click the submit button to see
+  transactions in the specified date range.Note: To see all possible transactions,
+  select date range 2013-01-01 to the current date.
 
-        .. image:: /../../images/date_range.png
+    .. image:: /../../images/date_range.png
+* In addition to selecting the date range on the Transactions, Representatives, and Companies page,
+  the user can click the magnifying glass icon to the left of the date range to complete a more advanced search.
+  Through the advanced search, the user can filter the table for more specific transactions after clicking submit.
 
-Additional Features
--------------------
+* On the Visualizations page, the visualization by default shows the sum of all transactions vs. time.
+  Through the search query, the user can filter the visualizations for more specific transactions
+  after clicking submit. The user can also filter by time and variables
+  (gone over in more detail in Additional Features for Visualizations Page)
+
+        .. image:: /../../images/advanced_search.png
+
+Additional Features for Transactions, Representatives, and Companies Pages
+--------------------------------------------------------------------------
 * Light and Dark Mode button on the top right of the webpage
 
 * Search through the list of transactions (accepts partial searches and is case insensitive)
@@ -54,21 +69,41 @@ Additional Features
 * The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the
   right of the column name shows the direction of the sort)
 
-* On the transaction page, the Update Transactions to a Category column saves the current transaction to a category
-  through a cookie. In future updates, the transactions that were saved to a category will be displayed on its
-  own page for the user.
-    1. Click the "Category" button for a transaction, and type in the name of the category you want to save the
-       transaction to.
+* On the transaction page, the Category column saves the current transaction to a category.
+
+    1. Click the "Category" button for a transaction, and type in the name of the category you want to save the transaction to.
         .. image:: /../../images/add_category.png
-    2. Click the Save button to save the changes to a cookie. An alert will show on the page to indicate the cookie
-       has been updated to save the transaction to a category.
-        .. image:: /../../images/add_category_alert.png
+    2. Click the Save button to save the transaction to that category.
+        .. image:: /../../images/add_category2.png
     3. After refreshing the page, you can see categories at the bottom that you have previously saved transactions to.
         .. image:: /../../images/list_previous_categories.png
-    4. Clicking on a category button at the bottom will add or delete the current transaction from that category
-       (the category button acts as a toggle button).
-        .. image:: /../../images/delete_transaction.png
-    5. Highlighted column names are hoverable to show a tooltip giving more information about what the column
-       represents. The tooltips are currently shown in the Companies and Representatives page
+    4. Clicking on the "Category Filter" button on the top right will list your categories. Clicking on a category will filter the table transactions by that category.
+        .. image:: /../../images/category_filter.png
+        .. image:: /../../images/category_filter2.png
+
+* Highlighted column names are hoverable to show a tooltip giving more information about what the column represents.
+
         .. image:: /../../images/tooltip.png
+
+Additional Features for Visualizations Page
+-------------------------------------------
+*  At the bottom of the transaction value vs. time graph, there is a time slider.
+   Dragging the ends of the slider limits the time range for the graph above.
+
+        .. image:: /../../images/visualizations_drag1.png
+        .. image:: /../../images/visualizations_drag2.png
+
+* Hovering over the transaction value vs. time graph brings up some tools at the top right of the graph.
+  Hover over each icon to get more information. For example, in the image below,
+  hovering over the camera lets us know we can download this plot as a png.
+
+        .. image:: /../../images/visualizations_tools.png
+
+* Hovering over elements of the the transaction value vs. time graph gives you more details about the data.
+
+        .. image:: /../../images/visualization_hover.png
+
+* Clicking any of the variables will filter the transaction value vs. time graph by that variable.
+* The user can filter by multiple variables.
+        .. image:: /../../images/visualizations_variable.png
 
