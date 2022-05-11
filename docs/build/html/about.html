@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About &mdash; Congressional Stock Trading Monitor v0.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Documentation" href="developer.html" />
+    <link rel="prev" title="Welcome to Congressional Stock Trading Monitor’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Congressional Stock Trading Monitor
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#user-documentation">User Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-directions">User Directions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-features">Additional Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Congressional Stock Trading Monitor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>About</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/about.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline"></a></h1>
+<p>The Congressional Stock Trading Monitor will be a tool that assists users in collecting, parsing and viewing data about stock market transactions that members of the U.S. House of Representatives publically report.</p>
+<div class="section" id="user-documentation">
+<h2>User Documentation<a class="headerlink" href="#user-documentation" title="Permalink to this headline"></a></h2>
+<p>On the Congressional Stock Trading Monitor webpage, users can retrieve information and data pertaining to the U.S. House of Representatives stock market transactions. The Congressional Stock Trading monitor consists of three main pages that can be accessed through the navigation panel:</p>
+<ol class="arabic">
+<li><dl>
+<dt>Transactions page (homepage): shows list of transactions</dt><dd><ul class="simple">
+<li><p>Includes the following data for each transaction: U.S. House of Representatives member name, member district,
+company, ticker, type of transaction (purchase/sale), lower bound value of the transaction, higher bound value of
+the transaction, transaction description, a link to the official pdf of the stock transaction, and an option to
+add/delete the transaction to a category.</p></li>
+</ul>
+<img alt="_images/transactions_page.png" src="_images/transactions_page.png" />
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Representatives page: shows list of representatives along with their aggregated purchased/sold stock data</dt><dd><ul class="simple">
+<li><p>Includes the following data for each representative: U.S. House of Representatives member name,
+trade count, transaction purchase count, transaction sale count, average transaction value, lower bound and
+higher bound value of the purchase range, and lower bound and higher bound value of the sale range.</p></li>
+</ul>
+<img alt="_images/representatives_page.png" src="_images/representatives_page.png" />
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Companies page:  shows list of companies along with their aggregated purchased/sold data</dt><dd><ul class="simple">
+<li><p>Includes the following data for each company: Company, ticker, transaction count, count of members having
+transactions with this company, lower bound and higher bound value of the purchase range, and lower bound
+and higher bound value of the sale range.</p></li>
+</ul>
+<img alt="_images/companies_page.png" src="_images/companies_page.png" />
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="user-directions">
+<h2>User Directions<a class="headerlink" href="#user-directions" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>On each page, select the date range (a calender will pop up to specify specific dates) at the top of the page,
+and click the submit button to see transactions in the specified date range.</p>
+<blockquote>
+<div><ul>
+<li><p>Note: To see all possible transactions, select date range 2013-01-01 to the current date.</p>
+<blockquote>
+<div><img alt="_images/date_range.png" src="_images/date_range.png" />
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="additional-features">
+<h2>Additional Features<a class="headerlink" href="#additional-features" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>Light and Dark Mode button on the top right of the webpage</p></li>
+<li><p>Search through the list of transactions (accepts partial searches and is case insensitive)</p></li>
+<li><p>Pick to show different number of entries on the page (ex.10, 25, 50, 100). Clicking on the next/previous buttons
+lets you go to different pages of entries.</p></li>
+<li><p>The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the
+right of the column name shows the direction of the sort)</p></li>
+<li><p>On the transaction page, the Update Transactions to a Category column saves the current transaction to a category
+through a cookie. In future updates, the transactions that were saved to a category will be displayed on its
+own page for the user.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Click the “Category” button for a transaction, and type in the name of the category you want to save the
+transaction to.</p>
+<blockquote>
+<div><img alt="_images/add_category.png" src="_images/add_category.png" />
+</div></blockquote>
+</li>
+<li><p>Click the Save button to save the changes to a cookie. An alert will show on the page to indicate the cookie
+has been updated to save the transaction to a category.</p>
+<blockquote>
+<div><img alt="_images/add_category_alert.png" src="_images/add_category_alert.png" />
+</div></blockquote>
+</li>
+<li><dl>
+<dt>After refreshing the page, you can see categories at the bottom that you have previously saved transactions to.</dt><dd><img alt="_images/list_previous_categories.png" src="_images/list_previous_categories.png" />
+</dd>
+</dl>
+</li>
+<li><p>Clicking on a category button at the bottom will add or delete the current transaction from that category
+(the category button acts as a toggle button).</p>
+<blockquote>
+<div><img alt="_images/delete_transaction.png" src="_images/delete_transaction.png" />
+</div></blockquote>
+</li>
+<li><p>Highlighted column names are hoverable to show a tooltip giving more information about what the column
+represents. The tooltips are currently shown in the Companies and Representatives page</p>
+<blockquote>
+<div><img alt="_images/tooltip.png" src="_images/tooltip.png" />
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Congressional Stock Trading Monitor’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="developer.html" class="btn btn-neutral float-right" title="Developer Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lily Qiu, Brian Spates, Jake Wilson, Jiaming Yao, Michelle Zheng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

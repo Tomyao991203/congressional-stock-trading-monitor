@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSTM &mdash; Congressional Stock Trading Monitor v0.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database" href="database.html" />
+    <link rel="prev" title="Developer Documentation" href="developer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Congressional Stock Trading Monitor
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CSTM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cstm-database-helpers">CSTM Database Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cstm-data-classes">CSTM Data Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cstm-representative-helpers">CSTM Representative Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cstm-query">CSTM Query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cstm-enums">CSTM Enums</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="static.html">Static</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Congressional Stock Trading Monitor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="developer.html">Developer Documentation</a> &raquo;</li>
+      <li>CSTM</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cstm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="cstm">
+<h1>CSTM<a class="headerlink" href="#cstm" title="Permalink to this headline"></a></h1>
+<p>The <cite>ctsm</cite> directory contains backend python files to retrieve, modify, and send information to the Flask application.</p>
+<ul class="simple">
+<li><p><cite>query.py</cite>: contains a function that returns a key-value pair as a string to assist with database queries.</p></li>
+<li><p><cite>database_helpers.py</cite>: connects html code form requests with queries on the database.</p></li>
+<li><p><cite>representative_helpers.py</cite>: contains code responsible for obtaining and processing representative information</p></li>
+<li><p><cite>enums.py</cite>: Contains enumerated types found in CSTM</p></li>
+<li><p><cite>dataclasses.py</cite>: Contains dataclasses found in CSTM</p></li>
+</ul>
+<div class="section" id="cstm-database-helpers">
+<h2>CSTM Database Helpers<a class="headerlink" href="#cstm-database-helpers" title="Permalink to this headline"></a></h2>
+<p><cite>database_helpers.py</cite>: connects html code form requests with queries on the database.</p>
+</div>
+<div class="section" id="cstm-data-classes">
+<h2>CSTM Data Classes<a class="headerlink" href="#cstm-data-classes" title="Permalink to this headline"></a></h2>
+<p><cite>dataclasses.py</cite>:  Contains dataclasses found in CSTM.</p>
+</div>
+<div class="section" id="cstm-representative-helpers">
+<h2>CSTM Representative Helpers<a class="headerlink" href="#cstm-representative-helpers" title="Permalink to this headline"></a></h2>
+<p><cite>representative_helpers.py</cite>: contains code responsible for obtaining and processing representative information</p>
+</div>
+<div class="section" id="cstm-query">
+<h2>CSTM Query<a class="headerlink" href="#cstm-query" title="Permalink to this headline"></a></h2>
+<p><cite>query.py</cite>:  contains a function that returns a key-value pair as a string to assist with database queries.</p>
+</div>
+<div class="section" id="cstm-enums">
+<h2>CSTM Enums<a class="headerlink" href="#cstm-enums" title="Permalink to this headline"></a></h2>
+<p><cite>enums.py</cite>: contains enumerated types found in CSTM.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="developer.html" class="btn btn-neutral float-left" title="Developer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="database.html" class="btn btn-neutral float-right" title="Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lily Qiu, Brian Spates, Jake Wilson, Jiaming Yao, Michelle Zheng.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -105,19 +105,22 @@ The ```templates``` directory contains html files.
 * ```partials``` directory: contains html files defining reusable UI components
     * ```description_modal.html```: html file defining the transaction description popup
     * ```navigation_bar.html```: html file defining the responsive navigation
+    * ```category_dropdown.html```: html file defining the dropdown for selecting and creating categories
     * ```transaction_table.html```: html file defining the transaction table
     * ```companies_table.html```: html file defining the companies table
+    *```category_dropdown.html```: html file for the categories button
+    *```category_listing.html```: html file for the categories dropdown menu
 * ```base.html```: html file defining the basic webpage format to extend into other pages
 * ```transactions.html```: html file defining the transaction driven view
 * ```companies.html```: html file defining the companies driven view
+* ```representatives.html```: html file defining the representatives driven view
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
 * ```darkly.bootstrap.min.css```: css file with the darkly bootstrap theme
 * ```flatly.bootstrap.min.css```: css file with the darkly bootstrap theme
-* ```toggle.css```: css file defining the toggle style 
 * ```tooltip.js```: javascript file supporting bootstrap tooltips
-* ```categories_cookies.js```: javascript file with functions to set cookies
+* ```cookies.js```: javascript file with functions to set cookies
 
 ### *tests* Directory
 The ```tests``` directory contains all test files.

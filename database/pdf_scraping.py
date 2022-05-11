@@ -10,7 +10,7 @@ def check_if_pdf_is_malformed(path: str):
     takes in a path to a financial disclosure pdf. It then checks the size, as malformed pdfs are less than 2 kilobytes,
     and correctly formatted pdfs are much larger.
 
-    :path: str, path to pdf
+    :param path: str, path to pdf
     :return: boolean, whether pdf is malformed, which is when a pdf is "empty".
     """
     return os.stat(path).st_size <= 2000
@@ -24,7 +24,7 @@ def create_correct_template(file: str):
     pdf_tmp_template.tabula-template.json. To learn more about what this template does, check out the tabula
     documentation for read_pdf_with_template().
 
-    :file: str, path to the financial disclosure pdf
+    :param file: str, path to the financial disclosure pdf
     :returns: none, creates a temporary template called pdf_tmp_template.tabula-template.json
     """
     file = open(file, 'rb')
@@ -52,7 +52,7 @@ def pdf_discriminator(file: str):
     is the correct form type, it scrapes the data and returns a list of unprocessed pandas dataframes. If it is not,
     it prints the reason why the pdf file provided is incorrect, and returns none.
 
-    :file: str, path to financial disclosure form
+    :param file: str, path to financial disclosure form
     :return: if the pdf is the correct, returns the list of unprocessed pandas dataframes, if not returns None type.
     """
     if check_if_pdf_is_malformed(file):
