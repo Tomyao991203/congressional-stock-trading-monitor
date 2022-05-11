@@ -27,7 +27,7 @@ def find_start(df):
     can be located at "schedule b: transaction". We then return the df_index,
     and the row that it starts on.
 
-    :df: list of pandas dataframes
+    :param df: list of pandas dataframes
     :return: the number of df, know as df_index, and the row in that specific df
     """
     for i in range(len(df)):
@@ -44,10 +44,10 @@ def get_column_for_regex(df, df_index, regex, start_row=0):
     a regex expression, and an optional start row, we search until we find a
     column and row value that gives a match to the given regex expression.
 
-    :df: list of pandas dataframe
-    :df_index: int, the index of the df to start at
-    :regex: regex string, the regex expression to match on
-    :start_row: int, optional, if not indicated starts at zero.
+    :param df: list of pandas dataframe
+    :param df_index: int, the index of the df to start at
+    :param regex: regex string, the regex expression to match on
+    :param start_row: int, optional, if not indicated starts at zero.
     """
     number_of_columns = len(df[df_index].columns)
     number_of_rows = len(df[df_index])
@@ -80,12 +80,12 @@ def generate_entry(df, df_index, row, regex_result, new_db_page):
     data for a single trade. It mostly works of matching regex expressions and
     taking the information from there
 
-    :df: list of pandas dataframes
-    :df_index: int, the starting index of which panda dataframe to start
-    :row: int, the row to start at
-    :regex_result: regex matching result, look at process dataframe for more info
-    :new_db_page: Bool, deals with the fact that the pandas dataframes look
-    different depending on if the transaction b: started on this page or if
+    :param df: list of pandas dataframes
+    :param df_index: int, the starting index of which panda dataframe to start
+    :param row: int, the row to start at
+    :param regex_result: regex matching result, look at process dataframe for more info
+    :param new_db_page: Bool, deals with the fact that the pandas dataframes look \
+    different depending on if the transaction b: started on this page or if \
     it started on a different page
     :return: returns a dict with all the information in it
     """
@@ -199,8 +199,8 @@ def process_dataframe(df, pdf_path):
     a new pandas dataframe with all the data about the trades filled in. This
     pandas dataframe is in the exact same shape as our final SQL database.
 
-    :df: list of pandas dataframes
-    :pdf_path: string, path to the pdf where df was created from
+    :param df: list of pandas dataframes
+    :param pdf_path: string, path to the pdf where df was created from
     :return: a pandas dataframe with all of the trade data from the given df/pdf
     """
     pdf_db = pd.DataFrame(columns=['Member Name', 'Member District', 'Company', 'Ticker', 'Type', 'Date',

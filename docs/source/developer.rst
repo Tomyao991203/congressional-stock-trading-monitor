@@ -21,3 +21,4 @@ This application utilizes a Continuous Integration and Continuous Delivery pipel
    templates
    static
    tests
+   visualization
