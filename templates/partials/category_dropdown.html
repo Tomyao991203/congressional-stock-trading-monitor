@@ -12,12 +12,14 @@
             <input type="text" class="form-control" id="categoryDropdown{{ entry.id }}" placeholder="Category name">
         </div>
         <div class="mb-3">
-            <button id="categoriesButton{{ entry.id }}" type="submit" class="btn btn-primary" onclick="assignTransactionIDToCategory('{{entry.id}}', document.getElementById('categoryDropdown{{ entry.id }}').value)");">Save</button>
+            <button id="categoriesButton{{ entry.id }}" type="submit" class="btn btn-primary" onclick="assignTransactionIDToCategory('{{entry.id}}', document.getElementById('categoryDropdown{{ entry.id }}').value, '{{entry.member_name}}', '{{entry.state_district_number}}', '{{entry.company}}', '{{entry.ticker}}', '{{entry.transaction_type}}', '{{entry.transaction_date}}', '{{entry.value_lb}}', '{{entry.value_ub}}', '{{entry.description}}', '{{entry.link}}');">Save</button>
         </div>
         <div class="dropdown-divider"></div>
         {% for category in categories %}
             <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="button" id="entry{{ category }}{{ entry.id }}" autocomplete="off" onclick="callCorrectCookieFunction('{{entry.id}}', '{{ category }}', 'entry{{ category }}{{ entry.id }}');">{{category}}</button>
+                <button type="button" class="dropdown-item" data-bs-toggle="button" id="entry{{ category }}{{ entry.id }}" autocomplete="off" onclick="callCorrectCookieFunction('{{entry.id}}', '{{ category }}', 'entry{{ category }}{{ entry.id }}', '{{entry.member_name}}', '{{entry.state_district_number}}', '{{entry.company}}', '{{entry.ticker}}', '{{entry.transaction_type}}', '{{entry.transaction_date}}', '{{entry.value_lb}}', '{{entry.value_ub}}', '{{entry.description}}', '{{entry.link}}');">{{category}}</button>
             </li>
         {% endfor %}
 </div>
+
+
