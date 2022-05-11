@@ -3,13 +3,13 @@ from visualization.helper_functions import purchase_sale_sum_on_time, row_lst_to
 import json
 from flask import Request
 from plotly.utils import PlotlyJSONEncoder
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from cstm.database_helpers import get_db_connection
 
 database_path = r"database/database.db"
 
 
-def purchase_sale_vs_time(request: Request) -> str:
+def purchase_sale_vs_time(request: Request) -> str:  # pragma: no cover
     """
     return the purchase/sale value vs time graph json str
     :param request: Request object from flask

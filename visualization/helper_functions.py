@@ -1,15 +1,14 @@
 import sqlite3
-import json
+
 import pandas
 
 from datetime import date, datetime
 
-from plotly import express as px, graph_objs as go
-from plotly.utils import PlotlyJSONEncoder
+from plotly import express as px
 
 from cstm.database_helpers import generate_select_query, table_name, generate_string_like_condition
 
-from cstm.query import value_between, equal_condition
+from cstm.query import value_between
 
 
 def purchase_sale_conversion_query():
@@ -74,7 +73,7 @@ def convert_date_string_lst_to_datetime(string_lst: list[str], str_format: str) 
     return [datetime.strptime(date_str, str_format) for date_str in string_lst]
 
 
-def row_lst_to_pandas_dataframe(data: list[sqlite3.Row], column_names: list[str]) -> pandas.DataFrame:
+def row_lst_to_pandas_dataframe(data: list[sqlite3.Row], column_names: list[str]) -> pandas.DataFrame:  # pragma: no cover
     """
     convert the input list of Row objects into pandas dataframe with given column names
     :param column_names: list of column names
@@ -93,7 +92,7 @@ def row_lst_to_pandas_dataframe(data: list[sqlite3.Row], column_names: list[str]
     return result
 
 
-def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):
+def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):  # pragma: no cover
     """
     using data in dataframe, construct a purchase/sale value vs time graph using plotly and encode the graph into jason
     then return the json string.
@@ -108,8 +107,8 @@ def purchase_sale_vs_time_visual_graph(data_frame: pandas.DataFrame):
                        barmode=barmode)
     fig.update_xaxes(rangeslider_visible=True)
     fig.update_layout(
-        title_text = "Transaction Value vs. Time",
-        xaxis_title_text = "Time",
-        yaxis_title_text = "Sum of Transaction Values"
+        title_text="Transaction Value vs. Time",
+        xaxis_title_text="Time",
+        yaxis_title_text="Sum of Transaction Values"
     )
     return fig
