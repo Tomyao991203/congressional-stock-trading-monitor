@@ -1,6 +1,6 @@
 # Congressional Stock Trading Monitor
 
-The Congressional Stock Trading Monitor will be a tool that assists users in collecting, parsing and viewing data about stock market transactions that members of the U.S. House of Representatives publically report.
+The Congressional Stock Trading Monitor will be a tool that assists users in collecting, parsing and viewing data about stock market transactions that members of the U.S. House of Representatives publically report. In addition to this, the Congressional Stock Trading Monitor allows users create visualizations and download table data in a cvs/pdf format.
 
 ## How To Run the Software
 
@@ -28,7 +28,7 @@ On the Congressional Stock Trading Monitor webpage, users can retrieve informati
 
     ![alt text](./images/transactions_page.png)
 2. Representatives page: shows list of representatives along with their aggregated purchased/sold stock data
-    * *Includes the following data for each representative*: U.S. House of Representatives member name, trade count, transaction purchase count, transaction sale count, average transaction value, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
+    * *Includes the following data for each representative*: U.S. House of Representatives member name, trade count, transaction purchase count, transaction sale count, average purchase transaction value, average sale transaction value, lower bound and higher bound value of the purchase range, and lower bound and higher bound value of the sale range.
 
     ![alt text](./images/representatives_page.png)
 3. Companies page: shows list of companies along with their aggregated purchased/sold data
@@ -36,25 +36,34 @@ On the Congressional Stock Trading Monitor webpage, users can retrieve informati
 
     ![alt text](./images/companies_page.png)
 
+4. Visualizations page: shows a transaction value vs. time graph based on the search query. The graph is hoverable and can be filtered further through interactive elements.
+    * *The Search Query includes*: Name, company, and ticker.
+
+    ![alt text](./images/visualizations_page.png)
+
 ***User Directions***
-* On each page, select the date range (a calender will pop up to specify specific dates) at the top of the page, and click the submit button to see transactions in the specified date range.
+* On the Transactions, Representatives, and Companies page, select the date range (a calender will pop up to specify specific dates) at the top of the page, and click the submit button to see transactions in the specified date range.
     * Note: To see all possible transactions, select date range 2013-01-01 to the current date.
     ![alt text](./images/date_range.png)
+* In addition to selecting the date range on the Transactions, Representatives, and Companies page, the user can click the magnifying glass icon to the left of the date range to complete a more advanced search. Through the advanced search, the user can filter the table for more specific transactions after clicking submit. 
+    ![alt text](./images/advanced_search.png)
+* On the Visualizations page, the visualization by default shows the sum of all transactions vs. time. Through the search query, the user can filter the visualizations for more specific transactions after clicking submit. The user can also filter by time and variables (gone over in more detail in *Additional Features for Visualizations Page*)
 
-***Additional Features***
+***Additional Features for Transactions, Representatives, and Companies Pages***
 * Light and Dark Mode button on the top right of the webpage
-* Search through the list of transactions (accepts partial searches and is case insensitive)
+* Search through the list of transactions (accepts partial searches and is case insensitive).
 * Pick to show different number of entries on the page (ex.10, 25, 50, 100). Clicking on the next/previous buttons lets you go to different pages of entries.
-* The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the right of the column name shows the direction of the sort)
-* On the transaction page, the *Update Transactions to a Category* column saves the current transaction to a category through a cookie. *In future updates, the transactions that were saved to a category will be displayed on its own page for the user.*
+* The entries in the table can be sorted by each column by clicking the column name (the corresponding arrow to the right of the column name shows the direction of the sort).
+* Table data can be downloaded in pdf or csv format.
+* On the transaction page, the *Category* column saves the current transaction to a category. 
     * Click the "Category" button for a transaction, and type in the name of the category you want to save the transaction to.
 
     ![alt text](./images/add_category.png)
     
 
-    * Click the *Save* button to save the changes to a cookie. An alert will show on the page to indicate the cookie has been updated to save the transaction to a category.
+    * Click the *Save* button to save the transaction to that category.
 
-    ![alt text](./images/add_category_alert.png)
+    ![alt text](./images/add_category2.png)
 
     * After refreshing the page, you can see categories at the bottom that you have previously saved transactions to.
 
@@ -62,15 +71,35 @@ On the Congressional Stock Trading Monitor webpage, users can retrieve informati
 
     * Clicking on a category button at the bottom will add or delete the current transaction from that category (the category button acts as a toggle button).
 
-    ![alt text](./images/delete_transaction.png)
+    ![alt text](./images/add_category_toggle.png)
 
-* Highlighted column names are hoverable to show a tooltip giving more information about what the column represents. *The tooltips are currently shown in the Companies and Representatives page*
+    * Clicking on the "Category Filter" button on the top right will list your categories. Clicking on a category will filter the table transactions by that category.
+
+    ![alt text](./images/category_filter.png)
+    ![alt text](./images/category_filter2.png)
+
+* Highlighted column names are hoverable to show a tooltip giving more information about what the column represents.
 ![alt text](./images/tooltip.png)
+
+***Additional Features for Visualization Page***
+* At the bottom of the transaction value vs. time graph, there is a time slider. Dragging the ends of the slider limits the time range for the graph above. 
+    ![alt text](./images/visualizations_drag1.png)
+
+    ![alt text](./images/visualizations_drag2.png)
+
+* Hovering over the transaction value vs. time graph brings up some tools at the top right of the graph. Hover over each icon to get more information. For example, in the image below, hovering over the camera lets us know we can download this plot as a png.
+    ![alt text](./images/visualizations_tools.png)
+
+* Hovering over elements of the the transaction value vs. time graph gives you more details about the data.
+    ![alt text](./images/visualization_hover.png)
+
+* Clicking any of the variables will filter the transaction value vs. time graph by that variable. The user can filter by multiple variables.
+    ![alt text](./images/visualizations_variable.png)
 
 ## Developer Documentation
 The goal of this application is to utilize webscraping tools to gather information from the Financial Disclosures of U.S. House of Representatives into a database. This database will be queried to provide structured and formatted data to users on the webpage, along with unique visualizations. *The website containing information pertaining to the Financial Disclosures of U.S. House of Representatives can be found at: https://disclosures-clerk.house.gov/PublicDisclosure/FinancialDisclosure.*
 
-Our current application holds a pre-populated database of real stock transactions from the U.S. House of Representatives. The database holds the following information for 32 U.S. House of Representatives: *Representative Name*, *State District Number*, *Company*, *Ticker*, *Transaction Type*, *Date*, *Amount*, and *Description*.
+The webscraping tools gather stock transactions from the U.S. House of Representatives containing the following information: *Representative Name*, *State District Number*, *Company*, *Ticker*, *Transaction Type*, *Date*, *Amount*, and *Description*.
 
 This application utilizes a *Continuous Integration* and *Continuous Delivery* pipeline to automate tests.  
 
@@ -105,15 +134,19 @@ The ```templates``` directory contains html files.
 * ```partials``` directory: contains html files defining reusable UI components
     * ```description_modal.html```: html file defining the transaction description popup
     * ```navigation_bar.html```: html file defining the responsive navigation
-    * ```category_dropdown.html```: html file defining the dropdown for selecting and creating categories
     * ```transaction_table.html```: html file defining the transaction table
     * ```companies_table.html```: html file defining the companies table
-    *```category_dropdown.html```: html file for the categories button
-    *```category_listing.html```: html file for the categories dropdown menu
+    * ```representatives_table.html```: html file defining the representatives table
+    * ```transaction_search.html```: html file defining the advanced search collapsable button for the transaction page
+    * ```companies_search.html```: html file defining the advanced search collapsable button for the companies page
+    * ```representatives_search.html```: html file defining the advanced search collapsable button for the representatives page
+    * ```category_dropdown.html```: html file for the categories button
+    * ```category_listing.html```: html file for the categories dropdown menu
 * ```base.html```: html file defining the basic webpage format to extend into other pages
 * ```transactions.html```: html file defining the transaction driven view
 * ```companies.html```: html file defining the companies driven view
 * ```representatives.html```: html file defining the representatives driven view
+* ```vizualizations.html```: html file defining the visualizations driven view
 
 ### *static* Directory
 The ```static``` directory contains any scripts, css, and javascript files.
@@ -132,6 +165,7 @@ The ```tests``` directory contains all test files.
     * ```test_disctrict_dataclasss.py```: tests the District dataclass
     * ```test_state_enum.py```: tests the State enum
     * ```test_representative_helpers.py```: tests the representative helper functions
+    * ```test_pdf_scraping.py```: tests pdf scraping
 
 
 ### Docker Files
@@ -153,3 +187,5 @@ The ```tests``` directory contains all test files.
 * (22%) Xue Qiu - Updated Transaction and Companies pages to the format from Brian. Wrote functions in database_helpers.py to assist with querying aggregated information for the Companies page, and wrote corresponding tests. Created a toggle button to connect Brian's frontend with Michelle's backend. Updated user documentation.
 * (18%) Jiaming Yao - 
 * (12%) Michelle Zheng - Worked on saving transaction searches(not merged/decided this feature would not be needed). Worked javascript functions to save cookies.
+
+## Sprint 3 - Level of Effort by Each Member
